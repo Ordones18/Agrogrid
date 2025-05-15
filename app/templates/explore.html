@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% block title %}Explora AgroGrid System{% endblock %}
+{% block content %}
+
+<!-- EXPLORA LA PLATAFORMA -->
+<section class="explore">
+  <div class="container">
+    <h2 class="section-title">Explora la plataforma</h2>
+    <p class="section-subtitle">Descubre todo lo que puedes hacer con AgroGrid System</p>
+    <div class="explore-grid">
+      <div class="explore-card">
+        <i class="fas fa-upload"></i>
+        <h3>Publica productos</h3>
+        <p>Sube tus productos agrícolas y llega a más compradores fácilmente.</p>
+      </div>
+      <div class="explore-card">
+        <i class="fas fa-search"></i>
+        <h3>Busca compradores y transportistas</h3>
+        <p>Encuentra aliados para vender o transportar tu cosecha de forma segura.</p>
+      </div>
+      <div class="explore-card">
+        <i class="fas fa-chart-line"></i>
+        <h3>Optimiza tus envíos</h3>
+        <p>Calcula automáticamente el costo de flete y gestiona tus entregas.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- INDICACIONES PARA AGREGAR PRODUCTOS -->
+
+<section class="explore-guide">
+  <div class="container">
+    <h2 class="section-title">¿Cómo usar AgroGrid System?</h2>
+    <div class="guide-collage">
+      <!-- Paso 1 -->
+      <div class="guide-step">
+        <div class="guide-info">
+          <h3>1. Agrega tus productos</h3>
+          <p>Haz clic en "Publicar producto", completa los datos y sube una foto de tu cosecha.</p>
+        </div>
+        <div class="guide-image">
+          <img src="{{ url_for('static', filename='images/captura-producto.png') }}" alt="Agregar producto">
+        </div>
+      </div>
+      <!-- Paso 2 -->
+      <div class="guide-step">
+        <div class="guide-info">
+          <h3>2. Busca compradores y transportistas</h3>
+          <p>Utiliza el buscador para encontrar aliados y negociar directamente.</p>
+        </div>
+        <div class="guide-image">
+          <img src="{{ url_for('static', filename='images/captura-busqueda.png') }}" alt="Buscar compradores y transportistas">
+        </div>
+      </div>
+      <!-- Paso 3 -->
+      <div class="guide-step">
+        <div class="guide-info">
+          <h3>3. Calcula y gestiona tus envíos</h3>
+          <p>Accede al módulo de envíos, ingresa los datos y obtén el costo y ruta óptima.</p>
+        </div>
+        <div class="guide-image">
+          <img src="{{ url_for('static', filename='images/captura-envio.png') }}" alt="Calcular envíos">
+        </div>
+      </div>
+    </div>
+      <a href="{{ url_for('index') }}" class="btn btn-primary">VOLVER AL INICIO</a>
+  </div>
+</section>
+{% endblock %}

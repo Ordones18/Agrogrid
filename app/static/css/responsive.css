@@ -1,0 +1,166 @@
+/* Responsive Styles */
+/* Large Desktop and below */
+@media (max-width: 1280px) {
+  .container {
+    max-width: 1140px;
+  }
+}
+
+/* Desktop */
+@media (max-width: 1024px) {
+  .container {
+    max-width: 960px;
+  }
+  
+  .hero h1 {
+    font-size: 3rem;
+  }
+  
+  .hero h2 {
+    font-size: var(--font-size-xl);
+  }
+  
+  .footer-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--spacing-lg);
+  }
+}
+
+/* Tablet */
+@media (max-width: 768px) {
+  html {
+    font-size: 15px;
+  }
+  
+  .container {
+    max-width: 720px;
+  }
+  
+  .navigation {
+    display: none;
+  }
+  
+  .mobile-menu-toggle {
+    display: block;
+  }
+  
+  .hero {
+    min-height: 500px;
+  }
+  
+  .hero h1 {
+    font-size: 2.5rem;
+  }
+  
+  .hero p {
+    font-size: var(--font-size-md);
+  }
+  
+  .section-title {
+    font-size: var(--font-size-xxl);
+  }
+  
+  .benefits-grid,
+  .testimonials-grid {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-md);
+  }
+  
+  .steps-container {
+    flex-direction: column-reverse;
+    gap: var(--spacing-xl);
+  }
+  
+  .footer-grid {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-lg);
+  }
+  
+  .footer-bottom {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+}
+
+/* Mobile Large */
+@media (max-width: 576px) {
+  html {
+    font-size: 14px;
+  }
+  
+  .container {
+    width: 100%;
+    padding: 0 var(--spacing-sm);
+  }
+  
+  section {
+    padding: var(--spacing-xl) 0;
+  }
+  
+  .hero {
+    min-height: 450px;
+  }
+  
+  .hero h1 {
+    font-size: 2rem;
+  }
+  
+  .hero h2 {
+    font-size: var(--font-size-lg);
+  }
+  
+  .section-title {
+    font-size: var(--font-size-xl);
+  }
+  
+  .section-subtitle {
+    font-size: var(--font-size-md);
+  }
+  
+  .benefit-card,
+  .testimonial-card {
+    padding: var(--spacing-md);
+  }
+  
+  .benefit-icon {
+    width: 60px;
+    height: 60px;
+    font-size: 1.5rem;
+  }
+  
+  .cta h2 {
+    font-size: var(--font-size-xl);
+  }
+  
+  .cta p {
+    font-size: var(--font-size-md);
+  }
+  
+  .legal-links {
+    flex-direction: column;
+    gap: var(--spacing-xs);
+    align-items: center;
+  }
+}
+
+/* Mobile Small */
+@media (max-width: 375px) {
+  html {
+    font-size: 13px;
+  }
+  
+  .hero h1 {
+    font-size: 1.8rem;
+  }
+  
+  .step {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  
+  .step-details {
+    text-align: center;
+  }
+}

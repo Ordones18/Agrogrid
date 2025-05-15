@@ -1,0 +1,21 @@
+# Entorno virtual
+venv/
+.env
+*.pyc
+__pycache__/
+instance/
+*.pyo
+*.pyd
+
+# Archivos de configuración de PyCharm
+.idea/
+
+# Archivos de sistema
+.DS_Store
+Thumbs.db
+
+# Archivos de log
+*.log
+
+# Archivos de base de datos locales
+*.sqlite3

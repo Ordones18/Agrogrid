@@ -1,0 +1,58 @@
+/* Benefits Section Styles */
+.benefits {
+  background-color: var(--color-gray-light);
+  padding: var(--spacing-xxl) 0;
+}
+
+.benefits-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--spacing-lg);
+  margin-top: var(--spacing-xl);
+}
+
+.benefit-card {
+  background-color: var(--color-white);
+  border-radius: var(--border-radius-lg);
+  padding: var(--spacing-xl);
+  text-align: center;
+  box-shadow: var(--shadow-md);
+  transition: transform var(--transition-normal), box-shadow var(--transition-normal);
+}
+
+.benefit-card:hover {
+  transform: translateY(-10px);
+  box-shadow: var(--shadow-lg);
+}
+
+.benefit-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background-color: rgba(139, 195, 74, 0.1);
+  color: var(--color-primary);
+  font-size: 2rem;
+  margin-bottom: var(--spacing-md);
+  transition: background-color var(--transition-normal), transform var(--transition-normal);
+}
+
+.benefit-card:hover .benefit-icon {
+  background-color: var(--color-primary);
+  color: var(--color-white);
+  transform: rotate(360deg);
+}
+
+.benefit-card h3 {
+  color: var(--color-primary);
+  font-size: var(--font-size-xl);
+  margin-bottom: var(--spacing-sm);
+}
+
+.benefit-card p {
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-md);
+  line-height: 1.6;
+}
