@@ -164,3 +164,57 @@
     text-align: center;
   }
 }
+/* Menu hamburguesa con Java Script */
+@media (max-width: 768px) {
+  .navigation.active {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+    position: absolute;
+    top: 60px;
+    left: 0;
+    width: 100%;
+    background: #fff;
+    z-index: 1000;
+    padding: 0.5rem 0;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    scrollbar-width: thin; /* Firefox */
+  }
+  .navigation.active a {
+    display: inline-block;
+    min-width: 110px;
+    padding: 0.5rem 1rem;
+    font-size: 0.95rem;
+    text-align: center;
+    border-bottom: 1px solid #eee;
+    box-sizing: border-box;
+    white-space: normal;
+  }
+  /* estiliza la barra de scroll */
+  .navigation.active::-webkit-scrollbar {
+    height: 4px;
+  }
+  .navigation.active::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 2px;
+  }
+}
+/* Explore  */
+@media (max-width: 768px) {
+  .explore-grid {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0 var(--spacing-sm);
+  }
+  .explore-card {
+    width: 100%;
+    max-width: 100%;
+    margin: 0 0 var(--spacing-md) 0;
+    text-align: center;
+    box-sizing: border-box;
+    float: none;
+  }
+}

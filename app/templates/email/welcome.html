@@ -1,0 +1,39 @@
+<!-- app/templates/email/welcome.html -->
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Bienvenido a AgroGrid System</title>
+</head>
+<body style="font-family: 'Montserrat', Arial, sans-serif; background: #f7f7f7; padding: 30px;">
+  <div style="max-width: 500px; margin: auto; background: #fff; border-radius: 8px; box-shadow: 0 2px 8px #e0e0e0; padding: 30px;">
+    <div style="text-align: center;">
+      <h2 style="color: #2e7d32;">¡Bienvenido a AgroGrid System!</h2>
+    </div>
+    <p>Hola {{ name }},</p>
+    <p>¡Gracias por registrarte en AgroGrid System! Ahora eres parte de la comunidad que conecta el campo con el futuro.</p>
+    <p>
+  Ahora tienes un perfil de
+  {% if user_type == 'agricultor' %}
+    <strong>Agricultor</strong>.
+  {% elif user_type == 'comprador' %}
+    <strong>Comprador</strong>.
+  {% elif user_type == 'transportista' %}
+    <strong>Transportista</strong>.
+  {% else %}
+    <strong>Usuario</strong>.
+  {% endif %}
+</p>
+    <p style="color: #888;">Si tienes dudas, contáctanos en cualquier momento.</p>
+    <div style="text-align: center; margin-top: 30px;">
+      <a href="{{ url_for('index', _external=True) }}" style="background: #2e7d32; color: #fff; padding: 12px 30px; border-radius: 5px; text-decoration: none;">Ir a AgroGrid</a>
+    </div>
+  </div>
+<div style="margin-top: 40px; padding: 20px 0 0 0; border-top: 1px solid #e0e0e0; text-align: center; color: #388e3c; font-size: 14px;">
+  <strong>AgroGrid System</strong><br>
+  Dirección: Ecuador, Quito, Calderón Av. Agricultura<br>
+  Teléfono: +593 99 765 8903<br>
+  Email: info@agrogrid.com
+</div>
+</body>
+</html>

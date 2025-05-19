@@ -1,0 +1,76 @@
+
+/* Contiene los colores y estilos ya predefinidos */
+:root {
+  --primary-color: #4caf50;
+  --spacing-xl: 3rem;
+  --spacing-md: 1.2rem;
+}
+
+.register-section {
+  padding: var(--spacing-xl) 0;
+  background: #f9fafb;
+  min-height: 80vh;
+  display: flex;
+  margin-top: 80px;
+  align-items: center;
+
+}
+.register-form {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.07);
+  padding: 2.5rem 2rem;
+  max-width: 420px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+.register-form .form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+.register-form label {
+  font-weight: 500;
+  color: #333;
+}
+.register-form input,
+.register-form select {
+  padding: 0.7rem 1rem;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  font-size: 1rem;
+  background: #f5f7fa;
+  transition: border 0.2s;
+}
+.register-form input:focus,
+.register-form select:focus {
+  border-color: var(--primary-color, #4caf50);
+  outline: none;
+}
+.register-form .btn-primary {
+  margin-top: 1rem;
+  width: 100%;
+  background: var(--primary-color, #4caf50);
+  color: #fff;
+  font-weight: 600;
+  border: none;
+  border-radius: 6px;
+  padding: 0.9rem 0;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.register-form .btn-primary:hover {
+  background: #388e3c;
+}
+.login-link {
+  text-align: center;
+  margin-top: 1rem;
+  font-size: 0.97rem;
+}
+.login-link a {
+  color: var(--primary-color, #4caf50);
+  text-decoration: underline;
+}

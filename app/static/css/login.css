@@ -1,0 +1,126 @@
+body {
+    background: #f4f8f4;
+    font-family: 'Roboto', Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.login-logo {
+    display: block;
+    margin: 0 auto 18px auto;
+    width: 200px;
+    height: auto;
+    margin-top: 30px;
+}
+
+
+.login-container {
+    background: #fff;
+    max-width: 350px;
+    margin: 60px auto;
+    padding: 32px 28px 24px 28px;
+    border-radius: 10px;
+    box-shadow: 0 4px 24px rgba(60, 120, 60, 0.10);
+    border: 1px solid #e0e8e0;
+}
+
+h1 {
+    color: #388e3c;
+    text-align: center;
+    margin-bottom: 24px;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+.login-form label {
+    display: block;
+    margin-bottom: 6px;
+    color: #333;
+    font-size: 15px;
+    font-weight: 500;
+}
+
+.login-form input {
+    width: 100%;
+    padding: 9px 10px;
+    margin-bottom: 18px;
+    border: 1px solid #b2dfdb;
+    border-radius: 5px;
+    font-size: 15px;
+    background: #f9fef9;
+    transition: border 0.2s;
+}
+
+.login-form input:focus {
+    border: 1.5px solid #388e3c;
+    outline: none;
+}
+
+.login-form button {
+    width: 100%;
+    padding: 10px 0;
+    background: #388e3c;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.login-form button:hover {
+    background: #256029;
+}
+
+.register-link {
+    text-align: center;
+    margin-top: 18px;
+    font-size: 14px;
+}
+
+.register-link a {
+    color: #388e3c;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.register-link a:hover {
+    text-decoration: underline;
+}
+
+.flash-messages {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 18px;
+    text-align: center;
+}
+
+.flash-success {
+    background-color: #d4edda;
+    margin-bottom: 18px;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+    margin-top: 18px;
+    border-radius: 12px;
+    padding: 14px 18px;
+    font-size: 16px;
+    text-align: center;
+}
+
+.flash-danger {
+    background-color: #ffebee;
+    margin-bottom: 18px;
+    color: #c62828;
+    border: 1px solid #ffcdd2;
+    margin-top: 18px;
+    border-radius: 12px;
+    padding: 14px 18px;
+    font-size: 16px;
+    text-align: center;
+}
+
+.return-home-wrapper {
+  text-align: center;
+  margin-top: 32px;
+}

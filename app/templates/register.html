@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+{% block title %}Regístrate en AgroGrid System{% endblock %}
+{% block content %}
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    {% for category, message in messages %}
+      <div class="alert alert-{{ category }}">{{ message }}</div>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
+<section class="register-section">
+  <div class="container">
+    <h2 class="section-title">Crea tu cuenta en AgroGrid System</h2>
+    <form class="register-form" method="POST" action="{{ url_for('register') }}">
+      <div class="form-group">
+        <label for="name">Nombre completo</label>
+        <input type="text" id="name" name="name" required>
+        <!-- Usamos required para mostrar un mensaje automaticamente del navegador para pedir completar el campo-->
+      </div>
+      <div class="form-group">
+        <label for="email">Correo electrónico</label>
+        <input type="email" id="email" name="email" required>
+      </div>
+      <div class="form-group">
+        <label for="user_type">Tipo de usuario</label>
+        <select id="user_type" name="user_type" required>
+          <option value="">Selecciona una opción</option>
+          <option value="agricultor">Agricultor</option>
+          <option value="comprador">Comprador</option>
+          <option value="transportista">Transportista</option>
+        </select>
+      </div>
+        <!-- Caja de provincias -->
+      <div class="form-group">
+        <label for="provincia">Provincia</label>
+        <select id="provincia" name="provincia" required>
+          <option value="">Selecciona una provincia</option>
+          <option value="azuay">Azuay</option>
+          <option value="bolivar">Bolívar</option>
+          <option value="canar">Cañar</option>
+          <option value="carchi">Carchi</option>
+          <option value="chimborazo">Chimborazo</option>
+          <option value="cotopaxi">Cotopaxi</option>
+          <option value="el_oro">El Oro</option>
+          <option value="esmeraldas">Esmeraldas</option>
+          <option value="galapagos">Galápagos</option>
+          <option value="guayas">Guayas</option>
+          <option value="imbabura">Imbabura</option>
+          <option value="loja">Loja</option>
+          <option value="los_rios">Los Ríos</option>
+          <option value="manabi">Manabí</option>
+          <option value="morona_santiago">Morona Santiago</option>
+          <option value="napo">Napo</option>
+          <option value="orellana">Orellana</option>
+          <option value="pastaza">Pastaza</option>
+          <option value="pichincha">Pichincha</option>
+          <option value="santa_elena">Santa Elena</option>
+          <option value="santo_domingo">Santo Domingo</option>
+          <option value="sucumbios">Sucumbíos</option>
+          <option value="tungurahua">Tungurahua</option>
+          <option value="zamora_chinchipe">Zamora Chinchipe</option>
+  </select>
+</div>
+
+      <div class="form-group">
+        <label for="cedula">Cédula de identidad </label>
+        <input type="text" id="cedula" name="cedula">
+      </div>
+      <div class="form-group">
+        <label for="phone">Teléfono</label>
+        <input type="tel" id="phone" name="phone" required>
+      </div>
+      <div class="form-group">
+        <label for="password">Contraseña</label>
+        <input type="password" id="password" name="password" required>
+      </div>
+      <button type="submit" class="btn btn-primary">Crear cuenta</button>
+      <p class="login-link">¿Ya tienes cuenta? <a href="{{ url_for('login') }}">Inicia sesión</a></p>
+    </form>
+  </div>
+</section>
+{% endblock %}
