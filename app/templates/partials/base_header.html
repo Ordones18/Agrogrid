@@ -1,0 +1,53 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8"> <!-- Evita problemas con la visualización de texto -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AgroGrid System - Conectando el campo con el futuro</title>
+    <!-- Linkear los archivos css al html -->
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/hoja.png') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/header.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/hero.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/benefits.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/how-it-works.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/testimonials.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/footer.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/animations.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/responsive.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/explore.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/register.css') }}">
+    <!-- Carga de fuentes externas de Google fonts y carga más rápida -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- Carga de iconos de Font Awesome -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Open+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+<!-- ENCABEZADO -->
+<!-- Archivo css header.css -->
+  <header class="header">
+    <div class="container">
+      <div class="logo">
+        <a href="{{ url_for('index') }}">
+          <img src="{{ url_for('static', filename='images/logo.png') }}" alt="AgroGrid System Logo" class="logo-image">
+          <span>AgroGrid System</span>
+        </a>
+      </div>
+      <nav class="navigation">
+        <ul>
+          <li><a href="{{ url_for('index') }}" class="active">Inicio</a></li>
+          <li><a href="#">Productos</a></li>
+          <li><a href="#">Nosotros</a></li>
+          <li><a href="{{ url_for('login') }}">Iniciar sesión</a></li>
+          <li><a href="{{ url_for('register') }}" class="registro-link">Registrate</a></li>
+        </ul>
+      </nav>
+      <div class="mobile-menu-toggle">
+        <i class="fas fa-bars"></i>
+      </div>
+    </div>
+  </header>
+{% block content %}{% endblock %}

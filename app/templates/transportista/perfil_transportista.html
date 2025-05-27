@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Transportista - {{ user.name }}</title>
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/hoja.png') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/header.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/register.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/transportista_perfil.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    {% include 'partials/header_perfiles.html' %}
+
+    <div class="transportista-dashboard container">
+      <header class="dashboard-header">
+        <h1>Panel del Transportista</h1>
+        <p>¡Hola, <strong>{{ user.name }}</strong>! Gestiona tus envíos y consulta tu actividad.</p>
+      </header>
+
+      <section class="metrics-section">
+        <div class="metric-card">
+          <i class="fas fa-truck-moving metric-icon"></i>
+          <h2>Envíos Realizados</h2>
+          <p class="metric-value">{{ envios_realizados | default(0) }}</p>
+        </div>
+        <div class="metric-card">
+          <i class="fas fa-star metric-icon"></i>
+          <h2>Calificación</h2>
+          <p class="metric-value">{{ calificacion | default('N/A') }}</p>
+        </div>
+      </section>
+
+      <section class="profile-section card-style">
+        <h2><i class="fas fa-box"></i> Historial de Envíos</h2>
+        <p class="empty-state">Aún no tienes envíos registrados.</p>
+      </section>
+
+      <section class="profile-section card-style">
+        <h2><i class="fas fa-truck"></i> Vehículos Registrados</h2>
+        <p class="empty-state">No has registrado ningún vehículo.</p>
+      </section>
+    </div>
+
+    {% include 'partials/footer.html' %}
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

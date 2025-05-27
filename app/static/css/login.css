@@ -42,6 +42,7 @@ h1 {
 
 .login-form input {
     width: 100%;
+    max-width: 330px;
     padding: 9px 10px;
     margin-bottom: 18px;
     border: 1px solid #b2dfdb;
@@ -123,4 +124,22 @@ h1 {
 .return-home-wrapper {
   text-align: center;
   margin-top: 32px;
+}
+
+.recover-link{
+    text-align: center;
+    margin-top: 18px;
+    font-size: 13px;
+}
+.recover-link a {
+    color: #388e3c;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s;
+
+}
+
+.recover-link a:hover {
+    color: #256029;
+    text-decoration: underline;
 }

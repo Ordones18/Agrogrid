@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+
     <meta charset="UTF-8"> <!-- Evita problemas con la visualización de texto -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AgroGrid System - Conectando el campo con el futuro</title>
     <!-- Linkear los archivos css al html -->
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/hoja.png') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/header.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/hero.css') }}">
@@ -37,8 +39,14 @@
           <li><a href="{{ url_for('index') }}" class="active">Inicio</a></li>
           <li><a href="#">Productos</a></li>
           <li><a href="#">Nosotros</a></li>
-          <li><a href="{{ url_for('login') }}">Iniciar sesión</a></li>
-          <li><a href="{{ url_for('register') }}" class="registro-link">Registrate</a></li>
+          <!-- Verificamos con un if o else si ha iniciado sesión o si no -->
+          {% if user %}
+            <li><a href="{{ url_for('logout') }}">Cerrar sesión</a></li>
+            <li><a href="{{ url_for('perfil_' + user_type) }}">Mi perfil</a></li>
+          {% else %}
+            <li><a href="{{ url_for('login') }}">Iniciar sesión</a></li>
+            <li><a href="{{ url_for('register') }}" class="registro-link">Registrate</a></li>
+          {% endif %}
         </ul>
       </nav>
       <div class="mobile-menu-toggle">

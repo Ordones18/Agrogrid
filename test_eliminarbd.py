@@ -4,7 +4,7 @@ from app import app, db
 from app.models import Usuario
 
 with app.app_context():
-    usuario = Usuario.query.filter_by(email='ordones18@gmail.com').first()
+    usuario = Usuario.query.filter_by(email='t@gmail.com').first()
     if usuario:
         db.session.delete(usuario)
         db.session.commit()

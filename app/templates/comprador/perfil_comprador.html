@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Comprador - {{ user.name }}</title>
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/hoja.png') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/header.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/register.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/comprador_perfil.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    {% include 'partials/header_perfiles.html' %}
+
+    <div class="comprador-dashboard container">
+      <header class="dashboard-header">
+          <!-- <span class="user-type-label">Comprador</span>  Crea un texto con fondo verde-->
+        <h1>Panel del Comprador</h1>
+        <p>Bienvenido de nuevo, <strong>{{ user.name }}</strong>. Consulta tu información y actividad.</p>
+      </header>
+
+      <section class="metrics-section">
+        <div class="metric-card">
+          <i class="fas fa-shopping-cart metric-icon"></i>
+          <h2>Pedidos Realizados</h2>
+          <p class="metric-value">{{ pedidos_realizados | default(0) }}</p>
+        </div>
+        <div class="metric-card">
+          <i class="fas fa-heart metric-icon"></i>
+          <h2>Favoritos</h2>
+          <p class="metric-value">{{ favoritos | default(0) }}</p>
+        </div>
+      </section>
+
+      <section class="profile-section card-style">
+        <h2><i class="fas fa-box"></i> Historial de Pedidos</h2>
+        <p class="empty-state">Aún no tienes pedidos registrados.</p>
+      </section>
+
+      <section class="profile-section card-style">
+        <h2><i class="fas fa-heart"></i> Productos Favoritos</h2>
+        <p class="empty-state">No has guardado ningún producto como favorito.</p>
+      </section>
+    </div>
+
+    {% include 'partials/footer.html' %}
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

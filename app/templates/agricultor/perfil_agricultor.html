@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Agricultor - {{ user.name }}</title>
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/hoja.png') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/header.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/register.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/agricultor_perfil.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    {% include 'partials/header_perfiles.html' %}
+
+    <div class="agricultor-dashboard container">
+      <header class="dashboard-header">
+        <h1>Panel del Agricultor</h1>
+        <p>Bienvenido de nuevo, <strong>{{ user.name }}</strong>. Gestiona tus productos y ventas.</p>
+      </header>
+
+      <section class="metrics-section">
+        <div class="metric-card">
+          <i class="fas fa-dollar-sign metric-icon"></i>
+          <h2>Ventas Totales</h2>
+          <!-- Deberás pasar esta variable desde tu ruta Flask -->
+          <p class="metric-value">${{ ventas_totales | default('0.00') }}</p>
+        </div>
+        <div class="metric-card">
+          <i class="fas fa-carrot metric-icon"></i>
+          <h2>Productos Publicados</h2>
+          <!-- Deberás pasar esta variable desde tu ruta Flask -->
+          <p class="metric-value">{{ numero_productos | default(0) }}</p>
+        </div>
+        <div class="metric-card">
+            <i class="fas fa-eye metric-icon"></i>
+            <h2>Vistas a Productos</h2>
+            <p class="metric-value">{{ vistas_productos | default(0) }}</p>
+          </div>
+      </section>
+
+      <section class="manage-products-section">
+        <div class="add-product-form card-style">
+          <h2><i class="fas fa-plus-circle"></i> Agregar Nuevo Producto</h2>
+          <!-- El action debería apuntar a una ruta que maneje la creación de productos -->
+          <form method="POST" action="{{ url_for('agregar_producto') }}" enctype="multipart/form-data" class="product-form">
+            <div class="form-group">
+              <label for="productName">Nombre del Producto</label>
+              <input type="text" id="productName" name="productName" required>
+            </div>
+            <div class="form-group">
+              <label for="productType">Tipo de Producto</label>
+              <select id="productType" name="productType" required>
+                <option value="" disabled selected>Seleccione tipo...</option>
+                <option value="Fruta">Fruta</option>
+                <option value="Verdura">Verdura</option>
+                <option value="Hortaliza">Hortaliza</option>
+                <option value="Grano">Grano</option>
+                <option value="Tubérculo">Tubérculo</option>
+                <option value="Otro">Otro</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="productDescription">Descripción Detallada</label>
+              <textarea id="productDescription" name="productDescription" rows="3" placeholder="Ej: Tomates orgánicos, maduros, listos para cosecha..."></textarea>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="productQuantity">Cantidad Disponible</label>
+                <input type="number" id="productQuantity" name="productQuantity" step="any" min="0" required>
+              </div>
+              <div class="form-group">
+                <label for="productUnit">Unidad de Medida</label>
+                <select id="productUnit" name="productUnit" required>
+                  <option value="Kg">Kilogramos (Kg)</option>
+                  <option value="Quintal">Quintales</option>
+                  <option value="Tonelada">Toneladas (Ton)</option>
+                  <option value="Unidad">Unidad(es)</option>
+                  <option value="Atado">Atado(s)</option>
+                  <option value="Saco">Saco(s)</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="productPrice">Precio (por unidad de medida)</label>
+              <input type="number" id="productPrice" name="productPrice" step="0.01" min="0" required placeholder="Ej: 1.50">
+            </div>
+            <div class="form-group">
+              <label for="productImage">Imagen del Producto (opcional)</label>
+              <input type="file" id="productImage" name="productImage" accept="image/*">
+            </div>
+            <button type="submit" class="btn-primary">Publicar Producto</button>
+          </form>
+        </div>
+
+        <div class="my-products-list card-style">
+          <h2><i class="fas fa-list-alt"></i> Mis Productos Publicados</h2>
+          {% if productos %}
+            <div class="products-grid">
+              {% for producto in productos %}
+              <div class="product-card">
+                <img src="{{ url_for('static', filename='uploads/' + producto.imagen_url if producto.imagen_url else 'images/placeholder_product.png') }}" alt="{{ producto.nombre }}" class="product-image">
+                <div class="product-info">
+                  <h3>{{ producto.nombre }}</h3>
+                  <p class="product-meta"><strong>Tipo:</strong> {{ producto.tipo }}</p>
+                  <p class="product-meta"><strong>Precio:</strong> ${{ "%.2f"|format(producto.precio) }} / {{ producto.unidad }}</p>
+                  <p class="product-meta"><strong>Disponible:</strong> {{ producto.cantidad }} {{ producto.unidad }}</p>
+                  <p class="product-status"><strong>Estado:</strong> {{ producto.estado | default('Activo') }}</p>
+                </div>
+                <div class="product-actions">
+                  <a href="{{ url_for('editar_producto', producto_id=producto.id) }}" class="btn-edit"><i class="fas fa-edit"></i> Editar</a>
+                  <a href="{{ url_for('eliminar_producto', producto_id=producto.id) }}" class="btn-delete" onclick="return confirm('¿Estás seguro de eliminar este producto?');"><i class="fas fa-trash"></i> Eliminar</a>
+                </div>
+              </div>
+              {% endfor %}
+            </div>
+          {% else %}
+            <p class="empty-state">Aún no has publicado ningún producto. ¡Agrega uno usando el formulario!</p>
+          {% endif %}
+
+        </div>
+      </section>
+    </div>
+
+    {% include 'partials/footer.html' %}
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

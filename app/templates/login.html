@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Iniciar sesión</title>
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/hoja.png') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
@@ -29,7 +30,9 @@
         <input type="password" name="password" id="password" required>
         <button type="submit">Ingresar</button>
     </form>
+
     <p class="register-link">¿No tienes cuenta? <a href="{{ url_for('register') }}">Regístrate aquí</a></p>
+    <p class="recover-link">¿Olvidaste tu contraseña? <a href="{{ url_for('recover_password') }}">Recuperar contraseña</a></p>
     <div class="return-home-wrapper">
         <a href="{{ url_for('index') }}" class="btn-return-home">
             <i class="fas fa-arrow-left"></i> Regresar al inicio
