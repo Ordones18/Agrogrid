@@ -12,6 +12,14 @@ def index():
     user = session.get('user')
     user_type = session.get('user_type')
     return render_template('index.html', user=user, user_type=user_type)
+
+@app.route('/about')
+def about():
+    return render_template('about.html')
+
+
+
+
 # Ruta para la página de explorar
 @app.route('/explore')
 def explore():
@@ -199,3 +207,10 @@ def logout():
     session.pop('user_type', None)
     flash('Has cerrado sesión exitosamente.', 'success')
     return redirect(url_for('login'))
+
+@app.context_processor
+def inject_user():
+    return {
+        'user': session.get('user'),
+        'user_type': session.get('user_type')
+    }

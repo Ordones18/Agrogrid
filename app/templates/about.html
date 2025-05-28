@@ -1,0 +1,72 @@
+{% if user %}
+  {% include "partials/header_perfiles.html" %}
+{% else %}
+  {% include "partials/base_header.html" %}
+{% endif %}
+
+<section class="about-hero">
+  <div class="about-hero-overlay"></div>
+  <div class="about-hero-content">
+    <h1>Sobre AgroGrid System</h1>
+    <p>Conectando el campo con el futuro a través de tecnología y transparencia.</p>
+  </div>
+</section>
+
+<section class="about-mission">
+  <div class="container">
+    <div class="about-row">
+      <div class="about-col">
+        <h2>Misión</h2>
+        <p>Facilitar la comercialización agrícola conectando productores, compradores y transportistas mediante una plataforma digital eficiente, segura y transparente.</p>
+      </div>
+      <div class="about-col">
+        <img src="{{ url_for('static', filename='images/agricultor.jpg') }}" alt="Misión AgroGrid" class="img-mission">
+      </div>
+    </div>
+    <div class="about-row reverse">
+      <div class="about-col">
+        <img src="https://images.pexels.com/photos/2255801/pexels-photo-2255801.jpeg" alt="Visión AgroGrid" class="img-vision">
+      </div>
+      <div class="about-col">
+        <h2>Visión</h2>
+        <p>Ser la plataforma líder en soluciones tecnológicas para el sector agrícola en Ecuador, promoviendo el desarrollo sostenible y la inclusión digital.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="about-values">
+  <div class="container">
+    <h2>Valores</h2>
+    <ul class="values-list">
+      <li>Innovación</li>
+      <li>Transparencia</li>
+      <li>Compromiso</li>
+      <li>Sostenibilidad</li>
+      <li>Colaboración</li>
+    </ul>
+  </div>
+</section>
+
+<section class="about-team">
+  <div class="container">
+    <h2>Nuestro Equipo</h2>
+    <div class="team-grid">
+      <div class="team-member">
+        <img src="https://images.pexels.com/photos/1130626/pexels-photo-1130626.jpeg" alt="Fundador">
+        <h4>Andrea Torres</h4>
+        <p>Fundadora & CEO</p>
+      </div>
+      <div class="team-member">
+        <img src="https://images.pexels.com/photos/614810/pexels-photo-614810.jpeg" alt="CTO">
+        <h4>Juan Pérez</h4>
+        <p>CTO</p>
+      </div>
+      <div class="team-member">
+        <img src="https://images.pexels.com/photos/1181696/pexels-photo-1181696.jpeg" alt="Operaciones">
+        <h4>María López</h4>
+        <p>Operaciones</p>
+      </div>
+    </div>
+  </div>
+</section>

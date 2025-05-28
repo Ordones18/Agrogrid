@@ -1,26 +1,31 @@
 /* Header Styles */
 .header {
-  position: fixed;
-  top: 0;
-  left: 0;
+  position: fixed; !important;
+  top: 0; !important;
+  left: 0; !important;
   width: 100%;
-  background-color: rgba(255, 255, 255, 0.95);
-  padding: var(--spacing-sm) 0;
-  z-index: 1000;
-  box-shadow: var(--shadow-sm);
-  transition: all var(--transition-normal);
+  background-color: rgba(255, 255, 255, 0.95); !important;
+  padding: 15px ; !important;
+  z-index: 1000; !important;
+  box-shadow: var(--shadow-sm); !important;
+  transition: all var(--transition-normal); !important;
 }
+
+
+
 
 .header .container {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  max-width: 1100px; !important;
 }
 
+
 .logo-image {
-  height: 50px;
-  width: auto;
-  margin-right: 10px;
+  height: 50px; !important;
+  width: auto; !important;
+  margin-right: 10px; !important;
 }
 
 
@@ -63,8 +68,7 @@
   transition: color var(--transition-fast);
 }
 
-.navigation a:hover,
-.navigation a.active {
+.navigation a:hover {
   color: var(--color-primary);
 }
 
@@ -79,10 +83,7 @@
   transition: width var(--transition-normal);
 }
 
-.navigation a:hover::after,
-.navigation a.active::after {
-  width: 100%;
-}
+
 
 .registro-link {
   color: var(--color-primary) !important;
@@ -101,5 +102,5 @@
 .header.scrolled {
   background-color: rgba(255, 255, 255, 0.98);
   box-shadow: var(--shadow-md);
-  padding: var(--spacing-xs) 0;
+  padding: 15px;
 }

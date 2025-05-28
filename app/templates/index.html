@@ -38,7 +38,7 @@
         <ul>
           <li><a href="{{ url_for('index') }}" class="active">Inicio</a></li>
           <li><a href="#">Productos</a></li>
-          <li><a href="#">Nosotros</a></li>
+          <li><a href="{{ url_for('about') }}">Nosotros</a></li>
           <!-- Verificamos con un if o else si ha iniciado sesión o si no -->
           {% if user %}
             <li><a href="{{ url_for('logout') }}">Cerrar sesión</a></li>
@@ -229,9 +229,9 @@
         <div class="footer-column">
           <h3>Enlaces rápidos</h3>
           <ul class="footer-links">
-            <li><a href="#">Inicio</a></li>
+            <li><a href="{{ url_for('index') }}">Inicio</a></li>
             <li><a href="#">Productos</a></li>
-            <li><a href="#">Nosotros</a></li>
+            <li><a href="{{url_for('about')}}">Nosotros</a></li>
             <li><a href="{{ url_for('login') }}">Iniciar sesión</a></li>
             <li><a href="#">Registrate</a></li>
           </ul>

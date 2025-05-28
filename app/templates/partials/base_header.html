@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -18,6 +17,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/responsive.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/explore.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/register.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/about.css') }}">
     <!-- Carga de fuentes externas de Google fonts y carga más rápida -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -40,7 +40,7 @@
         <ul>
           <li><a href="{{ url_for('index') }}" class="active">Inicio</a></li>
           <li><a href="#">Productos</a></li>
-          <li><a href="#">Nosotros</a></li>
+          <li><a href="{{ url_for('about') }}">Nosotros</a></li>
           <li><a href="{{ url_for('login') }}">Iniciar sesión</a></li>
           <li><a href="{{ url_for('register') }}" class="registro-link">Registrate</a></li>
         </ul>

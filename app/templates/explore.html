@@ -1,8 +1,11 @@
-{% extends "partials/base_header.html" %}
-{% block title %}Explora AgroGrid System{% endblock %}
-{% block content %}
+{% if user %}
+  {% include "partials/header_perfiles.html" %}
+{% else %}
+  {% include "partials/base_header.html" %}
+{% endif %}
 
 <!-- EXPLORA LA PLATAFORMA -->
+
 <section class="explore">
   <div class="container">
     <h2 class="section-title">Explora la plataforma</h2>
@@ -67,4 +70,4 @@
       <a href="{{ url_for('index') }}" class="btn btn-primary">VOLVER AL INICIO</a>
   </div>
 </section>
-{% endblock %}
+
