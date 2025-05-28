@@ -1,14 +1,14 @@
 /* Header Styles */
 .header {
-  position: fixed; !important;
-  top: 0; !important;
-  left: 0; !important;
+  position: fixed;
+  top: 0; 
+  left: 0; 
   width: 100%;
-  background-color: rgba(255, 255, 255, 0.95); !important;
-  padding: 15px ; !important;
-  z-index: 1000; !important;
-  box-shadow: var(--shadow-sm); !important;
-  transition: all var(--transition-normal); !important;
+  background-color: rgba(255, 255, 255, 0.95); 
+  padding: 15px ; 
+  z-index: 1000; 
+  box-shadow: var(--shadow-sm); 
+  transition: all var(--transition-normal); 
 }
 
 
@@ -18,14 +18,14 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  max-width: 1100px; !important;
+  max-width: 1100px; 
 }
 
 
 .logo-image {
-  height: 50px; !important;
-  width: auto; !important;
-  margin-right: 10px; !important;
+  height: 50px; 
+  width: auto; 
+  margin-right: 10px; 
 }
 
 

@@ -107,11 +107,20 @@
   gap: 1.5em;
   list-style: none;
   padding: 0;
-  margin: 1.5em 0 0 0;
+  margin: 2.8em 0 0 0;
   justify-content: center;
 }
 
 .values-list li {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: none;
+  padding: 0;
+  border-radius: 0;
+}
+
+.value-text {
   background: #e8f5e9;
   color: #097137;
   padding: 0.8em 1.5em;
@@ -119,6 +128,16 @@
   font-weight: 600;
   font-size: 1.1rem;
   box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+  margin-bottom: 0.5em;
+}
+
+.value-icon i {
+  font-size: 2.7em;
+  color: #2e7d32;
+  transition: transform 0.2s;
+}
+.value-icon i:hover {
+  transform: scale(1.25);
 }
 
 /* Equipo */
