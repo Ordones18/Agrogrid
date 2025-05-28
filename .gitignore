@@ -19,3 +19,7 @@ Thumbs.db
 
 # Archivos de base de datos locales
 *.sqlite3
+
+# Ignorar archivos de pruebas
+test_db.py
+test_eliminarbd.py
