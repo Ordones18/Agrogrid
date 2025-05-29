@@ -1,9 +1,12 @@
 from flask import render_template, request, redirect, url_for, flash, session
 from app import app, mail, db
 from flask_mail import Message
-from app.models import Usuario
+from app.models import Usuario, Producto
 from werkzeug.security import generate_password_hash, check_password_hash
 from .utils import generate_token, confirm_token
+from werkzeug.utils import secure_filename
+import os
+from flask import current_app
 
 
 # Ruta para la página de inicio
@@ -140,7 +143,7 @@ def perfil_agricultor():
         session.pop('user_type', None)
         return redirect(url_for('login'))
 
-    productos_del_agricultor = []
+    productos_del_agricultor = Producto.query.filter_by(usuario_id=usuario.id).all()
     ventas_totales_calculadas = 0.00
     numero_productos_publicados = len(productos_del_agricultor)
     vistas_a_productos = 0
@@ -152,6 +155,7 @@ def perfil_agricultor():
                            numero_productos=numero_productos_publicados,
                            vistas_productos=vistas_a_productos,
                            user_type=session['user_type'])
+
 # Ruta para agregar un producto
 @app.route('/producto/agregar', methods=['POST'])
 def agregar_producto():
@@ -159,9 +163,50 @@ def agregar_producto():
         flash('Acceso no autorizado.', 'danger')
         return redirect(url_for('login'))
 
-    # Aquí se implementaría la lógica para agregar un producto
+    usuario = Usuario.query.filter_by(email=session['user']).first()
+    if not usuario:
+        flash('Usuario no encontrado.', 'danger')
+        return redirect(url_for('login'))
 
-    flash('Producto agregado correctamente (lógica pendiente de implementar).', 'success')
+    # Recoge los datos del formulario
+    nombre = request.form['productName']
+    tipo = request.form['productType']
+    region = request.form['region']
+    provincia = request.form['provincia']
+    inicial_nombre = nombre[0].upper() if nombre else ''
+    imagen = request.files.get('productImage')
+    # Manejo robusto del precio
+    try:
+        precio = float(request.form.get('productPrice', 0) or 0)
+    except ValueError:
+        precio = 0.0
+    unidad = request.form.get('productUnit')
+
+    # Manejo de la imagen
+    imagen_url = None
+    if imagen and imagen.filename != '':
+        filename = secure_filename(imagen.filename)
+        uploads_dir = os.path.join(current_app.root_path, 'static', 'uploads')
+        os.makedirs(uploads_dir, exist_ok=True)
+        imagen.save(os.path.join(uploads_dir, filename))
+        imagen_url = filename
+
+    # Crea el producto y lo guarda en la base de datos
+    producto = Producto(
+        nombre=nombre,
+        tipo=tipo,
+        region=region,
+        provincia=provincia,
+        inicial_nombre=inicial_nombre,
+        imagen_url=imagen_url,
+        usuario_id=usuario.id,
+        precio=precio,
+        unidad=unidad
+    )
+    db.session.add(producto)
+    db.session.commit()
+
+    flash('Producto agregado correctamente.', 'success')
     return redirect(url_for('perfil_agricultor'))
 
 # Ruta del perfil de comprador
@@ -214,3 +259,17 @@ def inject_user():
         'user': session.get('user'),
         'user_type': session.get('user_type')
     }
+
+@app.route('/producto/editar/<int:producto_id>', methods=['GET', 'POST'])
+def editar_producto(producto_id):
+    # Lógica para editar el producto
+    return "Funcionalidad de edición próximamente"
+
+@app.route('/producto/eliminar/<int:producto_id>', methods=['POST', 'GET'])
+def eliminar_producto(producto_id):
+    producto = Producto.query.get_or_404(producto_id)
+    # Opcional: verifica que el usuario sea el dueño del producto
+    db.session.delete(producto)
+    db.session.commit()
+    flash('Producto eliminado correctamente.', 'success')
+    return redirect(url_for('perfil_agricultor'))

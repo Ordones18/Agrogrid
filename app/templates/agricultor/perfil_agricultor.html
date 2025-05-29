@@ -45,22 +45,47 @@
           <h2><i class="fas fa-plus-circle"></i> Agregar Nuevo Producto</h2>
           <!-- El action debería apuntar a una ruta que maneje la creación de productos -->
           <form method="POST" action="{{ url_for('agregar_producto') }}" enctype="multipart/form-data" class="product-form">
-            <div class="form-group">
-              <label for="productName">Nombre del Producto</label>
-              <input type="text" id="productName" name="productName" required>
+            <!-- ================= NUEVA FILA DE SELECCIÓN DE UBICACIÓN Y TIPO ================= -->
+            <div class="form-row">
+              <!-- Región ecuatoriana -->
+              <div class="form-group">
+                <label for="region">Región</label>
+                <select id="region" name="region" required>
+                  <option value="" disabled selected>Seleccione región...</option>
+                  <option value="Costa">Costa</option>
+                  <option value="Sierra">Sierra</option>
+                  <option value="Amazonía">Amazonía</option>
+                  <option value="Galápagos">Galápagos</option>
+                </select>
+              </div>
+              <!-- Provincia (se llena dinámicamente según la región) -->
+              <div class="form-group">
+                <label for="provincia">Provincia</label>
+                <select id="provincia" name="provincia" required>
+                  <option value="" disabled selected>Seleccione provincia...</option>
+                  <!-- Opciones se llenarán dinámicamente con JS -->
+                </select>
+              </div>
+              <!-- Tipo de producto -->
+              <div class="form-group">
+                <label for="productType">Tipo de Producto</label>
+                <select id="productType" name="productType" required>
+                  <option value="" disabled selected>Seleccione tipo...</option>
+                  <option value="Fruta">Fruta</option>
+                  <option value="Verdura">Verdura</option>
+                  <option value="Hortaliza">Hortaliza</option>
+                  <option value="Grano">Grano</option>
+                  <option value="Tubérculo">Tubérculo</option>
+                  <option value="Otro">Otro</option>
+                </select>
+              </div>
+              <!-- Nombre del producto -->
+              <div class="form-group">
+                <label for="productName">Nombre del Producto</label>
+                <input type="text" id="productName" name="productName" required>
+              </div>
             </div>
-            <div class="form-group">
-              <label for="productType">Tipo de Producto</label>
-              <select id="productType" name="productType" required>
-                <option value="" disabled selected>Seleccione tipo...</option>
-                <option value="Fruta">Fruta</option>
-                <option value="Verdura">Verdura</option>
-                <option value="Hortaliza">Hortaliza</option>
-                <option value="Grano">Grano</option>
-                <option value="Tubérculo">Tubérculo</option>
-                <option value="Otro">Otro</option>
-              </select>
-            </div>
+            <!-- ================= FIN NUEVA FILA ================= -->
             <div class="form-group">
               <label for="productDescription">Descripción Detallada</label>
               <textarea id="productDescription" name="productDescription" rows="3" placeholder="Ej: Tomates orgánicos, maduros, listos para cosecha..."></textarea>
@@ -74,11 +99,12 @@
                 <label for="productUnit">Unidad de Medida</label>
                 <select id="productUnit" name="productUnit" required>
                   <option value="Kg">Kilogramos (Kg)</option>
-                  <option value="Quintal">Quintales</option>
-                  <option value="Tonelada">Toneladas (Ton)</option>
+                  <option value="Quintal">Quintal(es)</option>
+                  <option value="Tonelada">Tonelada(s) (Ton)</option>
                   <option value="Unidad">Unidad(es)</option>
                   <option value="Atado">Atado(s)</option>
                   <option value="Saco">Saco(s)</option>
+                  <option value="Caja">Caja(s)</option>
                 </select>
               </div>
             </div>
@@ -104,7 +130,7 @@
                 <div class="product-info">
                   <h3>{{ producto.nombre }}</h3>
                   <p class="product-meta"><strong>Tipo:</strong> {{ producto.tipo }}</p>
-                  <p class="product-meta"><strong>Precio:</strong> ${{ "%.2f"|format(producto.precio) }} / {{ producto.unidad }}</p>
+                  <p class="product-meta"><strong>Precio:</strong> ${{ "%.2f"|format(producto.precio or 0) }} / {{ producto.unidad or '' }}</p>
                   <p class="product-meta"><strong>Disponible:</strong> {{ producto.cantidad }} {{ producto.unidad }}</p>
                   <p class="product-status"><strong>Estado:</strong> {{ producto.estado | default('Activo') }}</p>
                 </div>

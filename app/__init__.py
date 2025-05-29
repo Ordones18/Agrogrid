@@ -3,6 +3,9 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_mail import Mail
 import os # Para manejar rutas y variables de entorno
 from dotenv import load_dotenv
+from flask_migrate import Migrate
+
+
 # Carga las variables de entorno desde el archivo .env
 load_dotenv()
 
@@ -25,5 +28,6 @@ app.config['MAIL_PASSWORD'] = os.environ.get('MAIL_PASSWORD')
 db = SQLAlchemy(app) # Crea la instancia de SQLAlchemy
 mail = Mail(app) # Crea la instancia de Mail
 
+migrate = Migrate(app,db)
 
 from app import routes

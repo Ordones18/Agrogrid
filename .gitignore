@@ -4,6 +4,8 @@ venv/
 *.pyc
 __pycache__/
 instance/
+migrations/
+uploads/
 *.pyo
 *.pyd
 
@@ -20,6 +22,10 @@ Thumbs.db
 # Archivos de base de datos locales
 *.sqlite3
 
+
 # Ignorar archivos de pruebas
 test_db.py
 test_eliminarbd.py
+testingdb.py
+cleandb.py
+

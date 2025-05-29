@@ -1,15 +1,47 @@
 from werkzeug.security import generate_password_hash
 from app import db # Importa la instancia de SQLAlchemy (db) desde tu aplicación Flask
 
-class Usuario(db.Model): # Define una clase llamada Usuario que hereda de db.Model, lo que la convierte en un modelo de SQLAlchemy
-    id = db.Column(db.Integer, primary_key=True) # Define una columna 'id' de tipo Integer, que es la clave primaria de la tabla
-    name = db.Column(db.String(100), nullable=False) # Define una columna 'name' de tipo String con un máximo de 100 caracteres, no puede ser nula
-    email = db.Column(db.String(120), unique=True, nullable=False) # Define una columna 'email' de tipo String con un máximo de 120 caracteres, debe ser única y no puede ser nula
-    user_type = db.Column(db.String(50), nullable=False) # Define una columna 'user_type' de tipo String con un máximo de 50 caracteres, no puede ser nula (ej. 'agricultor', 'comprador')
-    provincia = db.Column(db.String(50), nullable=False) # Define una columna 'provincia' de tipo String con un máximo de 50 caracteres, no puede ser nula
-    cedula = db.Column(db.String(20)) # Define una columna 'cedula' de tipo String con un máximo de 20 caracteres, puede ser nula
-    phone = db.Column(db.String(20), nullable=False) # Define una columna 'phone' de tipo String con un máximo de 20 caracteres, no puede ser nula
-    password = db.Column(db.String(128), nullable=False) # Define una columna 'password' de tipo String con un máximo de 128 caracteres (para almacenar el hash de la contraseña), no puede ser nula
+# =========================
+# Modelo de Usuario
+# =========================
+class Usuario(db.Model):
+    """
+    Modelo que representa a un usuario del sistema AgroGrid.
+    Puede ser agricultor, comprador o transportista.
+    """
+    id = db.Column(db.Integer, primary_key=True) # Identificador único del usuario (clave primaria)
+    name = db.Column(db.String(100), nullable=False) # Nombre completo del usuario
+    email = db.Column(db.String(120), unique=True, nullable=False) # Correo electrónico único del usuario
+    user_type = db.Column(db.String(50), nullable=False) # Tipo de usuario (agricultor, comprador, transportista)
+    provincia = db.Column(db.String(50), nullable=False) # Provincia de residencia del usuario
+    cedula = db.Column(db.String(20)) # Cédula de identidad del usuario (opcional)
+    phone = db.Column(db.String(20), nullable=False) # Número de teléfono del usuario
+    password = db.Column(db.String(128), nullable=False) # Contraseña hasheada del usuario
 
     def set_password(self, password):
+        """
+        Hashea y establece la contraseña del usuario.
+        :param password: Contraseña en texto plano
+        """
         self.password = generate_password_hash(password)
+
+# =========================
+# Modelo de Producto
+# =========================
+class Producto(db.Model):
+    """
+    Modelo que representa un producto agrícola publicado por un agricultor.
+    """
+    id = db.Column(db.Integer, primary_key=True)  # Identificador único del producto (clave primaria)
+    nombre = db.Column(db.String(100), nullable=False)  # Nombre del producto
+    tipo = db.Column(db.String(50), nullable=False)  # Tipo de producto (Fruta, Verdura, etc.)
+    region = db.Column(db.String(30), nullable=False)  # Región ecuatoriana de origen
+    provincia = db.Column(db.String(50), nullable=False)  # Provincia de origen
+    inicial_nombre = db.Column(db.String(1), nullable=False)  # Inicial del nombre del producto (para grafos o agrupaciones)
+    imagen_url = db.Column(db.String(200))  # Ruta de la imagen subida (opcional)
+    usuario_id = db.Column(db.Integer, db.ForeignKey('usuario.id'), nullable=False)  # ID del usuario agricultor que publica el producto
+    precio = db.Column(db.Float, nullable=True)  # Precio del producto
+    unidad = db.Column(db.String(20), nullable=True)  # Unidad de medida (Kg, Quintal, etc.)
+
+    # Relación con el usuario (agricultor)
+    usuario = db.relationship('Usuario', backref=db.backref('productos', lazy=True))
