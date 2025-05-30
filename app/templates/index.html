@@ -1,7 +1,16 @@
+{#
+    Template: index.html
+    Descripción: Página de inicio de AgroGrid. Muestra bienvenida, navegación y resumen general.
+    Ruta asociada: /
+    Variables esperadas:
+        - user: email del usuario autenticado (opcional)
+        - user_type: tipo de usuario (opcional)
+#}
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
-
+    <!-- =================== METADATOS Y ESTILOS =================== -->
     <meta charset="UTF-8"> <!-- Evita problemas con la visualización de texto -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AgroGrid System - Conectando el campo con el futuro</title>
@@ -24,250 +33,239 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-<!-- ENCABEZADO -->
-<!-- Archivo css header.css -->
-  <header class="header">
-    <div class="container">
-      <div class="logo">
-        <a href="{{ url_for('index') }}">
-          <img src="{{ url_for('static', filename='images/logo.png') }}" alt="AgroGrid System Logo" class="logo-image">
-          <span>AgroGrid System</span>
-        </a>
+
+<!-- =================== ENCABEZADO PRINCIPAL =================== -->
+<header class="header">
+  <div class="container">
+    <div class="logo">
+      <a href="{{ url_for('index') }}">
+        <img src="{{ url_for('static', filename='images/logo.png') }}" alt="AgroGrid System Logo" class="logo-image">
+        <span>AgroGrid System</span>
+      </a>
+    </div>
+    <nav class="navigation">
+      <ul>
+        <li><a href="{{ url_for('index') }}" class="active">Inicio</a></li>
+        <li><a href="#">Productos</a></li>
+        <li><a href="{{ url_for('about') }}">Nosotros</a></li>
+        <!-- =================== CONTROL DE SESIÓN =================== -->
+        {% if user %}
+          <li><a href="{{ url_for('logout') }}">Cerrar sesión</a></li>
+          <li><a href="{{ url_for('perfil_' + user_type) }}">Mi perfil</a></li>
+        {% else %}
+          <li><a href="{{ url_for('login') }}">Iniciar sesión</a></li>
+          <li><a href="{{ url_for('register') }}" class="registro-link">Registrate</a></li>
+        {% endif %}
+      </ul>
+    </nav>
+    <div class="mobile-menu-toggle">
+      <i class="fas fa-bars"></i>
+    </div>
+  </div>
+</header>
+
+<!-- =================== SECCIÓN DESTACADA (HERO) =================== -->
+<section class="hero">
+  <div class="hero-overlay"></div>
+  <div class="container">
+    <div class="hero-content">
+      <h1>AgroGrid System</h1>
+      <h2>Conectando el campo con el futuro</h2>
+      <p>Plataforma digital que conecta agricultores, compradores y transportistas en un ecosistema transparente y eficiente.</p>
+      <a href="{{ url_for('explore') }}" class="btn btn-primary">Explorar plataforma</a>
+    </div>
+  </div>
+</section>
+
+<!-- =================== BENEFICIOS CLAVE =================== -->
+<section class="benefits">
+  <div class="container">
+    <h2 class="section-title">Beneficios clave</h2>
+    <p class="section-subtitle">Disfruta de todas las ventajas que AgroGrid System ofrece para tu negocio agrícola</p>
+    <div class="benefits-grid">
+      <!-- Tarjeta de beneficio -->
+      <div class="benefit-card">
+        <div class="benefit-icon">
+          <i class="fas fa-handshake"></i>
+        </div>
+        <h3>Venta directa</h3>
+        <p>Conectamos a productores directamente con compradores, eliminando intermediarios y aumentando tu margen de beneficio.</p>
       </div>
-      <nav class="navigation">
-        <ul>
-          <li><a href="{{ url_for('index') }}" class="active">Inicio</a></li>
+      <div class="benefit-card">
+        <div class="benefit-icon">
+          <i class="fas fa-calculator"></i>
+        </div>
+        <h3>Cálculo de flete automático</h3>
+        <p>Nuestra plataforma calcula automáticamente los costos de transporte según distancia y carga, optimizando tus envíos.</p>
+      </div>
+      <div class="benefit-card">
+        <div class="benefit-icon">
+          <i class="fas fa-percent"></i>
+        </div>
+        <h3>Comisión del 1%</h3>
+        <p>Ofrecemos la tasa más competitiva del mercado, maximizando tus ganancias en cada transacción que realices.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =================== CÓMO FUNCIONA =================== -->
+<section class="how-it-works">
+  <div class="container">
+    <h2 class="section-title">¿Cómo funciona?</h2>
+    <p class="section-subtitle">Tres simples pasos para revolucionar tu negocio agrícola</p>
+    <div class="steps-container">
+      <div class="steps-content">
+        <!-- Paso 1 -->
+        <div class="step">
+          <div class="step-number">1</div>
+          <div class="step-details">
+            <h3>Publica tu producto</h3>
+            <p>Crea un perfil y sube los detalles de tus productos agrícolas, especificando calidad, cantidad, ubicación y precio deseado.</p>
+          </div>
+        </div>
+        <!-- Paso 2 -->
+        <div class="step">
+          <div class="step-number">2</div>
+          <div class="step-details">
+            <h3>Encuentra comprador o transportista</h3>
+            <p>Gracias a nuestro avanzado sistema de búsqueda, conectarás con compradores o transportistas interesados en tu oferta.</p>
+          </div>
+        </div>
+        <!-- Paso 3 -->
+        <div class="step">
+          <div class="step-number">3</div>
+          <div class="step-details">
+            <h3>Transacción directa</h3>
+            <p>Concreta la venta y coordina la entrega de forma segura y transparente a través de nuestra plataforma.</p>
+          </div>
+        </div>
+      </div>
+      <div class="steps-image">
+        <img src="{{ url_for('static', filename='images/empresa.jpeg') }}" alt="Empresa AgroGrid System">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =================== TESTIMONIOS =================== -->
+<section class="testimonials">
+  <div class="container">
+    <h2 class="section-title">Lo que dicen nuestros usuarios</h2>
+    <p class="section-subtitle">Historias de éxito de agricultores y compradores que confían en AgroGrid System</p>
+    <div class="testimonials-grid">
+      <!-- Testimonio 1 -->
+      <div class="testimonial-card">
+        <div class="testimonial-avatar">
+          <img src="{{ url_for('static', filename='images/persona1.jpeg') }}" alt="Agricultor Mateo Almeida">
+        </div>
+        <div class="testimonial-content">
+          <p>"Desde que uso AgroGrid System, he aumentado mis ventas en un 30% y reducido costos de intermediación. La plataforma es intuitiva y el soporte excelente."</p>
+          <div class="testimonial-author">
+            <h4>Mateo Almeida</h4>
+            <p>Productor de Remolacha, Provincia del Carchi </p>
+          </div>
+        </div>
+      </div>
+      <!-- Testimonio 2 -->
+      <div class="testimonial-card">
+        <div class="testimonial-avatar">
+          <img src="{{ url_for('static', filename='images/persona2.jpeg') }}" alt="Comprador Andres Martinez">
+        </div>
+        <div class="testimonial-content">
+          <p>"Como comprador para una cadena de supermercados, AgroGrid me ha permitido encontrar productos frescos directamente de productores con total transparencia en precios y calidad."</p>
+          <div class="testimonial-author">
+            <h4>Kevin Martinez</h4>
+            <p>Gerente de Compras, Supermercados del Puyo</p>
+          </div>
+        </div>
+      </div>
+      <!-- Testimonio 3 -->
+      <div class="testimonial-card">
+        <div class="testimonial-avatar">
+          <img src="https://images.pexels.com/photos/1222271/pexels-photo-1222271.jpeg" alt="Transportista Carlos Vázquez">
+        </div>
+        <div class="testimonial-content">
+          <p>"El sistema de cálculo automático de fletes ha optimizado mis rutas y aumentado mi cartera de clientes. Ahora tengo trabajo constante y mejor planificado."</p>
+          <div class="testimonial-author">
+            <h4>Carlos Vázquez</h4>
+            <p>Transportista independiente, Sinaloa</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =================== LLAMADO A LA ACCIÓN (CTA) =================== -->
+<section class="cta">
+  <div class="container">
+    <div class="cta-content">
+      <h2>¿Listo para transformar tu negocio agrícola?</h2>
+      <p>Únete a miles de agricultores, compradores y transportistas que ya están aprovechando las ventajas de AgroGrid System.</p>
+      <a href="{{ url_for('register') }}" class="btn btn-primary">Comenzar ahora</a>
+    </div>
+  </div>
+</section>
+
+<!-- =================== PIE DE PÁGINA =================== -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-column">
+          <div class="footer-logo">
+            <img src="{{ url_for('static', filename='images/logowhite.png') }}" alt="AgroGrid System Logo" class="logo-image" style="height:32px;">
+            <span>AgroGrid System</span>
+          </div>
+        <p class="footer-description">Conectando el campo con el futuro a través de tecnología innovadora y procesos transparentes.</p>
+        <div class="social-icons">
+          <a href="#"><i class="fab fa-facebook-f"></i></a>
+          <a href="#"><i class="fab fa-twitter"></i></a>
+          <a href="#"><i class="fab fa-instagram"></i></a>
+          <a href="#"><i class="fab fa-linkedin-in"></i></a>
+        </div>
+      </div>
+      <div class="footer-column">
+        <h3>Enlaces rápidos</h3>
+        <ul class="footer-links">
+          <li><a href="{{ url_for('index') }}">Inicio</a></li>
           <li><a href="#">Productos</a></li>
-          <li><a href="{{ url_for('about') }}">Nosotros</a></li>
-          <!-- Verificamos con un if o else si ha iniciado sesión o si no -->
-          {% if user %}
-            <li><a href="{{ url_for('logout') }}">Cerrar sesión</a></li>
-            <li><a href="{{ url_for('perfil_' + user_type) }}">Mi perfil</a></li>
-          {% else %}
-            <li><a href="{{ url_for('login') }}">Iniciar sesión</a></li>
-            <li><a href="{{ url_for('register') }}" class="registro-link">Registrate</a></li>
-          {% endif %}
+          <li><a href="{{url_for('about')}}">Nosotros</a></li>
+          <li><a href="{{ url_for('login') }}">Iniciar sesión</a></li>
+          <li><a href="#">Registrate</a></li>
         </ul>
-      </nav>
-      <div class="mobile-menu-toggle">
-        <i class="fas fa-bars"></i>
+      </div>
+      <div class="footer-column">
+        <h3>Recursos</h3>
+        <ul class="footer-links">
+          <li><a href="#">Centro de ayuda</a></li>
+          <li><a href="#">Blog</a></li>
+          <li><a href="#">Preguntas frecuentes</a></li>
+          <li><a href="#">Testimonios</a></li>
+          <li><a href="#">Noticias</a></li>
+        </ul>
+      </div>
+      <div class="footer-column">
+        <h3>Contacto</h3>
+        <ul class="contact-info">
+          <li><i class="fas fa-map-marker-alt"></i> Quito, Calderón Av. Agricultura</li>
+          <li><i class="fas fa-phone"></i> +593 99 765 8903</li>
+          <li><i class="fas fa-envelope"></i> info@agrogrid.com</li>
+        </ul>
       </div>
     </div>
-  </header>
-
-  <!-- SECCIÓN DESTACADA -->
-  <!-- Archivo css hero.css -->
-  <section class="hero">
-    <div class="hero-overlay"></div>
-    <div class="container">
-      <div class="hero-content">
-        <h1>AgroGrid System</h1>
-        <h2>Conectando el campo con el futuro</h2>
-        <p>Plataforma digital que conecta agricultores, compradores y transportistas en un ecosistema transparente y eficiente.</p>
-        <a href="{{ url_for('explore') }}" class="btn btn-primary">Explorar plataforma</a>
+    <div class="footer-bottom">
+      <p>&copy; 2025 AgroGrid System. Todos los derechos reservados.</p>
+      <div class="legal-links">
+        <a href="#">Términos y condiciones</a>
+        <a href="#">Política de privacidad</a>
       </div>
     </div>
-  </section>
+  </div>
+</footer>
 
-  <!-- BENEFICIOS CLAVE -->
-  <!-- Archivo css benefits.css -->
-  <section class="benefits">
-    <div class="container">
-      <h2 class="section-title">Beneficios clave</h2>
-      <p class="section-subtitle">Disfruta de todas las ventajas que AgroGrid System ofrece para tu negocio agrícola</p>
-
-      <div class="benefits-grid">
-        <div class="benefit-card">
-          <div class="benefit-icon">
-            <i class="fas fa-handshake"></i>
-          </div>
-          <h3>Venta directa</h3>
-          <p>Conectamos a productores directamente con compradores, eliminando intermediarios y aumentando tu margen de beneficio.</p>
-        </div>
-
-        <div class="benefit-card">
-          <div class="benefit-icon">
-            <i class="fas fa-calculator"></i>
-          </div>
-          <h3>Cálculo de flete automático</h3>
-          <p>Nuestra plataforma calcula automáticamente los costos de transporte según distancia y carga, optimizando tus envíos.</p>
-        </div>
-
-        <div class="benefit-card">
-          <div class="benefit-icon">
-            <i class="fas fa-percent"></i>
-          </div>
-          <h3>Comisión del 1%</h3>
-          <p>Ofrecemos la tasa más competitiva del mercado, maximizando tus ganancias en cada transacción que realices.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- COMO FUNCIONA -->
-  <!-- Archivo css how-it-works.css -->
-  <section class="how-it-works">
-    <div class="container">
-      <h2 class="section-title">¿Cómo funciona?</h2>
-      <p class="section-subtitle">Tres simples pasos para revolucionar tu negocio agrícola</p>
-
-      <div class="steps-container">
-        <div class="steps-content">
-          <div class="step">
-            <div class="step-number">1</div>
-            <div class="step-details">
-              <h3>Publica tu producto</h3>
-              <p>Crea un perfil y sube los detalles de tus productos agrícolas, especificando calidad, cantidad, ubicación y precio deseado.</p>
-            </div>
-          </div>
-
-          <div class="step">
-            <div class="step-number">2</div>
-            <div class="step-details">
-              <h3>Encuentra comprador o transportista</h3>
-              <p>Gracias a nuestro avanzado sistema de búsqueda, conectarás con compradores o transportistas interesados en tu oferta.</p>
-            </div>
-          </div>
-
-          <div class="step">
-            <div class="step-number">3</div>
-            <div class="step-details">
-              <h3>Transacción directa</h3>
-              <p>Concreta la venta y coordina la entrega de forma segura y transparente a través de nuestra plataforma.</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="steps-image">
-          <img src="{{ url_for('static', filename='images/empresa.jpeg') }}" alt="Empresa AgroGrid System">
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- SECCIÓN DE TESTIMONIOS -->
-  <!-- Archivo css testimonials.css -->
-  <section class="testimonials">
-    <div class="container">
-      <h2 class="section-title">Lo que dicen nuestros usuarios</h2>
-      <p class="section-subtitle">Historias de éxito de agricultores y compradores que confían en AgroGrid System</p>
-
-      <div class="testimonials-grid">
-        <div class="testimonial-card">
-          <div class="testimonial-avatar">
-            <img src="{{ url_for('static', filename='images/persona1.jpeg') }}" alt="Agricultor Mateo Almeida">
-          </div>
-          <div class="testimonial-content">
-            <p>"Desde que uso AgroGrid System, he aumentado mis ventas en un 30% y reducido costos de intermediación. La plataforma es intuitiva y el soporte excelente."</p>
-            <div class="testimonial-author">
-              <h4>Mateo Almeida</h4>
-              <p>Productor de Remolacha, Provincia del Carchi </p>
-            </div>
-          </div>
-        </div>
-
-        <div class="testimonial-card">
-          <div class="testimonial-avatar">
-            <img src="{{ url_for('static', filename='images/persona2.jpeg') }}" alt="Comprador Andres Martinez">
-          </div>
-          <div class="testimonial-content">
-            <p>"Como comprador para una cadena de supermercados, AgroGrid me ha permitido encontrar productos frescos directamente de productores con total transparencia en precios y calidad."</p>
-            <div class="testimonial-author">
-              <h4>Kevin Martinez</h4>
-              <p>Gerente de Compras, Supermercados del Puyo</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="testimonial-card">
-          <div class="testimonial-avatar">
-            <img src="https://images.pexels.com/photos/1222271/pexels-photo-1222271.jpeg" alt="Transportista Carlos Vázquez">
-          </div>
-          <div class="testimonial-content">
-            <p>"El sistema de cálculo automático de fletes ha optimizado mis rutas y aumentado mi cartera de clientes. Ahora tengo trabajo constante y mejor planificado."</p>
-            <div class="testimonial-author">
-              <h4>Carlos Vázquez</h4>
-              <p>Transportista independiente, Sinaloa</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- COMENZAR AHORA -->
-  <!-- Archivo css .css -->
-  <section class="cta">
-    <div class="container">
-      <div class="cta-content">
-        <h2>¿Listo para transformar tu negocio agrícola?</h2>
-        <p>Únete a miles de agricultores, compradores y transportistas que ya están aprovechando las ventajas de AgroGrid System.</p>
-        <a href="{{ url_for('register') }}" class="btn btn-primary">Comenzar ahora</a>
-      </div>
-    </div>
-  </section>
-
-  <!-- PIE DE PAGINA -->
-  <!-- Archivo css footer.css -->
-  <footer class="footer">
-    <div class="container">
-      <div class="footer-grid">
-        <div class="footer-column">
-            <div class="footer-logo">
-              <img src="{{ url_for('static', filename='images/logowhite.png') }}" alt="AgroGrid System Logo" class="logo-image" style="height:32px;">
-              <span>AgroGrid System</span>
-            </div>
-          <p class="footer-description">Conectando el campo con el futuro a través de tecnología innovadora y procesos transparentes.</p>
-          <div class="social-icons">
-            <a href="#"><i class="fab fa-facebook-f"></i></a>
-            <a href="#"><i class="fab fa-twitter"></i></a>
-            <a href="#"><i class="fab fa-instagram"></i></a>
-            <a href="#"><i class="fab fa-linkedin-in"></i></a>
-          </div>
-        </div>
-
-        <div class="footer-column">
-          <h3>Enlaces rápidos</h3>
-          <ul class="footer-links">
-            <li><a href="{{ url_for('index') }}">Inicio</a></li>
-            <li><a href="#">Productos</a></li>
-            <li><a href="{{url_for('about')}}">Nosotros</a></li>
-            <li><a href="{{ url_for('login') }}">Iniciar sesión</a></li>
-            <li><a href="#">Registrate</a></li>
-          </ul>
-        </div>
-
-        <div class="footer-column">
-          <h3>Recursos</h3>
-          <ul class="footer-links">
-            <li><a href="#">Centro de ayuda</a></li>
-            <li><a href="#">Blog</a></li>
-            <li><a href="#">Preguntas frecuentes</a></li>
-            <li><a href="#">Testimonios</a></li>
-            <li><a href="#">Noticias</a></li>
-          </ul>
-        </div>
-
-        <div class="footer-column">
-          <h3>Contacto</h3>
-          <ul class="contact-info">
-            <li><i class="fas fa-map-marker-alt"></i> Quito, Calderón Av. Agricultura</li>
-            <li><i class="fas fa-phone"></i> +593 99 765 8903</li>
-            <li><i class="fas fa-envelope"></i> info@agrogrid.com</li>
-          </ul>
-        </div>
-      </div>
-
-      <div class="footer-bottom">
-        <p>&copy; 2025 AgroGrid System. Todos los derechos reservados.</p>
-        <div class="legal-links">
-          <a href="#">Términos y condiciones</a>
-          <a href="#">Política de privacidad</a>
-        </div>
-      </div>
-    </div>
-  </footer>
-<!-- Script para menu hamburguesa -->
+<!-- =================== SCRIPTS =================== -->
+<!-- Script principal de la app: menú, provincias dinámicas, etc. -->
 <script src="{{ url_for('static', filename='js/main.js') }}"></script>
 </body>
 </html>

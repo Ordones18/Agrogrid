@@ -1,3 +1,16 @@
+{#
+    Template: agricultor/perfil_agricultor.html
+    Descripción: Panel principal del agricultor. Permite gestionar productos, ver métricas y analítica.
+    Ruta asociada: /perfil/agricultor
+    Variables esperadas:
+        - user: objeto Usuario
+        - productos: lista de Producto
+        - ventas_totales: float
+        - numero_productos: int
+        - vistas_productos: int
+        - user_type: str
+#}
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -12,40 +25,48 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
+    <!-- =================== HEADER =================== -->
     {% include 'partials/header_perfiles.html' %}
 
     <div class="agricultor-dashboard container">
+      <!-- =================== ENCABEZADO DEL DASHBOARD =================== -->
       <header class="dashboard-header">
         <h1>Panel del Agricultor</h1>
         <p>Bienvenido de nuevo, <strong>{{ user.name }}</strong>. Gestiona tus productos y ventas.</p>
       </header>
 
+      <!-- =================== MÉTRICAS =================== -->
       <section class="metrics-section">
-        <div class="metric-card">
-          <i class="fas fa-dollar-sign metric-icon"></i>
-          <h2>Ventas Totales</h2>
-          <!-- Deberás pasar esta variable desde tu ruta Flask -->
-          <p class="metric-value">${{ ventas_totales | default('0.00') }}</p>
-        </div>
-        <div class="metric-card">
-          <i class="fas fa-carrot metric-icon"></i>
-          <h2>Productos Publicados</h2>
-          <!-- Deberás pasar esta variable desde tu ruta Flask -->
-          <p class="metric-value">{{ numero_productos | default(0) }}</p>
-        </div>
-        <div class="metric-card">
+        <a href="#ventas-totales" class="metric-card-link">
+          <div class="metric-card">
+            <i class="fas fa-dollar-sign metric-icon"></i>
+            <h2>Ventas Totales</h2>
+            <p class="metric-value">${{ ventas_totales | default('0.00') }}</p>
+          </div>
+        </a>
+        <a href="#productos-publicados" class="metric-card-link">
+          <div class="metric-card">
+            <i class="fas fa-carrot metric-icon"></i>
+            <h2>Productos Publicados</h2>
+            <p class="metric-value">{{ numero_productos | default(0) }}</p>
+          </div>
+        </a>
+        <a href="#vistas-productos" class="metric-card-link">
+          <div class="metric-card">
             <i class="fas fa-eye metric-icon"></i>
             <h2>Vistas a Productos</h2>
             <p class="metric-value">{{ vistas_productos | default(0) }}</p>
           </div>
+        </a>
       </section>
 
+      <!-- =================== GESTIÓN DE PRODUCTOS =================== -->
       <section class="manage-products-section">
+        <!-- =================== FORMULARIO DE AGREGAR PRODUCTO =================== -->
         <div class="add-product-form card-style">
           <h2><i class="fas fa-plus-circle"></i> Agregar Nuevo Producto</h2>
-          <!-- El action debería apuntar a una ruta que maneje la creación de productos -->
           <form method="POST" action="{{ url_for('agregar_producto') }}" enctype="multipart/form-data" class="product-form">
-            <!-- ================= NUEVA FILA DE SELECCIÓN DE UBICACIÓN Y TIPO ================= -->
+            <!-- =================== FILA DE SELECCIÓN DE UBICACIÓN Y TIPO =================== -->
             <div class="form-row">
               <!-- Región ecuatoriana -->
               <div class="form-group">
@@ -58,7 +79,7 @@
                   <option value="Galápagos">Galápagos</option>
                 </select>
               </div>
-              <!-- Provincia (se llena dinámicamente según la región) -->
+              <!-- Provincia -->
               <div class="form-group">
                 <label for="provincia">Provincia</label>
                 <select id="provincia" name="provincia" required>
@@ -85,7 +106,7 @@
                 <input type="text" id="productName" name="productName" required>
               </div>
             </div>
-            <!-- ================= FIN NUEVA FILA ================= -->
+            <!-- =================== FIN FILA =================== -->
             <div class="form-group">
               <label for="productDescription">Descripción Detallada</label>
               <textarea id="productDescription" name="productDescription" rows="3" placeholder="Ej: Tomates orgánicos, maduros, listos para cosecha..."></textarea>
@@ -117,39 +138,175 @@
               <input type="file" id="productImage" name="productImage" accept="image/*">
             </div>
             <button type="submit" class="btn-primary">Publicar Producto</button>
+            {# =================== MENSAJES FLASH =================== #}
+            {% with messages = get_flashed_messages(with_categories=true) %}
+              {% if messages %}
+                {% for category, message in messages %}
+                  <div class="flash-{{ category }}">
+                    {{ message }}
+                  </div>
+                {% endfor %}
+              {% endif %}
+            {% endwith %}
           </form>
         </div>
 
-        <div class="my-products-list card-style">
-          <h2><i class="fas fa-list-alt"></i> Mis Productos Publicados</h2>
-          {% if productos %}
-            <div class="products-grid">
-              {% for producto in productos %}
-              <div class="product-card">
-                <img src="{{ url_for('static', filename='uploads/' + producto.imagen_url if producto.imagen_url else 'images/placeholder_product.png') }}" alt="{{ producto.nombre }}" class="product-image">
-                <div class="product-info">
-                  <h3>{{ producto.nombre }}</h3>
-                  <p class="product-meta"><strong>Tipo:</strong> {{ producto.tipo }}</p>
-                  <p class="product-meta"><strong>Precio:</strong> ${{ "%.2f"|format(producto.precio or 0) }} / {{ producto.unidad or '' }}</p>
-                  <p class="product-meta"><strong>Disponible:</strong> {{ producto.cantidad }} {{ producto.unidad }}</p>
-                  <p class="product-status"><strong>Estado:</strong> {{ producto.estado | default('Activo') }}</p>
+        <!-- =================== LISTA DE PRODUCTOS PUBLICADOS =================== -->
+        <section id="productos-publicados" class="manage-products-section">
+          <div class="my-products-list card-style">
+            <h2><i class="fas fa-list-alt"></i> Mis Productos Publicados</h2>
+            {% if productos %}
+              <div class="products-grid">
+                {% for producto in productos %}
+                <!-- Tarjeta de producto publicado -->
+                <div class="product-card">
+                  <img src="{{ url_for('static', filename='uploads/' + producto.imagen_url if producto.imagen_url else 'images/placeholder_product.png') }}" alt="{{ producto.nombre }}" class="product-image">
+                  <div class="product-info">
+                    <h3>{{ producto.nombre }}</h3>
+                    <p class="product-meta"><strong>Tipo:</strong> {{ producto.tipo }}</p>
+                    <p class="product-meta"><strong>Descripción:</strong> {{ producto.descripcion or 'Sin descripción' }}</p>
+                    <p class="product-meta"><strong>Precio:</strong> ${{ "%.2f"|format(producto.precio or 0) }} / {{ producto.unidad or '' }}</p>
+                    <p class="product-meta"><strong>Disponible:</strong> {{ producto.cantidad or 0 }} {{ producto.unidad or '' }}</p>
+                    <p class="product-status"><strong>Estado:</strong> {{ producto.estado | default('Activo') }}</p>
+                  </div>
+                  <div class="product-actions">
+                    <a href="{{ url_for('editar_producto', producto_id=producto.id) }}" class="btn-edit"><i class="fas fa-edit"></i> Editar</a>
+                    <a href="{{ url_for('eliminar_producto', producto_id=producto.id) }}" class="btn-delete" onclick="return confirm('¿Estás seguro de eliminar este producto?');"><i class="fas fa-trash"></i> Eliminar</a>
+                  </div>
                 </div>
-                <div class="product-actions">
-                  <a href="{{ url_for('editar_producto', producto_id=producto.id) }}" class="btn-edit"><i class="fas fa-edit"></i> Editar</a>
-                  <a href="{{ url_for('eliminar_producto', producto_id=producto.id) }}" class="btn-delete" onclick="return confirm('¿Estás seguro de eliminar este producto?');"><i class="fas fa-trash"></i> Eliminar</a>
-                </div>
+                {% endfor %}
               </div>
-              {% endfor %}
-            </div>
-          {% else %}
-            <p class="empty-state">Aún no has publicado ningún producto. ¡Agrega uno usando el formulario!</p>
-          {% endif %}
+            {% else %}
+              <p class="empty-state">Aún no has publicado ningún producto. ¡Agrega uno usando el formulario!</p>
+            {% endif %}
+          </div>
+        </section>
+      </section>
 
+      <!-- =================== SECCIÓN DE VENTAS TOTALES =================== -->
+      <section id="ventas-totales" class="dashboard-section card-style">
+        <h2>Detalle de Ventas Totales</h2>
+        <p>Aquí puedes mostrar un resumen o tabla de ventas (puedes implementar la lógica real después).</p>
+      </section>
+
+      <!-- =================== SECCIÓN DE ANALÍTICA: VISTAS A PRODUCTOS =================== -->
+      <section id="vistas-productos" class="dashboard-section card-style">
+        <h2>Detalle de Vistas a Productos</h2>
+        <div style="margin-bottom:1rem;">
+          <label for="filtro-tipo" style="font-weight:600;">Filtrar por tipo:</label>
+          <select id="filtro-tipo" style="margin-left:0.5rem; padding:0.3rem 0.7rem; border-radius:5px; border:1px solid #e0e0e0;">
+            <option value="">Todos</option>
+          </select>
         </div>
+        <div id="plotly-vistas-productos" style="width:100%;min-height:400px;"></div>
       </section>
     </div>
 
+    <!-- =================== FOOTER =================== -->
     {% include 'partials/footer.html' %}
+
+    <!-- =================== SCRIPTS =================== -->
+    <!-- Script principal de la app: menú, provincias dinámicas, etc. -->
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <!-- Librería Plotly.js para gráficos interactivos -->
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <!-- Script para renderizar el gráfico de vistas por producto con Plotly -->
+    <script>
+    // Este script obtiene los datos de vistas por producto desde la API y renderiza un gráfico interactivo usando Plotly.js.
+    // Permite filtrar por tipo de producto y muestra tooltips personalizados.
+    function truncar(str, n) {
+      return (str.length > n) ? str.substr(0, n-1) + '…' : str;
+    }
+
+    let productosData = [];
+    let tiposUnicos = new Set();
+
+    function renderGrafico(filtroTipo = "") {
+      let productos = productosData;
+      if (filtroTipo) {
+        productos = productos.filter(p => p.tipo === filtroTipo);
+      }
+      const nombres = productos.map(p => truncar(p.nombre, 18));
+      const nombresFull = productos.map(p => p.nombre);
+      const vistas = productos.map(p => p.vistas);
+      const tipos = productos.map(p => p.tipo);
+      const precios = productos.map(p => p.precio);
+      const cantidades = productos.map(p => p.cantidad);
+      const unidades = productos.map(p => p.unidad);
+      const provincias = productos.map(p => p.provincia);
+      const regiones = productos.map(p => p.region);
+
+      // Gradiente de color según vistas
+      const minV = Math.min(...vistas);
+      const maxV = Math.max(...vistas);
+      const colores = vistas.map(v => `rgba(76,175,80,${0.4 + 0.6 * ((v - minV) / (maxV - minV || 1))})`);
+      // El más visto en naranja
+      if (vistas.length > 0) {
+        const idx = vistas.indexOf(maxV);
+        if (idx !== -1) colores[idx] = '#ff9800';
+      }
+
+      const trace = {
+        x: vistas,
+        y: nombres,
+        type: 'bar',
+        orientation: 'h',
+        marker: { color: colores },
+        text: vistas.map(String),
+        textposition: 'inside',
+        hovertemplate:
+          '<b>%{customdata[0]}</b><br>' +
+          'Vistas: <b>%{x}</b><br>' +
+          'Tipo: %{customdata[1]}<br>' +
+          'Precio: $%{customdata[2]:.2f} / %{customdata[5]}<br>' +
+          'Cantidad: %{customdata[3]} %{customdata[5]}<br>' +
+          'Provincia: %{customdata[6]}<br>' +
+          'Región: %{customdata[7]}<extra></extra>',
+        customdata: productos.map((p, i) => [nombresFull[i], p.tipo, p.precio, p.cantidad, p.vistas, p.unidad, p.provincia, p.region]),
+      };
+      const layout = {
+        title: 'Vistas por Producto',
+        xaxis: { title: 'Vistas', zeroline: false },
+        yaxis: { title: 'Producto', automargin: true },
+        margin: { l: 140, r: 30, t: 60, b: 40 },
+        plot_bgcolor: '#f9fafb',
+        paper_bgcolor: '#f9fafb',
+        font: { family: 'Open Sans, sans-serif', size: 14 },
+        bargap: 0.25,
+        showlegend: false,
+        hoverlabel: { bgcolor: '#fff', bordercolor: '#4caf50', font: { color: '#333' } },
+        transition: { duration: 500, easing: 'cubic-in-out' },
+      };
+      Plotly.newPlot('plotly-vistas-productos', [trace], layout, {responsive: true, displayModeBar: true, displaylogo: false, modeBarButtonsToRemove: ['sendDataToCloud']});
+
+      // Tooltips para nombres truncados
+      setTimeout(() => {
+        document.querySelectorAll('#plotly-vistas-productos .ytick text').forEach((el, i) => {
+          el.setAttribute('title', nombresFull[i]);
+        });
+      }, 500);
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      fetch("{{ url_for('api_vistas_productos') }}")
+        .then(response => response.json())
+        .then(data => {
+          productosData = data.productos || [];
+          // Llenar el filtro de tipo
+          tiposUnicos = new Set(productosData.map(p => p.tipo));
+          const filtro = document.getElementById('filtro-tipo');
+          tiposUnicos.forEach(tipo => {
+            const opt = document.createElement('option');
+            opt.value = tipo;
+            opt.textContent = tipo;
+            filtro.appendChild(opt);
+          });
+          filtro.addEventListener('change', function() {
+            renderGrafico(this.value);
+          });
+          renderGrafico();
+        });
+    });
+    </script>
 </body>
 </html>

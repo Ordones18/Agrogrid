@@ -1,3 +1,12 @@
+{#
+    Template: comprador/perfil_comprador.html
+    Descripción: Panel principal del comprador. Permite ver métricas, historial de pedidos y productos favoritos.
+    Ruta asociada: /perfil/comprador
+    Variables esperadas:
+        - user: objeto Usuario
+        - pedidos_realizados: int
+        - favoritos: int
+#}
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -47,5 +56,6 @@
 
     {% include 'partials/footer.html' %}
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+<!-- Script principal de la app: gestiona menú y lógica de navegación. -->
 </body>
 </html>

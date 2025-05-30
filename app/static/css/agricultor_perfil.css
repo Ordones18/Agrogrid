@@ -290,3 +290,20 @@ body {
         min-width: 100%;
     }
 }
+
+html {
+    scroll-behavior: smooth;
+}
+.metric-card-link {
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+    display: block;
+}
+.metric-card-link .metric-card {
+    transition: box-shadow 0.2s, transform 0.2s;
+}
+.metric-card-link .metric-card:hover {
+    box-shadow: 0 8px 32px rgba(76,175,80,0.15);
+    transform: translateY(-4px) scale(1.03);
+}

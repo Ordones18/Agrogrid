@@ -1,6 +1,16 @@
+{#
+    Template: register.html
+    Descripción: Formulario de registro de nuevos usuarios en AgroGrid.
+    Ruta asociada: /register
+    Variables esperadas: Ninguna
+#}
+
+<!-- =================== HEADER =================== -->
 {% extends "partials/base_header.html" %}
 {% block title %}Regístrate en AgroGrid System{% endblock %}
 {% block content %}
+
+<!-- =================== MENSAJES FLASH =================== -->
 {% with messages = get_flashed_messages(with_categories=true) %}
   {% if messages %}
     {% for category, message in messages %}
@@ -8,19 +18,24 @@
     {% endfor %}
   {% endif %}
 {% endwith %}
+
+<!-- =================== FORMULARIO DE REGISTRO =================== -->
 <section class="register-section">
   <div class="container">
     <h2 class="section-title">Crea tu cuenta en AgroGrid System</h2>
     <form class="register-form" method="POST" action="{{ url_for('register') }}">
+      <!-- Campo nombre -->
       <div class="form-group">
         <label for="name">Nombre completo</label>
         <input type="text" id="name" name="name" required>
         <!-- Usamos required para mostrar un mensaje automaticamente del navegador para pedir completar el campo-->
       </div>
+      <!-- Campo email -->
       <div class="form-group">
         <label for="email">Correo electrónico</label>
         <input type="email" id="email" name="email" required>
       </div>
+      <!-- Campo tipo de usuario -->
       <div class="form-group">
         <label for="user_type">Tipo de usuario</label>
         <select id="user_type" name="user_type" required>
@@ -30,7 +45,7 @@
           <option value="transportista">Transportista</option>
         </select>
       </div>
-        <!-- Caja de provincias -->
+      <!-- Campo provincia -->
       <div class="form-group">
         <label for="provincia">Provincia</label>
         <select id="provincia" name="provincia" required>
@@ -59,17 +74,19 @@
           <option value="sucumbios">Sucumbíos</option>
           <option value="tungurahua">Tungurahua</option>
           <option value="zamora_chinchipe">Zamora Chinchipe</option>
-  </select>
-</div>
-
+        </select>
+      </div>
+      <!-- Campo cédula -->
       <div class="form-group">
         <label for="cedula">Cédula de identidad </label>
         <input type="text" id="cedula" name="cedula">
       </div>
+      <!-- Campo teléfono -->
       <div class="form-group">
         <label for="phone">Teléfono</label>
         <input type="tel" id="phone" name="phone" required>
       </div>
+      <!-- Campo contraseña -->
       <div class="form-group">
         <label for="password">Contraseña</label>
         <input type="password" id="password" name="password" required>

@@ -1,11 +1,18 @@
+{#
+    Template: explore.html
+    Descripción: Página para explorar productos y agricultores registrados en AgroGrid.
+    Ruta asociada: /explore
+    Variables esperadas: Ninguna (puede requerir variables en el futuro)
+#}
+
+<!-- =================== HEADER =================== -->
 {% if user %}
   {% include "partials/header_perfiles.html" %}
 {% else %}
   {% include "partials/base_header.html" %}
 {% endif %}
 
-<!-- EXPLORA LA PLATAFORMA -->
-
+<!-- =================== SECCIÓN DE EXPLORACIÓN =================== -->
 <section class="explore">
   <div class="container">
     <h2 class="section-title">Explora la plataforma</h2>
@@ -30,8 +37,7 @@
   </div>
 </section>
 
-<!-- INDICACIONES PARA AGREGAR PRODUCTOS -->
-
+<!-- =================== GUÍA DE USO =================== -->
 <section class="explore-guide">
   <div class="container">
     <h2 class="section-title">¿Cómo usar AgroGrid System?</h2>
@@ -67,7 +73,7 @@
         </div>
       </div>
     </div>
-      <a href="{{ url_for('index') }}" class="btn btn-primary">VOLVER AL INICIO</a>
+    <a href="{{ url_for('index') }}" class="btn btn-primary">VOLVER AL INICIO</a>
   </div>
 </section>
 

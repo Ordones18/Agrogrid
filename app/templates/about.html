@@ -1,9 +1,18 @@
+{#
+    Template: about.html
+    Descripción: Página de información sobre AgroGrid, misión, visión y equipo.
+    Ruta asociada: /about
+    Variables esperadas: Ninguna
+#}
+
+<!-- =================== HEADER =================== -->
 {% if user %}
   {% include "partials/header_perfiles.html" %}
 {% else %}
   {% include "partials/base_header.html" %}
 {% endif %}
 
+<!-- =================== SECCIÓN HERO (TÍTULO Y SLOGAN) =================== -->
 <section class="about-hero">
   <div class="about-hero-overlay"></div>
   <div class="about-hero-content">
@@ -12,6 +21,7 @@
   </div>
 </section>
 
+<!-- =================== MISIÓN Y VISIÓN =================== -->
 <section class="about-mission">
   <div class="container">
     <div class="about-row">
@@ -35,6 +45,7 @@
   </div>
 </section>
 
+<!-- =================== VALORES =================== -->
 <section class="about-values">
   <div class="container">
     <h2>Valores</h2>
@@ -63,6 +74,7 @@
   </div>
 </section>
 
+<!-- =================== EQUIPO =================== -->
 <section class="about-team">
   <div class="container">
     <h2>Nuestro Equipo</h2>

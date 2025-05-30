@@ -1,5 +1,7 @@
-from werkzeug.security import generate_password_hash
-from app import db # Importa la instancia de SQLAlchemy (db) desde tu aplicación Flask
+# =================== Importaciones principales ===================
+
+from werkzeug.security import generate_password_hash  # Para hashear contraseñas de usuarios
+from app import db  # Instancia de SQLAlchemy para la base de datos
 
 # =========================
 # Modelo de Usuario
@@ -21,7 +23,8 @@ class Usuario(db.Model):
     def set_password(self, password):
         """
         Hashea y establece la contraseña del usuario.
-        :param password: Contraseña en texto plano
+        Args:
+            password (str): Contraseña en texto plano
         """
         self.password = generate_password_hash(password)
 
@@ -31,6 +34,7 @@ class Usuario(db.Model):
 class Producto(db.Model):
     """
     Modelo que representa un producto agrícola publicado por un agricultor.
+    Incluye información relevante para la gestión y visualización en AgroGrid.
     """
     id = db.Column(db.Integer, primary_key=True)  # Identificador único del producto (clave primaria)
     nombre = db.Column(db.String(100), nullable=False)  # Nombre del producto
@@ -42,6 +46,9 @@ class Producto(db.Model):
     usuario_id = db.Column(db.Integer, db.ForeignKey('usuario.id'), nullable=False)  # ID del usuario agricultor que publica el producto
     precio = db.Column(db.Float, nullable=True)  # Precio del producto
     unidad = db.Column(db.String(20), nullable=True)  # Unidad de medida (Kg, Quintal, etc.)
+    descripcion = db.Column(db.Text, nullable=True)  # Descripción detallada del producto
+    cantidad = db.Column(db.Float, nullable=True)  # Cantidad disponible del producto
+    vistas = db.Column(db.Integer, default=0)  # Número de vistas del producto
 
     # Relación con el usuario (agricultor)
     usuario = db.relationship('Usuario', backref=db.backref('productos', lazy=True))

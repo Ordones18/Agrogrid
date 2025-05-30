@@ -1,3 +1,12 @@
+{#
+    Template: transportista/perfil_transportista.html
+    Descripción: Panel principal del transportista. Permite ver métricas, historial de envíos y vehículos registrados.
+    Ruta asociada: /perfil/transportista
+    Variables esperadas:
+        - user: objeto Usuario
+        - envios_realizados: int
+        - calificacion: float o str
+#}
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -46,5 +55,6 @@
 
     {% include 'partials/footer.html' %}
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+<!-- Script principal de la app: gestiona menú y lógica de navegación. -->
 </body>
 </html>

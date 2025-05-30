@@ -1,0 +1,91 @@
+{#
+    Template: agricultor/editar_producto.html
+    Descripción: Formulario para editar un producto agrícola publicado por el agricultor.
+    Ruta asociada: /editar_producto/<producto_id>
+    Variables esperadas:
+        - producto: objeto Producto a editar
+#}
+{% extends 'partials/header_perfiles.html' %}
+{% block content %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/editar_producto.css') }}">
+<div class="agricultor-dashboard container">
+  <header class="dashboard-header">
+    <h1>Editar Producto</h1>
+    <p>Modifica los datos de tu producto y guarda los cambios.</p>
+  </header>
+  <section class="manage-products-section">
+    <div class="add-product-form card-style">
+      <h2><i class="fas fa-edit"></i> Editar Producto</h2>
+      <form method="POST" enctype="multipart/form-data" class="product-form">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="region">Región</label>
+            <select id="region" name="region" required>
+              <option value="" disabled>Seleccione región...</option>
+              <option value="Costa" {{ 'selected' if producto.region == 'Costa' else '' }}>Costa</option>
+              <option value="Sierra" {{ 'selected' if producto.region == 'Sierra' else '' }}>Sierra</option>
+              <option value="Amazonía" {{ 'selected' if producto.region == 'Amazonía' else '' }}>Amazonía</option>
+              <option value="Galápagos" {{ 'selected' if producto.region == 'Galápagos' else '' }}>Galápagos</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="provincia">Provincia</label>
+            <input type="text" id="provincia" name="provincia" value="{{ producto.provincia }}" required>
+          </div>
+          <div class="form-group">
+            <label for="productType">Tipo de Producto</label>
+            <select id="productType" name="productType" required>
+              <option value="" disabled>Seleccione tipo...</option>
+              <option value="Fruta" {{ 'selected' if producto.tipo == 'Fruta' else '' }}>Fruta</option>
+              <option value="Verdura" {{ 'selected' if producto.tipo == 'Verdura' else '' }}>Verdura</option>
+              <option value="Hortaliza" {{ 'selected' if producto.tipo == 'Hortaliza' else '' }}>Hortaliza</option>
+              <option value="Grano" {{ 'selected' if producto.tipo == 'Grano' else '' }}>Grano</option>
+              <option value="Tubérculo" {{ 'selected' if producto.tipo == 'Tubérculo' else '' }}>Tubérculo</option>
+              <option value="Otro" {{ 'selected' if producto.tipo == 'Otro' else '' }}>Otro</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="productName">Nombre del Producto</label>
+            <input type="text" id="productName" name="productName" value="{{ producto.nombre }}" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="productPrice">Precio (por unidad de medida)</label>
+          <input type="number" id="productPrice" name="productPrice" step="0.01" min="0" value="{{ producto.precio }}" required>
+        </div>
+        <div class="form-group">
+          <label for="productUnit">Unidad de Medida</label>
+          <select id="productUnit" name="productUnit" required>
+            <option value="Kg" {{ 'selected' if producto.unidad == 'Kg' else '' }}>Kilogramos (Kg)</option>
+            <option value="Quintal" {{ 'selected' if producto.unidad == 'Quintal' else '' }}>Quintal(es)</option>
+            <option value="Tonelada" {{ 'selected' if producto.unidad == 'Tonelada' else '' }}>Tonelada(s) (Ton)</option>
+            <option value="Unidad" {{ 'selected' if producto.unidad == 'Unidad' else '' }}>Unidad(es)</option>
+            <option value="Atado" {{ 'selected' if producto.unidad == 'Atado' else '' }}>Atado(s)</option>
+            <option value="Saco" {{ 'selected' if producto.unidad == 'Saco' else '' }}>Saco(s)</option>
+            <option value="Caja" {{ 'selected' if producto.unidad == 'Caja' else '' }}>Caja(s)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="productQuantity">Cantidad Disponible</label>
+          <input type="number" id="productQuantity" name="productQuantity" step="any" min="0" value="{{ producto.cantidad }}" required>
+        </div>
+        <div class="form-group">
+          <label for="productImage">Imagen del Producto (opcional)</label>
+          <input type="file" id="productImage" name="productImage" accept="image/*">
+          {% if producto.imagen_url %}
+            <p>Imagen actual:</p>
+            <img src="{{ url_for('static', filename='uploads/' + producto.imagen_url) }}" alt="Imagen actual" style="max-width:150px;">
+          {% endif %}
+        </div>
+        <div class="form-group">
+          <label for="productDescription">Descripción Detallada</label>
+          <textarea id="productDescription" name="productDescription" rows="3" placeholder="Ej: Tomates orgánicos, maduros, listos para cosecha...">{{ producto.descripcion or '' }}</textarea>
+        </div>
+        <button type="submit" class="btn-primary">Guardar Cambios</button>
+      </form>
+    </div>
+  </section>
+</div>
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+<!-- Script principal de la app: gestiona menú y lógica de provincias si aplica. -->
+{% endblock %} 
