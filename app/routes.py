@@ -5,13 +5,14 @@ from app import app, mail, db  # Instancias principales de la app, correo y base
 from flask_mail import Message  # Para enviar correos electrónicos
 from app.models import Usuario, Producto  # Modelos de la base de datos
 from werkzeug.security import generate_password_hash, check_password_hash  # Utilidades para hashear y verificar contraseñas
-from .utils import generate_token, confirm_token  # Funciones utilitarias para manejo de tokens (recuperación de contraseña, etc.)
+from app.utils import generate_token, confirm_token  # Funciones utilitarias para manejo de tokens (recuperación de contraseña, etc.)
 from werkzeug.utils import secure_filename  # Para guardar archivos de forma segura
 import os  # Manejo de rutas y sistema operativo
 from flask import current_app  # Acceso a la app actual de Flask
 import io  # Manejo de streams de datos (para imágenes, gráficos)
 import numpy as np  # Librería para cálculos numéricos y arreglos (usada en analítica)
 import matplotlib.pyplot as plt  # Librería para generación de gráficos estáticos
+import networkx as nx
 
 
 # =================== Rutas Públicas ===================
@@ -124,6 +125,18 @@ def login():
             flash('Correo o contraseña incorrectos', 'danger')
     return render_template('login.html')
 
+@app.route('/logout')
+def logout():
+    """
+    Cierra la sesión del usuario.
+    - Método: GET
+    - Request: Ninguno
+    - Response: Redirige a login
+    """
+    session.clear()
+    flash('Has cerrado sesión exitosamente.', 'success')
+    return redirect(url_for('login'))
+
 @app.route('/recover_password', methods=['GET', 'POST'])
 def recover_password():
     """
@@ -170,19 +183,6 @@ def reset_password(token):
             flash('Contraseña actualizada correctamente.', 'success')
             return redirect(url_for('login'))
     return render_template('reset_password.html')
-
-@app.route('/logout')
-def logout():
-    """
-    Cierra la sesión del usuario.
-    - Método: GET
-    - Request: Ninguno
-    - Response: Redirige a login
-    """
-    session.pop('user', None)
-    session.pop('user_type', None)
-    flash('Has cerrado sesión exitosamente.', 'success')
-    return redirect(url_for('login'))
 
 # =================== Perfiles de Usuario ===================
 
@@ -390,41 +390,48 @@ def eliminar_producto(producto_id):
     flash('Producto eliminado correctamente.', 'success')
     return redirect(url_for('perfil_agricultor'))
 
-# =================== Analítica y APIs ===================
+# =================== Página General de Productos ===================
+@app.route('/productos')
+def productos():
+    region = request.args.get('region', '')
+    provincia = request.args.get('provincia', '')
+    tipo = request.args.get('tipo', '')
+    nombre = request.args.get('nombre', '')
+    query = Producto.query
+    if region:
+        query = query.filter_by(region=region)
+    if provincia:
+        query = query.filter_by(provincia=provincia)
+    if tipo:
+        query = query.filter_by(tipo=tipo)
+    if nombre:
+        query = query.filter(Producto.nombre.ilike(f"%{nombre}%"))
+    productos = query.all()
+    regiones = [r[0] for r in db.session.query(Producto.region).distinct().all()]
+    provincias = [p[0] for p in db.session.query(Producto.provincia).distinct().all()]
+    tipos = [t[0] for t in db.session.query(Producto.tipo).distinct().all()]
+    return render_template('productos.html', productos=productos, regiones=regiones, provincias=provincias, tipos=tipos)
 
-@app.route('/grafico/vistas_productos')
-def grafico_vistas_productos():
-    """
-    Devuelve un gráfico PNG de vistas por producto (versión estática).
-    - Método: GET
-    - Requiere autenticación como agricultor.
-    - Response: Imagen PNG
-    """
-    if 'user' not in session or session.get('user_type') != 'agricultor':
-        return '', 403
-
-    usuario = Usuario.query.filter_by(email=session['user']).first()
-    productos = Producto.query.filter_by(usuario_id=usuario.id).all()
-    nombres = [p.nombre for p in productos]
-    vistas = [p.vistas or 0 for p in productos]
-
-    # Si no hay productos, muestra un gráfico vacío
-    if not nombres:
-        nombres = ['Sin productos']
-        vistas = [0]
-
-    fig, ax = plt.subplots(figsize=(8, 4))
-    ax.bar(nombres, vistas, color='green')
-    ax.set_ylabel('Vistas')
-    ax.set_title('Vistas por Producto')
-    plt.xticks(rotation=45, ha='right')
-    plt.tight_layout()
-
-    buf = io.BytesIO()
-    plt.savefig(buf, format='png')
-    buf.seek(0)
-    plt.close(fig)
-    return send_file(buf, mimetype='image/png')
+# =================== APIs y Analítica ===================
+@app.route('/api/grafo_productos')
+def api_grafo_productos():
+    productos = Producto.query.all()
+    G = nx.Graph()
+    for p in productos:
+        G.add_node(p.id, nombre=p.nombre, tipo=p.tipo, region=p.region, provincia=p.provincia, precio=p.precio, cantidad=p.cantidad, unidad=p.unidad)
+    for i, p1 in enumerate(productos):
+        for j, p2 in enumerate(productos):
+            if i >= j:
+                continue
+            if p1.tipo == p2.tipo or p1.region == p2.region:
+                G.add_edge(p1.id, p2.id)
+    nodos = [
+        {"id": n, **G.nodes[n]} for n in G.nodes
+    ]
+    aristas = [
+        {"source": u, "target": v} for u, v in G.edges
+    ]
+    return jsonify({"nodes": nodos, "edges": aristas})
 
 @app.route('/api/vistas_productos')
 def api_vistas_productos():
@@ -465,4 +472,3 @@ def inject_user():
         'user': session.get('user'),
         'user_type': session.get('user_type')
     }
-

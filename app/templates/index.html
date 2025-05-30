@@ -46,7 +46,7 @@
     <nav class="navigation">
       <ul>
         <li><a href="{{ url_for('index') }}" class="active">Inicio</a></li>
-        <li><a href="#">Productos</a></li>
+        <li><a href="{{ url_for('productos') }}">Productos</a></li>
         <li><a href="{{ url_for('about') }}">Nosotros</a></li>
         <!-- =================== CONTROL DE SESIÓN =================== -->
         {% if user %}
@@ -229,7 +229,7 @@
         <h3>Enlaces rápidos</h3>
         <ul class="footer-links">
           <li><a href="{{ url_for('index') }}">Inicio</a></li>
-          <li><a href="#">Productos</a></li>
+          <li><a href="{{ url_for('productos') }}">Productos</a></li>
           <li><a href="{{url_for('about')}}">Nosotros</a></li>
           <li><a href="{{ url_for('login') }}">Iniciar sesión</a></li>
           <li><a href="#">Registrate</a></li>

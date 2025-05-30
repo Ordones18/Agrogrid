@@ -47,7 +47,7 @@
       <nav class="navigation">
         <ul>
           <li><a href="{{ url_for('index') }}" class="active">Inicio</a></li>
-          <li><a href="#">Productos</a></li>
+          <li><a href="{{ url_for('productos') }}">Productos</a></li>
           <li><a href="{{ url_for('about') }}">Nosotros</a></li>
           <li><a href="{{ url_for('logout') }}">Cerrar sesión</a></li>
           <li><a href="{{ url_for('perfil_' + user_type) }}">Mi perfil</a></li>

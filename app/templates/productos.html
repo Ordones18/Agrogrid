@@ -1,0 +1,99 @@
+{#
+    Template: productos.html
+    Descripción: Página general para explorar todos los productos publicados por los agricultores.
+    Variables esperadas:
+        - productos: lista de Producto
+        - regiones: lista de regiones únicas
+        - provincias: lista de provincias únicas
+        - tipos: lista de tipos de producto únicos
+#}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Explorar Productos - AgroGrid</title>
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/hoja.png') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/header.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/productos.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    {% include 'partials/base_header.html' %}
+    <div class="productos-dashboard container">
+        <header class="dashboard-header">
+            <h1>Explora Productos Agrícolas</h1>
+            <p>Descubre productos frescos y de calidad directamente de los agricultores ecuatorianos.</p>
+        </header>
+        <!-- =================== FILTROS =================== -->
+        <section class="filtros-section card-style">
+            <form method="GET" class="filtros-form">
+                <div class="filtros-row">
+                    <div class="form-group">
+                        <label for="region">Región</label>
+                        <select id="region" name="region">
+                            <option value="">Todas</option>
+                            {% for region in regiones %}
+                                <option value="{{ region }}">{{ region }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="provincia">Provincia</label>
+                        <select id="provincia" name="provincia">
+                            <option value="">Todas</option>
+                            {% for provincia in provincias %}
+                                <option value="{{ provincia }}">{{ provincia }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="tipo">Tipo de Producto</label>
+                        <select id="tipo" name="tipo">
+                            <option value="">Todos</option>
+                            {% for tipo in tipos %}
+                                <option value="{{ tipo }}">{{ tipo }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="nombre">Nombre</label>
+                        <input type="text" id="nombre" name="nombre" placeholder="Buscar por nombre...">
+                    </div>
+                    <div class="form-group" style="align-self: flex-end;">
+                        <button type="submit" class="btn-primary"><i class="fas fa-search"></i> Filtrar</button>
+                    </div>
+                </div>
+            </form>
+        </section>
+        <!-- =================== GRID DE PRODUCTOS =================== -->
+        <section class="productos-list-section">
+            {% if productos %}
+                <div class="products-grid">
+                    {% for producto in productos %}
+                        <div class="product-card">
+                            <img src="{{ url_for('static', filename='uploads/' + producto.imagen_url) if producto.imagen_url else url_for('static', filename='images/placeholder_product.png') }}" alt="{{ producto.nombre }}" class="product-image">
+                            <div class="product-info">
+                                <h3>{{ producto.nombre }}</h3>
+                                <p class="product-meta"><strong>Tipo:</strong> {{ producto.tipo }}</p>
+                                <p class="product-meta"><strong>Región:</strong> {{ producto.region }}</p>
+                                <p class="product-meta"><strong>Provincia:</strong> {{ producto.provincia }}</p>
+                                <p class="product-meta"><strong>Precio:</strong> ${{ '%.2f'|format(producto.precio or 0) }} / {{ producto.unidad or '' }}</p>
+                                <p class="product-meta"><strong>Disponible:</strong> {{ producto.cantidad or 0 }} {{ producto.unidad or '' }}</p>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p class="empty-state">No se encontraron productos con los filtros seleccionados.</p>
+            {% endif %}
+        </section>
+        <!-- =================== PAGINACIÓN (opcional) =================== -->
+        <section class="paginacion-section">
+            {# Aquí puedes agregar controles de paginación si lo deseas #}
+        </section>
+    </div>
+    {% include 'partials/footer.html' %}
+</body>
+</html> 
