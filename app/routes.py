@@ -13,6 +13,7 @@ import io  # Manejo de streams de datos (para imágenes, gráficos)
 import numpy as np  # Librería para cálculos numéricos y arreglos (usada en analítica)
 import matplotlib.pyplot as plt  # Librería para generación de gráficos estáticos
 import networkx as nx
+from app.ubicacion import obtener_estructura_ubicacion
 
 
 # =================== Rutas Públicas ===================
@@ -461,6 +462,77 @@ def api_vistas_productos():
     }
     return jsonify(data)
 
+# =================== API de Taxonomía ===================
+
+@app.route('/api/taxonomia')
+def api_taxonomia():
+    """
+    Endpoint que devuelve la estructura simple de taxonomía de productos.
+    - Método: GET
+    - Response: JSON con estructura simple {categoria: {subcategoria: [productos]}}
+    """
+    from app.taxonomia import obtener_estructura_simple
+    return jsonify(obtener_estructura_simple())
+
+@app.route('/api/taxonomia/estructura')
+def api_taxonomia_estructura():
+    """
+    Endpoint para el widget de árbol de clasificación de productos.
+    - Método: GET
+    - Response: JSON con la estructura simple de taxonomía (categoría > subcategoría > productos)
+    """
+    from app.taxonomia import obtener_estructura_simple
+    return jsonify(obtener_estructura_simple())
+
+
+@app.route('/api/ubicacion/estructura')
+def api_ubicacion_estructura():
+    """
+    Endpoint para el árbol de ubicación.
+    - Método: GET
+    - Response: JSON con la estructura de regiones, provincias y cantones
+    """
+    return jsonify(obtener_estructura_ubicacion())
+
+
+
+@app.route('/api/taxonomia/buscar')
+def api_buscar_productos():
+    """
+    Endpoint para búsqueda de productos en la taxonomía.
+    - Método: GET
+    - Query params: q (término de búsqueda)
+    - Response: JSON con lista de productos que coinciden
+    """
+    from app.taxonomia import buscar_productos
+    termino = request.args.get('q', '')
+    
+    if len(termino) < 2:
+        return jsonify([])
+    
+    resultados = buscar_productos(termino)
+    # Convertir al formato esperado por el frontend
+    resultados_formato = []
+    for resultado in resultados:
+        resultados_formato.append({
+            "producto": resultado["nombre"],
+            "categoria": resultado["categoria"],
+            "subcategoria": resultado["subcategoria"]
+        })
+    
+    return jsonify(resultados_formato)
+
+# Agregar ruta para obtener íconos
+@app.route('/api/taxonomia/iconos')
+def api_iconos_categorias():
+    """
+    Endpoint que devuelve los íconos de las categorías principales.
+    - Método: GET
+    - Response: JSON con íconos {categoria: icono}
+    """
+    from app.taxonomia import obtener_iconos_categorias
+    return jsonify(obtener_iconos_categorias())
+
 # =================== Utilidades y Context Processors ===================
 
 @app.context_processor
@@ -472,3 +544,11 @@ def inject_user():
         'user': session.get('user'),
         'user_type': session.get('user_type')
     }
+
+# Ruta de prueba para debugging de taxonomía
+@app.route('/test-taxonomia')
+def test_taxonomia():
+    """
+    Página de prueba para verificar el funcionamiento de la API de taxonomía
+    """
+    return render_template('test_taxonomia.html')

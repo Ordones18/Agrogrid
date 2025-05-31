@@ -17,11 +17,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Panel de Agricultor - {{ user.name }}</title>
-    <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/hoja.png') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/hoja.png') }}">    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/header.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/register.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/agricultor_perfil.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/taxonomia-tree.css') }}?v={{ range(10000, 99999) | random }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/ubicacion-arbol.css') }}?v={{ range(10000, 99999) | random }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
@@ -68,43 +69,65 @@
           <form method="POST" action="{{ url_for('agregar_producto') }}" enctype="multipart/form-data" class="product-form">
             <!-- =================== FILA DE SELECCIÓN DE UBICACIÓN Y TIPO =================== -->
             <div class="form-row">
-              <!-- Región ecuatoriana -->
+              <div class="form-group" style="flex: 1 1 100%;">
+                <label>Ubicación</label>
+<div class="form-row">
+  <div class="form-group">
+    <label for="regionSelector">Región</label>
+    <select id="regionSelector" name="regionSelector" required>
+      <option value="" disabled selected>Seleccione región...</option>
+    </select>
+  </div>
+  <div class="form-group">
+    <label for="provinciaSelector">Provincia</label>
+    <select id="provinciaSelector" name="provinciaSelector" required disabled>
+      <option value="" disabled selected>Seleccione provincia...</option>
+    </select>
+  </div>
+  <div class="form-group">
+    <label for="cantonSelector">Cantón</label>
+    <select id="cantonSelector" name="cantonSelector" required disabled>
+      <option value="" disabled selected>Seleccione cantón...</option>
+    </select>
+  </div>
+</div>
+<!-- Campos ocultos para compatibilidad con el backend -->
+<input type="hidden" id="region" name="region" required>
+<input type="hidden" id="provincia" name="provincia" required>
+<input type="hidden" id="canton" name="canton" required>
+              </div>
+            </div>
+            <script src="{{ url_for('static', filename='js/ubicacion_selector_simple.js') }}?v={{ range(10000, 99999) | random }}"></script>
+            <div class="form-row">
+              <!-- Categoría -->
               <div class="form-group">
-                <label for="region">Región</label>
-                <select id="region" name="region" required>
-                  <option value="" disabled selected>Seleccione región...</option>
-                  <option value="Costa">Costa</option>
-                  <option value="Sierra">Sierra</option>
-                  <option value="Amazonía">Amazonía</option>
-                  <option value="Galápagos">Galápagos</option>
+                <label for="categoriaSelector">Categoría</label>
+                <select id="categoriaSelector" name="categoriaSelector" required>
+                  <option value="" disabled selected>Seleccione categoría...</option>
                 </select>
               </div>
-              <!-- Provincia -->
+              <!-- Subcategoría -->
               <div class="form-group">
-                <label for="provincia">Provincia</label>
-                <select id="provincia" name="provincia" required>
-                  <option value="" disabled selected>Seleccione provincia...</option>
-                  <!-- Opciones se llenarán dinámicamente con JS -->
+                <label for="subcategoriaSelector">Subcategoría</label>
+                <select id="subcategoriaSelector" name="subcategoriaSelector" required disabled>
+                  <option value="" disabled selected>Seleccione subcategoría...</option>
                 </select>
               </div>
-              <!-- Tipo de producto -->
+              <!-- Producto -->
               <div class="form-group">
-                <label for="productType">Tipo de Producto</label>
-                <select id="productType" name="productType" required>
-                  <option value="" disabled selected>Seleccione tipo...</option>
-                  <option value="Fruta">Fruta</option>
-                  <option value="Verdura">Verdura</option>
-                  <option value="Hortaliza">Hortaliza</option>
-                  <option value="Grano">Grano</option>
-                  <option value="Tubérculo">Tubérculo</option>
-                  <option value="Otro">Otro</option>
+                <label for="productoSelector">Producto</label>
+                <select id="productoSelector" name="productoSelector" required disabled>
+                  <option value="" disabled selected>Seleccione producto...</option>
                 </select>
               </div>
-              <!-- Nombre del producto -->
+              <!-- Nombre personalizado -->
               <div class="form-group">
-                <label for="productName">Nombre del Producto</label>
-                <input type="text" id="productName" name="productName" required>
+                <label for="customProductName">Nombre del Producto</label>
+                <input type="text" id="customProductName" name="customProductName" maxlength="50" placeholder="Ejemplo: Tomate Cherry" autocomplete="off">
               </div>
+              <!-- Campos ocultos para compatibilidad con el backend -->
+              <input type="hidden" id="productType" name="productType" required>
+              <input type="hidden" id="productName" name="productName" required>
             </div>
             <!-- =================== FIN FILA =================== -->
             <div class="form-group">
@@ -203,11 +226,10 @@
     </div>
 
     <!-- =================== FOOTER =================== -->
-    {% include 'partials/footer.html' %}
-
-    <!-- =================== SCRIPTS =================== -->
+    {% include 'partials/footer.html' %}    <!-- =================== SCRIPTS =================== -->
     <!-- Script principal de la app: menú, provincias dinámicas, etc. -->
-    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>    <!-- Script del widget de taxonomía -->
+    <script src="{{ url_for('static', filename='js/taxonomia-selector-simple.js') }}"></script>
     <!-- Librería Plotly.js para gráficos interactivos -->
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
     <!-- Script para renderizar el gráfico de vistas por producto con Plotly -->
@@ -304,8 +326,42 @@
           filtro.addEventListener('change', function() {
             renderGrafico(this.value);
           });
-          renderGrafico();
-        });
+          renderGrafico();        });
+    });
+    </script>
+
+    <!-- Inicialización del widget de taxonomía -->
+    <script src="{{ url_for('static', filename='js/taxonomia_widget.js') }}"></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Inicializar el nuevo selector de taxonomía
+      const taxonomiaSelector = new TaxonomiaSelector({
+        onSelect: function(selectedPath) {
+          const form = document.querySelector('.product-form');
+          const submitBtn = form.querySelector('button[type="submit"]');
+          if (selectedPath && selectedPath.producto) {
+            submitBtn.disabled = false;
+            submitBtn.style.opacity = '1';
+          } else {
+            submitBtn.disabled = true;
+            submitBtn.style.opacity = '0.6';
+          }
+        }
+      });
+      // Deshabilitar el botón de envío inicialmente
+      const form = document.querySelector('.product-form');
+      const submitBtn = form.querySelector('button[type="submit"]');
+      submitBtn.disabled = true;
+      submitBtn.style.opacity = '0.6';
+      // Validación adicional antes del envío
+      form.addEventListener('submit', function(e) {
+        const selectedProduct = taxonomiaSelector.getSelectedProduct();
+        if (!selectedProduct || !selectedProduct.categoria || !selectedProduct.subcategoria || !(selectedProduct.producto && selectedProduct.producto.length > 0)) {
+          e.preventDefault();
+          alert('Por favor, seleccione y/o escriba un producto de la clasificación.');
+          return false;
+        }
+      });
     });
     </script>
 </body>
