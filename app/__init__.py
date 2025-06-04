@@ -4,6 +4,7 @@ from flask_mail import Mail
 import os
 from dotenv import load_dotenv
 from flask_migrate import Migrate
+from flask_login import LoginManager
 
 # Carga las variables de entorno desde el archivo .env
 load_dotenv()
@@ -27,4 +28,15 @@ db = SQLAlchemy(app)
 mail = Mail(app)
 migrate = Migrate(app, db)
 
-from app import routes 
+# Inicializa Flask-Login
+login_manager = LoginManager()
+login_manager.init_app(app)
+login_manager.login_view = 'login'  # Cambia 'login' por el nombre de la vista de login si es diferente
+
+from app.models import Usuario
+
+@login_manager.user_loader
+def load_user(user_id):
+    return Usuario.query.get(int(user_id))
+
+from app import routes

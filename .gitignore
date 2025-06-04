@@ -3,8 +3,6 @@ venv/
 .env
 *.pyc
 __pycache__/
-instance/
-migrations/
 uploads/
 *.pyo
 *.pyd
@@ -20,12 +18,16 @@ Thumbs.db
 *.log
 
 # Archivos de base de datos locales
-*.sqlite3
+
 
 
 # Ignorar archivos de pruebas
-test_db.py
-test_eliminarbd.py
-testingdb.py
-cleandb.py
+alembic.ini
+README
+script.py.mako
+1557e79fd3b2_recrear_tabla_orden_con_comprador_id_y_.py
+env.py
+
+
+
 

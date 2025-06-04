@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Mi Carrito</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/checkout.css') }}">
+</head>
+<body class="checkout-page">
+{% if user %}
+  {% include "partials/header_perfiles.html" %}
+{% else %}
+  {% include "partials/base_header.html" %}
+{% endif %}
+<div class="checkout-content">
+  <div class="container carrito-container">
+    <header class="dashboard-header">
+        <h1><i class="fas fa-shopping-cart"></i> Mi Carrito</h1>
+        <p>Revisa tus productos antes de finalizar la compra.</p>
+    </header>
+    <!-- Mensajes flash -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="flashes">
+          {% for category, message in messages %}
+            <div class="alert alert-{{ category }}">{{ message }}</div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    {% if items and items|length > 0 %}
+    <form method="POST" action="{{ url_for('actualizar_carrito') }}">
+      <div class="table-responsive">
+        <table class="table table-cart">
+          <thead>
+            <tr>
+              <th>Producto</th>
+              <th>Descripción</th>
+              <th>Precio</th>
+              <th>Cantidad</th>
+              <th>Subtotal</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for item in items %}
+            <tr>
+              <td>
+                <strong>{{ item.producto.nombre }}</strong><br>
+                <span class="text-muted">{{ item.producto.tipo }} | {{ item.producto.provincia }}</span>
+              </td>
+              <td>
+                {{ item.producto.descripcion }}
+              </td>
+              <td>${{ '%.2f'|format(item.producto.precio or 0) }} / {{ item.producto.unidad or '' }}</td>
+              <td>
+                <input type="number" min="1" name="cantidad_{{ item.id }}" value="{{ item.cantidad }}" class="input-cantidad">
+              </td>
+              <td>${{ '%.2f'|format(item.cantidad * (item.producto.precio or 0)) }}</td>
+              <td>
+                </form>
+<form method="POST" action="{{ url_for('eliminar_del_carrito', detalle_id=item.id) }}" style="display:inline;">
+  <button type="submit" class="btn btn-danger btn-sm" title="Eliminar">
+    <i class="fas fa-trash"></i>
+  </button>
+</form> <!-- este formulario de eliminar va después de cada producto -->
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      <div class="cart-summary" style="display:flex; flex-direction:column; align-items:center; width:100%;">
+        <div class="cart-total mb-2">
+          <h3>Total: <span class="cart-total-amount">${{ '%.2f'|format(total) }}</span></h3>
+        </div>
+        <div class="finalizar-compra-form" style="width:100%; max-width:320px; display:flex; flex-direction:column; gap:14px; align-items:stretch;">
+          <button type="submit" class="btn btn-primary btn-lg shadow-sm">Actualizar Carrito</button>
+          <a href="{{ url_for('confirmar_compra') }}" class="btn btn-success btn-lg shadow-sm">Finalizar Compra</a>
+        </div>
+      </div>
+    </form>
+    {% else %}
+      <div class="empty-state">
+        <a href="{{ url_for('productos') }}" class="btn btn-primary"><i class="fas fa-arrow-left"></i> Volver a productos</a>
+      </div>
+    {% endif %}
+  </div>
+</div>
+{% include 'partials/footer.html' %}
+</body>

@@ -1,0 +1,40 @@
+{% if user %}
+  {% include "partials/header_perfiles.html" %}
+{% else %}
+  {% include "partials/base_header.html" %}
+{% endif %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/checkout.css') }}">
+<body class="checkout-page">
+  <div class="checkout-content" style="display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 60vh;">
+    <div class="card checkout-card shadow-lg p-5" style="max-width: 480px;">
+      <div class="text-center mb-4">
+        <div class="success-checkmark mx-auto mb-3">
+          <svg width="72" height="72" viewBox="0 0 72 72">
+            <circle cx="36" cy="36" r="34" fill="url(#successGradient)"/>
+            <linearGradient id="successGradient" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#43e97b"/>
+              <stop offset="100%" stop-color="#38c172"/>
+            </linearGradient>
+            <polyline points="22,38 33,49 52,27" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <h1 class="checkout-success" style="font-size:2.5rem; background: linear-gradient(90deg,#43e97b,#38c172); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: 800;">¡Compra realizada con éxito!</h1>
+        <p class="checkout-lead mt-3 mb-2" style="color:#38c172; font-size:1.3rem; font-weight:500;">¡Gracias por confiar en AgroGrid!</p>
+        <p class="text-muted mb-4" style="font-size:1.1rem;">Tu pedido ha sido registrado y pronto recibirás la información en tu perfil.</p>
+        <a href="{{ url_for('productos') }}" class="btn checkout-btn btn-lg px-5 shadow-sm" style="font-size:1.15rem;">Seguir comprando</a>
+      </div>
+    </div>
+  </div>
+  {% include 'partials/footer.html' %}
+</body>
+<style>
+.success-checkmark svg {
+  display: block;
+  margin: 0 auto;
+  animation: pop-in 0.7s cubic-bezier(.25,1.7,.45,.88);
+}
+@keyframes pop-in {
+  from { transform: scale(0.4); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+</style>

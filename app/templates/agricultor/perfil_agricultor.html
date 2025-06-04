@@ -42,7 +42,7 @@
           <div class="metric-card">
             <i class="fas fa-dollar-sign metric-icon"></i>
             <h2>Ventas Totales</h2>
-            <p class="metric-value">${{ ventas_totales | default('0.00') }}</p>
+            <p class="metric-value">${{ '%.2f'|format(ventas_totales or 0) }}</p>
           </div>
         </a>
         <a href="#productos-publicados" class="metric-card-link">
@@ -56,17 +56,19 @@
           <div class="metric-card">
             <i class="fas fa-eye metric-icon"></i>
             <h2>Vistas a Productos</h2>
-            <p class="metric-value">{{ vistas_productos | default(0) }}</p>
+
           </div>
         </a>
       </section>
 
       <!-- =================== GESTIÓN DE PRODUCTOS =================== -->
+
       <section class="manage-products-section">
+
         <!-- =================== FORMULARIO DE AGREGAR PRODUCTO =================== -->
         <div class="add-product-form card-style">
           <h2><i class="fas fa-plus-circle"></i> Agregar Nuevo Producto</h2>
-          <form method="POST" action="{{ url_for('agregar_producto') }}" enctype="multipart/form-data" class="product-form">
+          <form method="POST" action="{{ url_for('agregar_producto') }}" enctype="multipart/form-data" class="product-form" id="agregar-producto-form">
             <!-- =================== FILA DE SELECCIÓN DE UBICACIÓN Y TIPO =================== -->
             <div class="form-row">
               <div class="form-group" style="flex: 1 1 100%;">
@@ -101,23 +103,23 @@
             <div class="form-row">
               <!-- Categoría -->
               <div class="form-group">
-                <label for="categoriaSelector">Categoría</label>
+                <label for="categoriaSelector">Categoría 1</label>
                 <select id="categoriaSelector" name="categoriaSelector" required>
                   <option value="" disabled selected>Seleccione categoría...</option>
                 </select>
               </div>
               <!-- Subcategoría -->
               <div class="form-group">
-                <label for="subcategoriaSelector">Subcategoría</label>
-                <select id="subcategoriaSelector" name="subcategoriaSelector" required disabled>
-                  <option value="" disabled selected>Seleccione subcategoría...</option>
+                <label for="subcategoria2Selector">Subcategoría 2</label>
+                <select id="subcategoria2Selector" name="subcategoria2Selector" required disabled>
+                  <option value="" disabled selected>Seleccione subcategoría 2...</option>
                 </select>
               </div>
-              <!-- Producto -->
+              <!-- Subcategoría -->
               <div class="form-group">
-                <label for="productoSelector">Producto</label>
-                <select id="productoSelector" name="productoSelector" required disabled>
-                  <option value="" disabled selected>Seleccione producto...</option>
+                <label for="subcategoria3Selector">Subcategoría 3</label>
+                <select id="subcategoria3Selector" name="subcategoria3Selector" required disabled>
+                  <option value="" disabled selected>Seleccione subcategoría 3...</option>
                 </select>
               </div>
               <!-- Nombre personalizado -->
@@ -171,7 +173,25 @@
                 {% endfor %}
               {% endif %}
             {% endwith %}
-          </form>
+            <!-- Debug: Show value being sent for subcategoriaSelector -->
+  <input type="hidden" id="debug_subcat" name="debug_subcat">
+</form>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('agregar-producto-form');
+    const subcat = document.getElementById('subcategoriaSelector');
+    const debug = document.getElementById('debug_subcat');
+    form.addEventListener('submit', function(e) {
+        debug.value = subcat.value;
+        if (!subcat.value) {
+            alert('DEBUG: subcategoriaSelector está vacío');
+            console.log('DEBUG: subcategoriaSelector value:', subcat.value);
+        } else {
+            console.log('DEBUG: subcategoriaSelector value:', subcat.value);
+        }
+    });
+});
+</script>
         </div>
 
         <!-- =================== LISTA DE PRODUCTOS PUBLICADOS =================== -->
@@ -206,11 +226,96 @@
         </section>
       </section>
 
+      <!-- =================== HISTORIAL DE VENTAS =================== -->
+      <section class="ventas-section card-style seccion-compacta">
+        <h2 style="cursor:pointer;display:flex;align-items:center;gap:0.5em;" id="toggle-historial">
+          <i class="fas fa-shopping-basket"></i> Historial de Ventas
+          <span id="icono-toggle" class="icono-toggle"><i class="fas fa-chevron-down"></i></span>
+        </h2>
+        <div id="contenedor-historial" class="table-responsive contenedor-historial">
+          <table class="table table-striped" id="tabla-historial-ventas" cellspacing="0">
+            <thead>
+              <tr>
+                <th class="col-fecha">Fecha y Hora</th>
+                <th class="col-producto">Producto</th>
+                <th class="col-cantidad">Cantidad</th>
+                <th class="col-precio">Precio unitario</th>
+                <th class="col-total">Total</th>
+                <th class="col-comprador">Comprador</th>
+              </tr>
+            </thead>
+            <tbody id="tbody-historial-ventas">
+              <tr><td colspan="6" style="text-align:center; color:#888;">Cargando historial...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        // --- Tabla desplegable ---
+        const toggle = document.getElementById('toggle-historial');
+        const cont = document.getElementById('contenedor-historial');
+        const icono = document.getElementById('icono-toggle');
+        // Asegura que inicie cerrado
+        cont.classList.remove('abierto');
+        let abierto = false;
+        toggle.addEventListener('click', function() {
+          abierto = !abierto;
+          cont.classList.toggle('abierto', abierto);
+          icono.style.transform = abierto ? 'rotate(180deg)' : 'rotate(0deg)';
+        });
+        // --- Cargar historial ventas ---
+        fetch('/api/historial_ventas')
+          .then(res => res.json())
+          .then(historial => {
+            const tbody = document.getElementById('tbody-historial-ventas');
+            tbody.innerHTML = '';
+            if (!historial || historial.length === 0) {
+              tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; color:#888;">Aún no tienes ventas registradas.</td></tr>`;
+              return;
+            }
+            historial.forEach(venta => {
+              const row = document.createElement('tr');
+              row.innerHTML = `
+                <td class="col-fecha"><span class="fecha-hora-venta">${venta.fecha_hora_str}</span></td>
+                <td class="col-producto">${venta.producto}</td>
+                <td class="col-cantidad">${venta.cantidad}</td>
+                <td class="col-precio">$${parseFloat(venta.precio_unitario).toFixed(2)}</td>
+                <td class="col-total"><span class="total-venta">$${parseFloat(venta.total).toFixed(2)}</span></td>
+                <td class="col-comprador">${venta.comprador_nombre ? venta.comprador_nombre : '-'}</td>
+              `;
+              tbody.appendChild(row);
+            });
+          })
+          .catch(() => {
+            const tbody = document.getElementById('tbody-historial-ventas');
+            tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; color:#d32f2f;">Error al cargar el historial de ventas.</td></tr>`;
+          });
+      });
+      </script>
+
+
       <!-- =================== SECCIÓN DE VENTAS TOTALES =================== -->
       <section id="ventas-totales" class="dashboard-section card-style">
         <h2>Detalle de Ventas Totales</h2>
-        <p>Aquí puedes mostrar un resumen o tabla de ventas (puedes implementar la lógica real después).</p>
+        <div class="ventas-totales-summary">
+          <span id="ventas-totales-general" style="font-size:1.2em;font-weight:bold;"></span>
+        </div>
+        <div style="margin: 1rem 0;">
+          <label for="ventas-totales-groupby" style="margin-right:0.5em;">Ver por:</label>
+          <select id="ventas-totales-groupby" style="padding:0.25em 0.5em;">
+            <option value="semana">Semana</option>
+            <option value="mes" selected>Mes</option>
+            <option value="anio">Año</option>
+          </select>
+        </div>
+        <div id="grafico-ventas-totales" style="width:100%;min-height:350px;"></div>
+        <h3 style="margin-top:2em;">Ventas por Producto</h3>
+        <div id="grafico-ventas-producto" style="width:100%;min-height:320px;"></div>
       </section>
+
+      
 
       <!-- =================== SECCIÓN DE ANALÍTICA: VISTAS A PRODUCTOS =================== -->
       <section id="vistas-productos" class="dashboard-section card-style">
@@ -228,7 +333,89 @@
     <!-- =================== FOOTER =================== -->
     {% include 'partials/footer.html' %}    <!-- =================== SCRIPTS =================== -->
     <!-- Script principal de la app: menú, provincias dinámicas, etc. -->
-    <script src="{{ url_for('static', filename='js/main.js') }}"></script>    <!-- Script del widget de taxonomía -->
+    <script src="https://cdn.plot.ly/plotly-2.26.0.min.js"></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Ventas Totales - Gráficos
+      fetch("{{ url_for('api_ventas_totales') }}")
+        .then(res => res.json())
+        .then(data => {
+          // Mostrar resumen numérico
+          document.getElementById('ventas-totales-general').textContent = 'Total general: $' + (data.total_general ? data.total_general.toFixed(2) : '0.00');
+
+          // --- Ventas por Producto ---
+          const productos = Object.keys(data.por_producto || {});
+          const ventasPorProducto = Object.values(data.por_producto || {});
+
+          const traceProducto = {
+            x: ventasPorProducto,
+            y: productos,
+            type: 'bar',
+            orientation: 'h',
+            marker: { color: '#4caf50' },
+            text: ventasPorProducto.map(v => '$' + v.toFixed(2)),
+            textposition: 'auto',
+            hovertemplate: '<b>%{y}</b><br>Ventas: <b>$%{x:.2f}</b><extra></extra>',
+          };
+          const layoutProducto = {
+            title: 'Ventas por Producto',
+            xaxis: { title: 'Ventas ($)', zeroline: false },
+            yaxis: { title: 'Producto', automargin: true },
+            margin: { l: 120, r: 30, t: 40, b: 40 },
+            plot_bgcolor: '#f9fafb',
+            paper_bgcolor: '#f9fafb',
+            font: { family: 'Open Sans, sans-serif', size: 14 },
+            bargap: 0.25,
+            showlegend: false,
+            hoverlabel: { bgcolor: '#fff', bordercolor: '#4caf50', font: { color: '#333' } },
+          };
+          Plotly.newPlot('grafico-ventas-producto', [traceProducto], layoutProducto, {responsive: true, displayModeBar: false});
+
+          // --- Ventas Totales por periodo ---
+          const groupbyOptions = {
+            semana: data.por_semana || {},
+            mes: data.por_mes || {},
+            anio: data.por_anio || {}
+          };
+
+          function renderVentasTotales(periodo) {
+            const ventasPorPeriodo = groupbyOptions[periodo];
+            const labels = Object.keys(ventasPorPeriodo);
+            const valores = Object.values(ventasPorPeriodo);
+            const trace = {
+              x: labels,
+              y: valores,
+              type: 'bar',
+              marker: { color: '#1976d2' },
+              text: valores.map(v => '$' + v.toFixed(2)),
+              textposition: 'auto',
+              hovertemplate: '<b>%{x}</b><br>Ventas: <b>$%{y:.2f}</b><extra></extra>',
+            };
+            const layout = {
+              title: 'Ventas Totales por ' + (periodo === 'semana' ? 'Semana' : periodo === 'mes' ? 'Mes' : 'Año'),
+              xaxis: { title: periodo.charAt(0).toUpperCase() + periodo.slice(1), tickangle: -45 },
+              yaxis: { title: 'Ventas ($)', zeroline: false },
+              margin: { l: 60, r: 30, t: 40, b: 80 },
+              plot_bgcolor: '#f9fafb',
+              paper_bgcolor: '#f9fafb',
+              font: { family: 'Open Sans, sans-serif', size: 14 },
+              showlegend: false,
+              hoverlabel: { bgcolor: '#fff', bordercolor: '#1976d2', font: { color: '#333' } },
+              bargap: 0.25,
+            };
+            Plotly.newPlot('grafico-ventas-totales', [trace], layout, {responsive: true, displayModeBar: false});
+          }
+
+          // Inicializar con "mes"
+          renderVentasTotales('mes');
+          document.getElementById('ventas-totales-groupby').addEventListener('change', function() {
+            renderVentasTotales(this.value);
+          });
+        });
+    });
+    </script>
+    <script src="{{ url_for('static', filename='js/main.js') }}">
+    </script>    <!-- Script del widget de taxonomía -->
     <script src="{{ url_for('static', filename='js/taxonomia-selector-simple.js') }}"></script>
     <!-- Librería Plotly.js para gráficos interactivos -->
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>

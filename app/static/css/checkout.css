@@ -1,0 +1,86 @@
+/* --- Estilos generales para las páginas de checkout --- */
+
+body.checkout-page {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background: #f8fafc;
+}
+
+.checkout-content {
+    flex: 1 0 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+
+.finalizar-compra-form {
+    width: 100%;
+    max-width: 320px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    align-items: stretch;
+    margin: 0 auto;
+    margin-top: 12px;
+}
+
+.cart-summary {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.card.checkout-card {
+    border-radius: 1.5rem;
+    background: #f6fff7;
+    border: 2px solid #b2f2bb;
+    box-shadow: 0 4px 24px 0 rgba(56, 193, 114, 0.08);
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+h1.checkout-success {
+    color: #38c172;
+    font-weight: bold;
+    font-size: 2.7rem;
+    text-shadow: 0 2px 8px #b2f2bb66;
+    
+}
+
+.checkout-lead {
+    color: #38c172;
+    font-size: 1.5rem;
+}
+
+.btn.checkout-btn {
+    background: #38c172;
+    border-color: #38c172;
+    color: #fff;
+    font-weight: 600;
+    transition: background 0.25s;
+}
+
+
+.btn.checkout-btn:hover {
+    background: #2fa36e;
+    border-color: #2fa36e;
+}
+
+
+@media (max-width: 600px) {
+  /* Puedes agregar estilos responsivos aquí */
+}
+
+.card.checkout-card {
+padding: 1.2rem !important;
+}
+h1.checkout-success {
+font-size: 2rem;
+}
+.checkout-lead {
+font-size: 1.1rem;
+}
+

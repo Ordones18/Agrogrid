@@ -20,7 +20,17 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    {% include 'partials/base_header.html' %}
+    {% if user.is_authenticated and user.user_type == 'comprador' %}
+    <!-- Botón flotante ver carrito SOLO para compradores -->
+    <a href="{{ url_for('ver_carrito') }}" class="btn-float-cart">
+        <i class="fas fa-shopping-cart"></i> Ver mi carrito
+    </a>
+    {% endif %}
+    {% if user %}
+        {% include "partials/header_perfiles.html" %}
+    {% else %}
+        {% include "partials/base_header.html" %}
+    {% endif %}
     <div class="productos-dashboard container">
         <header class="dashboard-header">
             <h1>Explora Productos Agrícolas</h1>
@@ -58,15 +68,35 @@
                         </select>
                     </div>
                     <div class="form-group">
+                        <label for="precio_min">Precio Mínimo</label>
+                        <input type="number" step="0.01" id="precio_min" name="precio_min" min="0">
+                    </div>
+                    <div class="form-group">
+                        <label for="precio_max">Precio Máximo</label>
+                        <input type="number" step="0.01" id="precio_max" name="precio_max" min="0">
+                    </div>
+                    <div class="form-group">
                         <label for="nombre">Nombre</label>
                         <input type="text" id="nombre" name="nombre" placeholder="Buscar por nombre...">
                     </div>
                     <div class="form-group" style="align-self: flex-end;">
-                        <button type="submit" class="btn-primary"><i class="fas fa-search"></i> Filtrar</button>
+                        <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i> Filtrar</button>
                     </div>
                 </div>
             </form>
         </section>
+        <body>
+       
+        <!-- =================== MENSAJES FLASH =================== -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            <div class="flashes">
+              {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">{{ message }}</div>
+              {% endfor %}
+            </div>
+          {% endif %}
+        {% endwith %}
         <!-- =================== GRID DE PRODUCTOS =================== -->
         <section class="productos-list-section">
             {% if productos %}
@@ -82,6 +112,31 @@
                                 <p class="product-meta"><strong>Precio:</strong> ${{ '%.2f'|format(producto.precio or 0) }} / {{ producto.unidad or '' }}</p>
                                 <p class="product-meta"><strong>Disponible:</strong> {{ producto.cantidad or 0 }} {{ producto.unidad or '' }}</p>
                             </div>
+                            <div class="product-actions-centered">
+                                {% if user.is_authenticated and user.user_type == 'comprador' %}
+                                <form method="POST" action="{{ url_for('agregar_al_carrito', producto_id=producto.id) }}">
+                                    <input type="hidden" name="cantidad" value="1">
+                                    <button type="submit" class="btn btn-agregar-carrito"><i class="fas fa-cart-plus"></i> Agregar al carrito</button>
+                                </form>
+                                <form>
+                                    <button type="button" class="btn btn-quick-view-light"
+                                        data-producto-id="{{ producto.id }}"
+                                        data-nombre="{{ producto.nombre }}"
+                                        data-imagen="{{ url_for('static', filename='uploads/' + producto.imagen_url) if producto.imagen_url else url_for('static', filename='images/placeholder_product.png') }}"
+                                        data-tipo="{{ producto.tipo }}"
+                                        data-region="{{ producto.region }}"
+                                        data-provincia="{{ producto.provincia }}"
+                                        data-precio="{{ producto.precio }}"
+                                        data-cantidad="{{ producto.cantidad }}"
+                                        data-descripcion="{{ producto.descripcion|e }}"
+                                    >
+                                        <i class="fas fa-eye"></i> Vista rápida
+                                    </button>
+                                </form>
+                                {% elif not user.is_authenticated %}
+                                <button href="{{ url_for('login') }}" type="submit" class="btn btn-agregar-carrito"><i class="fas fa-cart-plus"></i> Inicia sesión para comprar</button>
+                                {% endif %}
+                            </div>
                         </div>
                     {% endfor %}
                 </div>
@@ -95,5 +150,24 @@
         </section>
     </div>
     {% include 'partials/footer.html' %}
+    {% if user.is_authenticated and user.user_type == 'comprador' %}
+    <script src="{{ url_for('static', filename='js/fix_cart_button_footer.js') }}"></script>
+{% endif %}
+</body>
+<!-- Modal de Vista Rápida -->
+<div id="quickViewModal" class="quick-view-modal" style="display:none;">
+  <div class="quick-view-content">
+    <span class="quick-view-close">&times;</span>
+    <img id="qv-imagen" src="" alt="Imagen producto" class="quick-view-image">
+    <h3 id="qv-nombre"></h3>
+    <p><strong>Tipo:</strong> <span id="qv-tipo"></span></p>
+    <p><strong>Región:</strong> <span id="qv-region"></span></p>
+    <p><strong>Provincia:</strong> <span id="qv-provincia"></span></p>
+    <p><strong>Precio:</strong> <span id="qv-precio"></span></p>
+    <p><strong>Disponible:</strong> <span id="qv-cantidad"></span></p>
+    <p><strong>Descripción:</strong> <span id="qv-descripcion"></span></p>
+  </div>
+</div>
+<script src="{{ url_for('static', filename='js/productos_quickview.js') }}"></script>
 </body>
 </html> 

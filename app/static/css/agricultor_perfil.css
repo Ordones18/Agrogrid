@@ -81,6 +81,7 @@ body {
     padding: 1.5rem;
     flex: 1;
     min-width: 220px;
+    min-height: 190px; /* Ajuste para igualar el alto de todas las tarjetas */
     text-align: center;
     margin-bottom: var(--spacing-md);
     border-left: 5px solid var(--primary-color, #4caf50);
@@ -109,8 +110,27 @@ body {
     border-radius: 12px;
     box-shadow: 0 4px 24px rgba(0,0,0,0.07);
     padding: 2rem;
-    margin-bottom: var(--spacing-xl);
+    margin-bottom: 0 !important;
+}
+.contenedor-historial {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.5s cubic-bezier(.4,2,.6,1);
+}
+.contenedor-historial.abierto {
+  max-height: 800px;
+}
 
+.seccion-compacta {
+  margin-top: 0.7em !important;
+  margin-bottom: 0.7em !important;
+}
+
+.dashboard-section,
+.ventas-section,
+.card-style {
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
 }
 .card-style h2 {
     color: var(--primary-color, #4caf50);
@@ -278,6 +298,90 @@ body {
     padding: 2rem;
     color: #777;
     font-style: italic;
+}
+
+/* ======= Tabla de Historial de Ventas ======= */
+.agricultor-dashboard #tabla-historial-ventas th {
+  text-align: center !important;
+  vertical-align: middle !important;
+}
+.agricultor-dashboard #tabla-historial-ventas td {
+  color: #222 !important;
+  font-size: 1.08em !important;
+  vertical-align: middle !important;
+  padding: 0 2px !important;
+  border-spacing: 0 !important;
+  border: none !important;
+  line-height: 1.7 !important;
+}
+#tabla-historial-ventas {
+  border-collapse: collapse !important;
+  border-spacing: 0 !important;
+}
+
+
+.col-fecha {
+  text-align: center !important;
+  width: 20% !important;
+  min-width: 80px !important;
+}
+.col-producto {
+  text-align: center !important;
+  width: 22% !important;
+  min-width: 60px !important;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+.col-cantidad {
+  text-align: center !important;
+  width: 12% !important;
+  min-width: 40px !important;
+}
+.col-precio {
+  text-align: center !important;
+  width: 18% !important;
+  min-width: 70px !important;
+}
+.col-total {
+  text-align: center !important;
+  width: 18% !important;
+  min-width: 80px !important;
+}
+.col-comprador {
+  text-align: center !important;
+  width: 25% !important;
+  min-width: 90px !important;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+
+.dashboard-section,
+.ventas-section,
+.card-style,
+.seccion-compacta {
+  margin-top: 0.15em !important;
+  margin-bottom: 0.15em !important;
+}
+
+#tabla-historial-ventas {
+  border-collapse: collapse !important;
+  border-spacing: 0 !important;
+}
+
+#tabla-historial-ventas th.col-fecha,
+#tabla-historial-ventas td.col-fecha,
+#tabla-historial-ventas td .fecha-hora-venta {
+  color: #1976d2 !important;
+  font-weight: bold;
+}
+#tabla-historial-ventas th.col-total,
+#tabla-historial-ventas td.col-total,
+#tabla-historial-ventas td .total-venta {
+  color: #1b5e20 !important;
+  font-weight: bold;
 }
 
 /* ======= Responsive ======= */

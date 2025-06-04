@@ -1,0 +1,125 @@
+{% if user %}
+  {% include "partials/header_perfiles.html" %}
+{% else %}
+  {% include "partials/base_header.html" %}
+{% endif %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/checkout.css') }}">
+<body class="checkout-page">
+  <div class="checkout-content">
+    <div class="container carrito-container">
+      <header class="dashboard-header">
+        <h1><i class="fas fa-credit-card"></i> Confirmar Compra</h1>
+        <p>Revisa tu pedido y elige el método de pago.</p>
+      </header>
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          <div class="flashes">
+            {% for category, message in messages %}
+              <div class="alert alert-{{ category }}">{{ message }}</div>
+            {% endfor %}
+          </div>
+        {% endif %}
+      {% endwith %}
+      <div class="table-responsive">
+        <table class="table table-cart">
+          <thead>
+            <tr>
+              <th>Producto</th>
+              <th>Descripción</th>
+              <th>Precio</th>
+              <th>Cantidad</th>
+              <th>Subtotal</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for item in items %}
+            <tr>
+              <td><strong>{{ item.producto.nombre }}</strong><br><span class="text-muted">{{ item.producto.tipo }} | {{ item.producto.provincia }}</span></td>
+              <td>{{ item.producto.descripcion }}</td>
+              <td>${{ '%.2f'|format(item.producto.precio or 0) }} / {{ item.producto.unidad or '' }}</td>
+              <td>{{ item.cantidad }}</td>
+              <td>${{ '%.2f'|format(item.cantidad * (item.producto.precio or 0)) }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      <div class="cart-summary">
+        <div class="cart-total">
+          <h3>Total: <span class="cart-total-amount">${{ '%.2f'|format(total) }}</span></h3>
+        </div>
+      </div>
+      <div class="card checkout-card shadow-lg p-4">
+        <form method="POST" action="{{ url_for('finalizar_compra') }}" id="form-pago">
+          <h3>Método de Pago</h3>
+          <div class="metodos-pago">
+            <label><input type="radio" name="metodo_pago" value="tarjeta" checked> Tarjeta de crédito/débito</label>
+            <label><input type="radio" name="metodo_pago" value="transferencia"> Transferencia bancaria</label>
+          </div>
+          <div id="pago-tarjeta" class="pago-metodo">
+            <div class="form-group">
+              <label for="numero_tarjeta">Número de tarjeta</label>
+              <input type="text" id="numero_tarjeta" name="numero_tarjeta" maxlength="19" autocomplete="off" placeholder="0000 0000 0000 0000" required>
+              <span id="tipo_tarjeta" class="tipo-tarjeta"></span>
+            </div>
+            <div class="form-group">
+              <label for="nombre_tarjeta">Titular</label>
+              <input type="text" id="nombre_tarjeta" name="nombre_tarjeta" required>
+            </div>
+            <div class="form-group">
+              <label for="expira">Vencimiento</label>
+              <input type="text" id="expira" name="expira" maxlength="5" placeholder="MM/AA" required>
+            </div>
+            <div class="form-group">
+              <label for="cvv">CVV</label>
+              <input type="text" id="cvv" name="cvv" maxlength="4" required>
+            </div>
+          </div>
+          <div id="pago-transferencia" class="pago-metodo" style="display:none;">
+            <p>Escanea el siguiente código QR para transferir el total a la cuenta bancaria de AgroGrid:</p>
+            <img src="{{ url_for('static', filename='images/qr_transferencia.png') }}" alt="QR transferencia" class="qr-transferencia">
+            <p><strong>Banco:</strong> Banco Ficticio<br>
+               <strong>Cuenta:</strong> 1234567890<br>
+               <strong>Titular:</strong> AgroGrid S.A.<br>
+               <strong>Referencia:</strong> COMPRA{{ current_user.id }}{{ total|int }}</p>
+          </div>
+          <div class="finalizar-compra-form">
+            <button type="submit" class="btn btn-success btn-lg"><i class="fas fa-check"></i> Confirmar y pagar</button>
+            <a href="{{ url_for('ver_carrito') }}" class="btn btn-secondary">Cancelar</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  {% include 'partials/footer.html' %}
+</body>
+<script>
+// Mostrar campos según método
+const radios = document.getElementsByName('metodo_pago');
+const pagoTarjeta = document.getElementById('pago-tarjeta');
+const pagoTransf = document.getElementById('pago-transferencia');
+radios.forEach(radio => {
+  radio.addEventListener('change', function() {
+    if (this.value === 'tarjeta') {
+      pagoTarjeta.style.display = '';
+      pagoTransf.style.display = 'none';
+    } else {
+      pagoTarjeta.style.display = 'none';
+      pagoTransf.style.display = '';
+    }
+  });
+});
+// Detectar tipo de tarjeta
+const inputTarjeta = document.getElementById('numero_tarjeta');
+const tipoTarjeta = document.getElementById('tipo_tarjeta');
+inputTarjeta.addEventListener('input', function() {
+  let v = this.value.replace(/\D/g,'');
+  if (/^4/.test(v)) {
+    tipoTarjeta.innerText = 'VISA';
+  } else if (/^5[1-5]/.test(v)) {
+    tipoTarjeta.innerText = 'MasterCard';
+  } else {
+    tipoTarjeta.innerText = '';
+  }
+});
+</script>
