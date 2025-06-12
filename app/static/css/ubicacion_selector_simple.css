@@ -1,0 +1,32 @@
+/* Estilos para los selectores de ubicación (región, provincia, cantón) */
+.form-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5em;
+}
+.form-group {
+  flex: 1 1 30%;
+  min-width: 180px;
+}
+.form-group label {
+  font-weight: 600;
+  margin-bottom: 0.4em;
+  display: block;
+}
+.form-group select:disabled {
+  background: #f3f3f3;
+  color: #aaa;
+}
+.form-group select {
+  width: 100%;
+  padding: 0.35em 0.6em;
+  border: 1px solid #cfd8dc;
+  border-radius: 4px;
+  font-size: 1em;
+  background: #fff;
+  transition: border 0.2s;
+}
+.form-group select:focus {
+  border-color: #4caf50;
+  outline: none;
+}

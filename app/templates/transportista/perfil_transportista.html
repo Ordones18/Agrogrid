@@ -43,8 +43,44 @@
       </section>
 
       <section class="profile-section card-style">
-        <h2><i class="fas fa-box"></i> Historial de Envíos</h2>
-        <p class="empty-state">Aún no tienes envíos registrados.</p>
+        <h2><i class="fas fa-map-marker-alt"></i> Viajes Pendientes por Aceptar</h2>
+        <div id="viajes-pendientes-wrapper" class="orders-table-wrapper">
+          <table id="tabla-viajes-pendientes" class="orders-table">
+            <thead>
+              <tr>
+                <th>Origen</th>
+                <th>Destino</th>
+                <th>Productos</th>
+                <th>Agricultor</th>
+                <th>Comprador</th>
+                <th>Acción</th>
+              </tr>
+            </thead>
+            <tbody id="tbody-viajes-pendientes">
+              <tr><td colspan="6" class="empty-state">Cargando viajes pendientes...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="profile-section card-style">
+        <h2><i class="fas fa-truck-moving"></i> Viajes Asignados / En Curso</h2>
+        <div id="viajes-asignados-wrapper" class="orders-table-wrapper">
+          <table id="tabla-viajes-asignados" class="orders-table">
+            <thead>
+              <tr>
+                <th>Origen</th>
+                <th>Destino</th>
+                <th>Productos</th>
+                <th>Estado</th>
+                <th>Acción</th>
+              </tr>
+            </thead>
+            <tbody id="tbody-viajes-asignados">
+              <tr><td colspan="5" class="empty-state">Cargando viajes asignados...</td></tr>
+            </tbody>
+          </table>
+        </div>
       </section>
 
       <section class="profile-section card-style">
@@ -54,7 +90,9 @@
     </div>
 
     {% include 'partials/footer.html' %}
+    <script src="{{ url_for('static', filename='js/transportista_perfil.js') }}"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/transportista_perfil.css') }}">
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
-<!-- Script principal de la app: gestiona menú y lógica de navegación. -->
+    <!-- Script principal de la app: gestiona menú y lógica de navegación. -->
 </body>
 </html>

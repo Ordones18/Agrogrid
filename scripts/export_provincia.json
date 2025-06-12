@@ -1,0 +1,122 @@
+[
+  {
+    "id": 1,
+    "region_id": 2,
+    "nombre": "Guayas"
+  },
+  {
+    "id": 2,
+    "region_id": 2,
+    "nombre": "Manabí"
+  },
+  {
+    "id": 3,
+    "region_id": 2,
+    "nombre": "El Oro"
+  },
+  {
+    "id": 4,
+    "region_id": 2,
+    "nombre": "Los Ríos"
+  },
+  {
+    "id": 5,
+    "region_id": 2,
+    "nombre": "Esmeraldas"
+  },
+  {
+    "id": 6,
+    "region_id": 2,
+    "nombre": "Santa Elena"
+  },
+  {
+    "id": 7,
+    "region_id": 2,
+    "nombre": "Santo Domingo de los Tsáchilas"
+  },
+  {
+    "id": 8,
+    "region_id": 3,
+    "nombre": "Pichincha"
+  },
+  {
+    "id": 9,
+    "region_id": 3,
+    "nombre": "Azuay"
+  },
+  {
+    "id": 10,
+    "region_id": 3,
+    "nombre": "Loja"
+  },
+  {
+    "id": 11,
+    "region_id": 3,
+    "nombre": "Cañar"
+  },
+  {
+    "id": 12,
+    "region_id": 3,
+    "nombre": "Imbabura"
+  },
+  {
+    "id": 13,
+    "region_id": 3,
+    "nombre": "Tungurahua"
+  },
+  {
+    "id": 14,
+    "region_id": 3,
+    "nombre": "Cotopaxi"
+  },
+  {
+    "id": 15,
+    "region_id": 3,
+    "nombre": "Bolívar"
+  },
+  {
+    "id": 16,
+    "region_id": 3,
+    "nombre": "Chimborazo"
+  },
+  {
+    "id": 17,
+    "region_id": 3,
+    "nombre": "Carchi"
+  },
+  {
+    "id": 18,
+    "region_id": 1,
+    "nombre": "Morona Santiago"
+  },
+  {
+    "id": 19,
+    "region_id": 1,
+    "nombre": "Napo"
+  },
+  {
+    "id": 20,
+    "region_id": 1,
+    "nombre": "Orellana"
+  },
+  {
+    "id": 21,
+    "region_id": 1,
+    "nombre": "Pastaza"
+  },
+  {
+    "id": 22,
+    "region_id": 1,
+    "nombre": "Sucumbíos"
+  },
+  {
+    "id": 23,
+    "region_id": 1,
+    "nombre": "Zamora Chinchipe"
+  },
+  {
+    "id": 24,
+    "region_id": 4,
+    "nombre": "Galápagos"
+  }
+]

@@ -4,6 +4,12 @@ from werkzeug.security import generate_password_hash  # Para hashear contraseña
 from app import db  # Instancia de SQLAlchemy para la base de datos
 from datetime import datetime
 
+# Tabla de asociación para favoritos (Usuario <-> Producto)
+favoritos = db.Table('favoritos',
+    db.Column('usuario_id', db.Integer, db.ForeignKey('usuario.id'), primary_key=True),
+    db.Column('producto_id', db.Integer, db.ForeignKey('producto.id'), primary_key=True)
+)
+
 # =========================
 # Modelo de Usuario
 # =========================
@@ -20,6 +26,14 @@ class Usuario(db.Model):
     cedula = db.Column(db.String(20)) # Cédula de identidad del usuario (opcional)
     phone = db.Column(db.String(20), nullable=False) # Número de teléfono del usuario
     password = db.Column(db.String(128), nullable=False) # Contraseña hasheada del usuario
+
+    # Relación de favoritos: productos marcados como favoritos por el usuario
+    favoritos = db.relationship(
+        'Producto',
+        secondary='favoritos',
+        backref=db.backref('usuarios_favoritos', lazy='dynamic'),
+        lazy='dynamic'
+    )
 
     def set_password(self, password):
         """
@@ -64,6 +78,8 @@ class Canton(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     nombre = db.Column(db.String(100), nullable=False)
     provincia_id = db.Column(db.Integer, db.ForeignKey('provincia.id'), nullable=False)
+    lat = db.Column(db.Float, nullable=True)  # Latitud
+    lon = db.Column(db.Float, nullable=True)  # Longitud
 
 # =========================
 # Modelos de Taxonomía de Productos
@@ -101,7 +117,8 @@ class Producto(db.Model):
     vistas = db.Column(db.Integer, default=0)  # Número de vistas del producto
     subcategoria_id = db.Column(db.Integer, db.ForeignKey('subcategoria.id'), nullable=False)  # Relación obligatoria con subcategoría
     usuario = db.relationship('Usuario', backref=db.backref('productos', lazy=True))
-    
+    canton = db.Column(db.String(50), nullable=True)  # Campo para cantón agregado (opcional)
+
 
 # =========================
 # Modelo de Carrito de Compras
@@ -126,15 +143,34 @@ class Orden(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     comprador_id = db.Column(db.Integer, db.ForeignKey('usuario.id'), nullable=False)
     total = db.Column(db.Float, nullable=False)
+    costo_envio = db.Column(db.Float, nullable=True, default=0)  # Nuevo campo para el costo de envío
     creado_en = db.Column(db.DateTime, default=datetime.utcnow)
     estado = db.Column(db.String(20), default='pendiente')
     items = db.relationship('OrdenItem', backref='orden', cascade='all, delete-orphan')
+    viaje = db.relationship('Viaje', backref='orden', uselist=False)
+
+class Viaje(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    orden_id = db.Column(db.Integer, db.ForeignKey('orden.id'), nullable=False, unique=True)
+    transportista_id = db.Column(db.Integer, db.ForeignKey('usuario.id'), nullable=True)
+    estado = db.Column(db.String(20), default='pendiente')  # pendiente, aceptado, en_progreso, entregado
+    fecha_asignacion = db.Column(db.DateTime, nullable=True)
+    fecha_entrega = db.Column(db.DateTime, nullable=True)
+    origen = db.Column(db.String(200), nullable=True)  # Dirección origen (del agricultor)
+    destino = db.Column(db.String(200), nullable=True)  # Dirección destino (del comprador)
+    costo = db.Column(db.Float, nullable=True)
+    notas = db.Column(db.Text, nullable=True)
+    calificacion = db.Column(db.Integer, nullable=True)  # Calificación del transportista (1-5)
+    transportista = db.relationship('Usuario', foreign_keys=[transportista_id])
 
 class OrdenItem(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     orden_id = db.Column(db.Integer, db.ForeignKey('orden.id'), nullable=False)
-    producto_id = db.Column(db.Integer, db.ForeignKey('producto.id'), nullable=False)
+    producto_id = db.Column(db.Integer, db.ForeignKey('producto.id'), nullable=False)  # Mantener obligatorio por compatibilidad SQLite
     cantidad = db.Column(db.Integer, nullable=False)
     precio_unitario = db.Column(db.Float, nullable=False)
+    # Snapshots del producto al momento de la compra
+    producto_nombre = db.Column(db.String(100), nullable=True)
+    producto_unidad = db.Column(db.String(20), nullable=True)
     producto = db.relationship('Producto')
 

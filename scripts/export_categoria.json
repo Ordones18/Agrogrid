@@ -1,0 +1,30 @@
+[
+  {
+    "id": 1,
+    "nombre": "Frutas"
+  },
+  {
+    "id": 2,
+    "nombre": "Hortalizas y Legumbres"
+  },
+  {
+    "id": 3,
+    "nombre": "Tubérculos Andinos"
+  },
+  {
+    "id": 4,
+    "nombre": "Granos y Cereales"
+  },
+  {
+    "id": 5,
+    "nombre": "Oleaginosas"
+  },
+  {
+    "id": 6,
+    "nombre": "Cacao y Café"
+  },
+  {
+    "id": 7,
+    "nombre": "Hierbas Aromáticas"
+  }
+]

@@ -67,11 +67,60 @@
     padding: 2rem 1.5rem;
     margin-bottom: 28px;
 }
-.profile-section h2 {
+.orders-table-wrapper {
+    overflow-x: auto;
+    background: #f5faff;
+    border-radius: 12px;
+    box-shadow: 0 2px 12px rgba(25,118,210,0.06);
+    padding: 1.5rem 1rem;
+    margin-bottom: 1.8rem;
+}
+.orders-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    background: #fff;
+    border-radius: 10px;
+    overflow: hidden;
+    font-size: 1.05rem;
+    box-shadow: 0 1px 8px rgba(25,118,210,0.05);
+}
+.orders-table thead th {
+    background: #e3f2fd;
     color: #1976d2;
-    font-size: 1.3rem;
     font-weight: 700;
-    margin-bottom: 1.2rem;
+    padding: 0.85rem 0.6rem;
+    border-bottom: 2px solid #bbdefb;
+    text-align: center;
+    font-size: 1.08rem;
+}
+.orders-table tbody td {
+    padding: 0.7rem 0.5rem;
+    text-align: center;
+    border-bottom: 1px solid #e0e7ef;
+    color: #333;
+}
+.orders-table tbody tr:nth-child(even) {
+    background: #f0f7fa;
+}
+.orders-table tbody tr:hover {
+    background: #e3f2fd;
+    transition: background 0.18s;
+}
+.btn-aceptar-viaje, .btn-marcar-entregado {
+    background: #1976d2;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 0.4em 1em;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background 0.18s;
+    font-weight: 600;
+    box-shadow: 0 1px 4px rgba(25,118,210,0.07);
+}
+.btn-aceptar-viaje:hover, .btn-marcar-entregado:hover {
+    background: #145ea8;
 }
 .empty-state {
     text-align: center;
@@ -79,6 +128,12 @@
     font-style: italic;
     padding: 1.2rem 0 0.5rem 0;
 }
+.modal-transporte-bg { position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.35); z-index:9999; display:flex; align-items:center; justify-content:center; }
+.modal-transporte { background:#fff; padding:2em; border-radius:8px; min-width:320px; position:relative; box-shadow:0 2px 24px #2224; }
+.modal-close { position:absolute; top:10px; right:15px; font-size:1.5em; cursor:pointer; }
+.estrella { color:#FFD600; transition:color 0.2s; }
+.estrella:hover, .estrella.selected { color:#FFA000; }
+
 @media (max-width: 991px) {
     .metrics-section {
         flex-direction: column;

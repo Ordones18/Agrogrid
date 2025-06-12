@@ -39,23 +39,90 @@
         <div class="metric-card">
           <i class="fas fa-heart metric-icon"></i>
           <h2>Favoritos</h2>
-          <p class="metric-value">{{ favoritos | default(0) }}</p>
+          <p class="metric-value">{{ favoritos_count | default(0) }}</p>
         </div>
       </section>
 
       <section class="profile-section card-style">
         <h2><i class="fas fa-box"></i> Historial de Pedidos</h2>
-        <p class="empty-state">Aún no tienes pedidos registrados.</p>
+        {% if pedidos and pedidos|length > 0 %}
+          <div class="orders-table-wrapper">
+  <table class="orders-table">
+    <thead>
+      <tr>
+        <th>Fecha</th>
+        <th>Productos</th>
+        <th>Costo Envío</th>
+        <th>Total</th>
+        <th>Estado</th>
+
+      </tr>
+    </thead>
+    <tbody>
+      {% for pedido in pedidos %}
+      <tr>
+        <td data-label="Fecha">{{ pedido.fecha.strftime('%d/%m/%Y') }}</td>
+        <td data-label="Productos">
+          <ul style="padding-left:0; margin:0; list-style:none;">
+            {% for item in pedido.productos %}
+              <li>
+                {{ item.nombre }}{% if item.unidad %} ({{ item.unidad }}){% endif %} (x{{ item.cantidad }})
+                {% if item.nombre == 'Producto eliminado' %}<span style="color:#b00; font-size:0.95em;"> (eliminado)</span>{% endif %}
+              </li>
+            {% endfor %}
+          </ul>
+        </td>
+        <td data-label="Costo Envío">
+          {% if pedido.costo_envio is not none %}
+            ${{ '%.2f'|format(pedido.costo_envio) }}
+          {% else %}
+            -
+          {% endif %}
+        </td>
+        <td data-label="Total">${{ '%.2f'|format(pedido.total) }}</td>
+        <td data-label="Estado">{% if pedido.estado == 'pendiente' %}Pendiente{% elif pedido.estado == 'aceptado' %}Aceptado{% elif pedido.estado == 'en_progreso' %}En progreso{% elif pedido.estado == 'entregado' %}Entregado{% else %}{{ pedido.estado }}{% endif %}</td>
+
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+        {% else %}
+          <p class="empty-state">Aún no tienes pedidos registrados.</p>
+        {% endif %}
       </section>
 
       <section class="profile-section card-style">
-        <h2><i class="fas fa-heart"></i> Productos Favoritos</h2>
-        <p class="empty-state">No has guardado ningún producto como favorito.</p>
-      </section>
+  <h2><i class="fas fa-heart"></i> Productos Favoritos</h2>
+  {% if favoritos and favoritos|length > 0 %}
+    <div class="favoritos-profile-grid">
+      {% for producto in favoritos %}
+        <div class="favorito-profile-card">
+          <img src="{{ url_for('static', filename='uploads/' + producto.imagen_url) if producto.imagen_url else url_for('static', filename='images/placeholder_product.png') }}" alt="{{ producto.nombre }}" class="product-image">
+          <div class="product-info">
+            <h3>{{ producto.nombre }}</h3>
+            <p class="product-meta"><strong>Tipo:</strong> {{ producto.tipo }}</p>
+            <p class="product-meta"><strong>Precio:</strong> ${{ '%.2f'|format(producto.precio or 0) }} / {{ producto.unidad or '' }}</p>
+          </div>
+          <div class="product-actions-centered">
+            <form class="form-quitar-favorito" data-producto-id="{{ producto.id }}" action="{{ url_for('quitar_favorito', producto_id=producto.id) }}" method="POST">
+  <button type="submit" class="btn btn-danger"><i class="fas fa-heart-broken icono-quitar-favorito-verde"></i> Quitar</button>
+</form>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <p class="empty-state">No has guardado ningún producto como favorito.</p>
+  {% endif %}
+</section>
     </div>
 
     {% include 'partials/footer.html' %}
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
 <!-- Script principal de la app: gestiona menú y lógica de navegación. -->
+
+<script src="{{ url_for('static', filename='js/perfil_comprador.js') }}"></script>
+
 </body>
 </html>

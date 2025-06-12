@@ -46,7 +46,11 @@
       </div>
       <div class="cart-summary">
         <div class="cart-total">
-          <h3>Total: <span class="cart-total-amount">${{ '%.2f'|format(total) }}</span></h3>
+          <h3>Total productos: <span class="cart-total-amount">${{ '%.2f'|format(total) }}</span></h3>
+          {% if costo_envio and costo_envio > 0 %}
+            <h4>Costo de envío: <span class="cart-total-amount">${{ '%.2f'|format(costo_envio) }}</span></h4>
+            <h3>Total final: <span class="cart-total-amount">${{ '%.2f'|format(total_final) }}</span></h3>
+          {% endif %}
         </div>
       </div>
       <div class="card checkout-card shadow-lg p-4">

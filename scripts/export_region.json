@@ -1,0 +1,18 @@
+[
+  {
+    "nombre": "Amazonía",
+    "id": 1
+  },
+  {
+    "nombre": "Costa",
+    "id": 2
+  },
+  {
+    "nombre": "Sierra",
+    "id": 3
+  },
+  {
+    "nombre": "Región Insular",
+    "id": 4
+  }
+]

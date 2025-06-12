@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <title>Mi Carrito</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='css/checkout.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/carrito_custom.css') }}">
 </head>
 <body class="checkout-page">
 {% if user %}
@@ -29,63 +30,83 @@
     {% endwith %}
 
     {% if items and items|length > 0 %}
-    <form method="POST" action="{{ url_for('actualizar_carrito') }}">
-      <div class="table-responsive">
-        <table class="table table-cart">
-          <thead>
-            <tr>
-              <th>Producto</th>
-              <th>Descripción</th>
-              <th>Precio</th>
-              <th>Cantidad</th>
-              <th>Subtotal</th>
-              <th>Acciones</th>
-            </tr>
-          </thead>
-          <tbody>
-            {% for item in items %}
-            <tr>
-              <td>
-                <strong>{{ item.producto.nombre }}</strong><br>
-                <span class="text-muted">{{ item.producto.tipo }} | {{ item.producto.provincia }}</span>
-              </td>
-              <td>
-                {{ item.producto.descripcion }}
-              </td>
-              <td>${{ '%.2f'|format(item.producto.precio or 0) }} / {{ item.producto.unidad or '' }}</td>
-              <td>
-                <input type="number" min="1" name="cantidad_{{ item.id }}" value="{{ item.cantidad }}" class="input-cantidad">
-              </td>
-              <td>${{ '%.2f'|format(item.cantidad * (item.producto.precio or 0)) }}</td>
-              <td>
-                </form>
-<form method="POST" action="{{ url_for('eliminar_del_carrito', detalle_id=item.id) }}" style="display:inline;">
-  <button type="submit" class="btn btn-danger btn-sm" title="Eliminar">
-    <i class="fas fa-trash"></i>
-  </button>
-</form> <!-- este formulario de eliminar va después de cada producto -->
-              </td>
-            </tr>
-            {% endfor %}
-          </tbody>
-        </table>
-      </div>
-      <div class="cart-summary" style="display:flex; flex-direction:column; align-items:center; width:100%;">
-        <div class="cart-total mb-2">
-          <h3>Total: <span class="cart-total-amount">${{ '%.2f'|format(total) }}</span></h3>
-        </div>
-        <div class="finalizar-compra-form" style="width:100%; max-width:320px; display:flex; flex-direction:column; gap:14px; align-items:stretch;">
-          <button type="submit" class="btn btn-primary btn-lg shadow-sm">Actualizar Carrito</button>
-          <a href="{{ url_for('confirmar_compra') }}" class="btn btn-success btn-lg shadow-sm">Finalizar Compra</a>
-        </div>
-      </div>
+    <form method="POST" action="{{ url_for('actualizar_carrito') }}" id="carritoForm">
+      <ul class="carrito-lista-productos">
+        {% for item in items %}
+        <li class="carrito-lista-item">
+          <div class="carrito-lista-info-principal">
+            <div class="carrito-lista-nombre-row">
+              <i class="fas fa-leaf"></i>
+              <span class="carrito-lista-nombre">{{ item.producto.nombre }}</span>
+            </div>
+            <div class="carrito-lista-tipo-prov">
+              {{ item.producto.tipo }} |
+              <span class="carrito-lista-provincia">{{ item.producto.provincia }}</span>
+              {% if item.producto.canton %}
+                <span class="carrito-lista-canton">/ {{ item.producto.canton }}</span>
+              {% endif %}
+            </div>
+            <div class="carrito-lista-descripcion">{{ item.producto.descripcion }}</div>
+          </div>
+          <div class="carrito-lista-info-secundaria">
+            <div class="carrito-lista-precio">${{ '%.2f'|format(item.producto.precio or 0) }} <span class="carrito-lista-unidad">/ {{ item.producto.unidad or '' }}</span></div>
+            <div class="carrito-lista-cantidad">Cantidad: <input type="number" min="1" name="cantidad_{{ item.id }}" value="{{ item.cantidad }}" class="form-control input-cantidad"></div>
+            <div class="carrito-lista-subtotal">Subtotal: ${{ '%.2f'|format(item.cantidad * (item.producto.precio or 0)) }}</div>
+            <button type="submit" name="eliminar_{{ item.id }}" class="btn btn-danger btn-sm ms-2" title="Eliminar"><i class="fas fa-trash"></i></button>
+          </div>
+        </li>
+        {% endfor %}
+      </ul>
     </form>
+    <!-- Bloques de cálculo de transporte por cantón de origen -->
+    <div id="bloquesTransporte" class="mt-4">
+      {% set provincias_origen = items|groupby('producto.provincia') %}
+      {% for provincia, productos in provincias_origen %}
+      <div class="bloque-transporte-canton">
+        <div class="bloque-transporte-titulo">
+          <i class="fas fa-map-marker-alt"></i> Envío desde <span class="bloque-transporte-provincia">{{ provincia }}</span>
+        </div>
+        <form class="formTransporte" data-canton="{{ productos[0].producto.canton if productos[0].producto.canton else provincia }}">
+          <div class="form-group form-provincia-origen">
+            <label class="form-label-strong">Cantón origen</label>
+            <input type="text" value="{{ productos[0].producto.canton if productos[0].producto.canton else provincia }}" readonly class="input-canton-origen">
+          </div>
+          <div class="form-group form-region-destino">
+            <label class="form-label-strong">Región destino</label>
+            <select class="regionSelect" required></select>
+          </div>
+          <div class="form-group form-provincia-destino">
+            <label class="form-label-strong">Provincia destino</label>
+            <select class="provinciaSelect" required></select>
+          </div>
+          <div class="form-group form-canton-destino">
+            <label class="form-label-strong">Cantón destino</label>
+            <select class="cantonSelect" required></select>
+          </div>
+          <button type="submit" class="btn btn-outline-success btn-calcular-transporte">Calcular</button>
+        </form>
+        <div class="resultadoTransporte"></div>
+      </div>
+      {% endfor %}
+    </div>
+    <!-- Acciones finales al pie del carrito -->
+
+    <!-- Acciones finales al pie del carrito -->
+    <div class="carrito-total-acciones-final">
+      <div class="carrito-total-final">
+        Total: ${{ '%.2f'|format(total) }}
+      </div>
+      <button type="submit" form="carritoForm" class="btn btn-success btn-actualizar-carrito">Actualizar carrito</button>
+      <a href="{{ url_for('confirmar_compra') }}" class="btn btn-primary btn-finalizar-compra">Finalizar compra</a>
+    </div>
+    <!-- Fin acciones finales -->
     {% else %}
-      <div class="empty-state">
+      <div class="empty-state text-center my-5">
         <a href="{{ url_for('productos') }}" class="btn btn-primary"><i class="fas fa-arrow-left"></i> Volver a productos</a>
       </div>
     {% endif %}
   </div>
 </div>
 {% include 'partials/footer.html' %}
+    <script src="{{ url_for('static', filename='js/transporte_modal.js') }}"></script>
 </body>

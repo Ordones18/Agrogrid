@@ -105,34 +105,45 @@
                         <div class="product-card">
                             <img src="{{ url_for('static', filename='uploads/' + producto.imagen_url) if producto.imagen_url else url_for('static', filename='images/placeholder_product.png') }}" alt="{{ producto.nombre }}" class="product-image">
                             <div class="product-info">
-                                <h3>{{ producto.nombre }}</h3>
+                                <h3>
+    {{ producto.nombre }}
+    {% if user.is_authenticated and user.user_type == 'comprador' %}
+        <button type="button" class="btn-favorito" data-producto-id="{{ producto.id }}" aria-label="Agregar a favoritos">
+    {% if producto.id in favoritos_ids %}
+        <i class="fas fa-heart favorito-activo icono-favorito-grande"></i>
+    {% else %}
+        <i class="far fa-heart icono-favorito-grande"></i>
+    {% endif %}
+</button>
+    {% endif %}
+</h3>
                                 <p class="product-meta"><strong>Tipo:</strong> {{ producto.tipo }}</p>
                                 <p class="product-meta"><strong>Región:</strong> {{ producto.region }}</p>
-                                <p class="product-meta"><strong>Provincia:</strong> {{ producto.provincia }}</p>
+                                <p class="product-meta"><strong>Origen:</strong> {{ producto.provincia }}{% if producto.canton %} ({{ producto.canton }}){% endif %}</p>
                                 <p class="product-meta"><strong>Precio:</strong> ${{ '%.2f'|format(producto.precio or 0) }} / {{ producto.unidad or '' }}</p>
                                 <p class="product-meta"><strong>Disponible:</strong> {{ producto.cantidad or 0 }} {{ producto.unidad or '' }}</p>
                             </div>
                             <div class="product-actions-centered">
                                 {% if user.is_authenticated and user.user_type == 'comprador' %}
-                                <form method="POST" action="{{ url_for('agregar_al_carrito', producto_id=producto.id) }}">
-                                    <input type="hidden" name="cantidad" value="1">
-                                    <button type="submit" class="btn btn-agregar-carrito"><i class="fas fa-cart-plus"></i> Agregar al carrito</button>
-                                </form>
-                                <form>
-                                    <button type="button" class="btn btn-quick-view-light"
-                                        data-producto-id="{{ producto.id }}"
-                                        data-nombre="{{ producto.nombre }}"
-                                        data-imagen="{{ url_for('static', filename='uploads/' + producto.imagen_url) if producto.imagen_url else url_for('static', filename='images/placeholder_product.png') }}"
-                                        data-tipo="{{ producto.tipo }}"
-                                        data-region="{{ producto.region }}"
-                                        data-provincia="{{ producto.provincia }}"
-                                        data-precio="{{ producto.precio }}"
-                                        data-cantidad="{{ producto.cantidad }}"
-                                        data-descripcion="{{ producto.descripcion|e }}"
-                                    >
-                                        <i class="fas fa-eye"></i> Vista rápida
-                                    </button>
-                                </form>
+    <form method="POST" action="{{ url_for('agregar_al_carrito', producto_id=producto.id) }}">
+        <input type="hidden" name="cantidad" value="1">
+        <button type="submit" class="btn btn-agregar-carrito"><i class="fas fa-cart-plus"></i> Agregar al carrito</button>
+    </form>
+    <form>
+        <button type="button" class="btn btn-quick-view-light"
+            data-producto-id="{{ producto.id }}"
+            data-nombre="{{ producto.nombre }}"
+            data-imagen="{{ url_for('static', filename='uploads/' + producto.imagen_url) if producto.imagen_url else url_for('static', filename='images/placeholder_product.png') }}"
+            data-tipo="{{ producto.tipo }}"
+            data-region="{{ producto.region }}"
+            data-provincia="{{ producto.provincia }}{% if producto.canton %} : {{ producto.canton }}{% endif %}"
+            data-precio="{{ producto.precio }}"
+            data-cantidad="{{ producto.cantidad }}"
+            data-descripcion="{{ producto.descripcion|e }}"
+        >
+            <i class="fas fa-eye"></i> Vista rápida
+        </button>
+    </form>
                                 {% elif not user.is_authenticated %}
                                 <button href="{{ url_for('login') }}" type="submit" class="btn btn-agregar-carrito"><i class="fas fa-cart-plus"></i> Inicia sesión para comprar</button>
                                 {% endif %}
@@ -152,6 +163,7 @@
     {% include 'partials/footer.html' %}
     {% if user.is_authenticated and user.user_type == 'comprador' %}
     <script src="{{ url_for('static', filename='js/fix_cart_button_footer.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/favoritos.js') }}"></script>
 {% endif %}
 </body>
 <!-- Modal de Vista Rápida -->

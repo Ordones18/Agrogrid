@@ -15,7 +15,8 @@ Cuando un agricultor consulta el detalle de sus ventas, el backend:
 3. Usa Pandas para agrupar las ventas por semana, mes y año, generando los datos que alimentan las gráficas del dashboard.
 
 **Fragmento de código real:**
-```python
+```
+python
 import numpy as np
 import pandas as pd
 
@@ -43,3 +44,158 @@ pip install numpy pandas
 ```
 
 **Nota:** Ambas librerías son dependencias necesarias para el correcto funcionamiento del análisis de ventas en Agrogrid.
+
+# Agrogrid
+
+Agrogrid es una plataforma web para la gestión y optimización de la cadena de suministro agrícola, conectando agricultores, compradores y transportistas, y facilitando la administración de productos, órdenes y rutas de transporte entre cantones.
+
+## Estructura del Proyecto
+
+```
+Agrogrid/
+├── app/
+│   ├── __init__.py
+│   ├── analytics_historial.py
+│   ├── analytics.py
+│   ├── controllers.py
+│   ├── grafo_transporte.py
+│   ├── models.py
+│   ├── routes.py
+│   ├── taxonomia.py
+│   ├── ubicacion.py
+│   ├── utils.py
+│   ├── static/
+│   │   ├── css/
+│   │   ├── images/
+│   │   ├── js/
+│   │   └── uploads/
+│   └── templates/
+│       ├── about.html
+│       ├── ...
+│       ├── agricultor/
+│       ├── comprador/
+│       ├── email/
+│       ├── partials/
+│       └── transportista/
+├── config.py
+├── crear_tablas_sqlalchemy.py
+├── grafo_cantonal_geodesico.json
+├── grafo_cantonal_vecinos.json
+├── poblar_coordenadas_cantones.py
+├── poblar_grafo_ors.py
+├── poblar_grafo_vecinos.py
+├── run.py
+├── testingdb.py
+├── ver_bd_estructura.py
+├── ver_cantones_latlon.py
+├── geojson/
+│   └── cantons.geojson
+├── instance/
+│   └── agrogrid.db
+├── migrations/
+│   ├── alembic.ini
+│   ├── env.py
+│   ├── README
+│   ├── script.py.mako
+│   ├── versions/
+│   │   └── *.py
+├── scripts/
+│   ├── eliminar_viajes_por_definir.py
+│   └── poblar_viajes.py
+└── README.md
+```
+
+## Descripción de Carpetas y Archivos Principales
+
+- **app/**: Lógica principal de la aplicación, modelos, controladores, rutas, utilidades y recursos estáticos/plantillas.
+  - **static/**: Archivos estáticos (CSS, JS, imágenes, uploads de usuarios).
+  - **templates/**: Plantillas HTML para la interfaz web.
+- **config.py**: Configuración general de la aplicación.
+- **geojson/**: Archivos geográficos para visualización y análisis espacial.
+- **instance/**: Base de datos local (no versionar en producción).
+- **migrations/**: Migraciones de base de datos gestionadas con Alembic.
+- **scripts/**: Scripts para poblar datos y tareas administrativas.
+- **grafo_cantonal_*.json**: Datos de grafos geográficos para rutas y análisis de transporte.
+- **run.py**: Punto de entrada principal de la aplicación.
+- **README.md**: Documentación del proyecto.
+
+## Dependencias principales
+- Python 3.x
+- Flask
+- SQLAlchemy
+- Alembic
+- Numpy
+- Pandas
+
+
+# =============================
+# INSTRUCCIONES DE INSTALACIÓN Y USO DE DATOS ESTRUCTURALES
+# =============================
+
+## Instalación y carga de datos estructurales
+
+1. **Clona el repositorio y entra al directorio:**
+   ```bash
+   git clone <url-del-repo>
+   cd Agrogrid
+   ```
+
+2. **Crea y activa un entorno virtual (opcional pero recomendado):**
+   ```bash
+   python -m venv .venv
+   .venv\Scripts\activate  # En Windows
+   source .venv/bin/activate  # En Linux/Mac
+   ```
+
+3. **Instala las dependencias:**
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+4. **Crea la estructura de la base de datos:**
+   Ejecuta las migraciones para crear todas las tablas necesarias:
+   ```bash
+   flask db upgrade
+   ```
+   O si tienes un script para crear tablas:
+   ```bash
+   python crear_tablas_sqlalchemy.py
+   ```
+
+5. **Carga los datos estructurales (ubicaciones y taxonomía):**
+   Si ya tienes los archivos JSON exportados (`export_region.json`, `export_provincia.json`, `export_canton.json`, `export_categoria.json`, `export_subcategoria.json`), ejecuta:
+   ```bash
+   python scripts/importar_tablas_json.py
+   ```
+   Esto poblará las tablas:
+   - Region
+   - Provincia
+   - Canton
+   - Categoria
+   - Subcategoria
+
+   Si necesitas generar estos archivos desde una base de datos existente, ejecuta:
+   ```bash
+   python scripts/exportar_tablas_json.py
+   ```
+
+6. **Tablas adicionales:**
+   Las tablas de usuarios, productos, carritos, órdenes, viajes y favoritos se crearán vacías. Estas se llenarán a medida que los usuarios interactúen con la aplicación.
+
+   - Usuario
+   - Producto
+   - Carrito
+   - DetalleCarrito
+   - Orden
+   - OrdenItem
+   - Viaje
+   - favoritos
+
+   Si necesitas poblar datos de ejemplo para pruebas, puedes crear scripts adicionales o poblar manualmente desde la app.
+
+7. **Ejecuta la aplicación:**
+   ```bash
+   python run.py
+   ```
+
+---

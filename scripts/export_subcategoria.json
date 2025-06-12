@@ -1,0 +1,716 @@
+[
+  {
+    "parent_id": null,
+    "id": 1,
+    "nombre": "Frutas Tropicales",
+    "categoria_id": 1
+  },
+  {
+    "parent_id": null,
+    "id": 2,
+    "nombre": "Frutas Andinas",
+    "categoria_id": 1
+  },
+  {
+    "parent_id": null,
+    "id": 3,
+    "nombre": "Cítricos",
+    "categoria_id": 1
+  },
+  {
+    "parent_id": null,
+    "id": 4,
+    "nombre": "Hortalizas de Hoja",
+    "categoria_id": 2
+  },
+  {
+    "parent_id": null,
+    "id": 5,
+    "nombre": "Hortalizas de Fruto",
+    "categoria_id": 2
+  },
+  {
+    "parent_id": null,
+    "id": 6,
+    "nombre": "Hortalizas de Raíz",
+    "categoria_id": 2
+  },
+  {
+    "parent_id": null,
+    "id": 7,
+    "nombre": "Legumbres",
+    "categoria_id": 2
+  },
+  {
+    "parent_id": null,
+    "id": 8,
+    "nombre": "Tubérculos Andinos",
+    "categoria_id": 3
+  },
+  {
+    "parent_id": null,
+    "id": 9,
+    "nombre": "Granos y Cereales",
+    "categoria_id": 4
+  },
+  {
+    "parent_id": null,
+    "id": 10,
+    "nombre": "Oleaginosas",
+    "categoria_id": 5
+  },
+  {
+    "parent_id": null,
+    "id": 11,
+    "nombre": "Cacao y Café",
+    "categoria_id": 6
+  },
+  {
+    "parent_id": null,
+    "id": 12,
+    "nombre": "Hierbas Aromáticas",
+    "categoria_id": 7
+  },
+  {
+    "parent_id": 1,
+    "id": 13,
+    "nombre": "Banano",
+    "categoria_id": 1
+  },
+  {
+    "parent_id": 1,
+    "id": 14,
+    "nombre": "Plátano",
+    "categoria_id": 1
+  },
+  {
+    "parent_id": 1,
+    "id": 15,
+    "nombre": "Mango",
+    "categoria_id": 1
+  },
+  {
+    "parent_id": 1,
+    "id": 16,
+    "nombre": "Piña",
+    "categoria_id": 1
+  },
+  {
+    "parent_id": 1,
+    "id": 17,
+    "nombre": "Papaya",
+    "categoria_id": 1
+  },
+  {
+    "parent_id": 1,
+    "id": 18,
+    "nombre": "Maracuyá",
+    "categoria_id": 1
+  },
+  {
+    "parent_id": 1,
+    "id": 19,
+    "nombre": "Sandía",
+    "categoria_id": 1
+  },
+  {
+    "parent_id": 1,
+    "id": 20,
+    "nombre": "Melón",
+    "categoria_id": 1
+  },
+  {
+    "parent_id": 1,
+    "id": 21,
+    "nombre": "Aguacate",
+    "categoria_id": 1
+  },
+  {
+    "parent_id": 1,
+    "id": 22,
+    "nombre": "Guayusa",
+    "categoria_id": 1
+  },
+  {
+    "parent_id": 1,
+    "id": 23,
+    "nombre": "Guayaba",
+    "categoria_id": 1
+  },
+  {
+    "parent_id": 2,
+    "id": 24,
+    "nombre": "Babaco",
+    "categoria_id": 1
+  },
+  {
+    "parent_id": 2,
+    "id": 25,
+    "nombre": "Tomate de árbol",
+    "categoria_id": 1
+  },
+  {
+    "parent_id": 2,
+    "id": 26,
+    "nombre": "Granadilla",
+    "categoria_id": 1
+  },
+  {
+    "parent_id": 2,
+    "id": 27,
+    "nombre": "Taxo",
+    "categoria_id": 1
+  },
+  {
+    "parent_id": 2,
+    "id": 28,
+    "nombre": "Mora",
+    "categoria_id": 1
+  },
+  {
+    "parent_id": 2,
+    "id": 29,
+    "nombre": "Frambuesa",
+    "categoria_id": 1
+  },
+  {
+    "parent_id": 2,
+    "id": 30,
+    "nombre": "Capulí",
+    "categoria_id": 1
+  },
+  {
+    "parent_id": 2,
+    "id": 31,
+    "nombre": "Níspero",
+    "categoria_id": 1
+  },
+  {
+    "parent_id": 2,
+    "id": 32,
+    "nombre": "Chirimoya",
+    "categoria_id": 1
+  },
+  {
+    "parent_id": 3,
+    "id": 33,
+    "nombre": "Naranja",
+    "categoria_id": 1
+  },
+  {
+    "parent_id": 3,
+    "id": 34,
+    "nombre": "Mandarina",
+    "categoria_id": 1
+  },
+  {
+    "parent_id": 3,
+    "id": 35,
+    "nombre": "Limón",
+    "categoria_id": 1
+  },
+  {
+    "parent_id": 4,
+    "id": 36,
+    "nombre": "Lechuga",
+    "categoria_id": 2
+  },
+  {
+    "parent_id": 4,
+    "id": 37,
+    "nombre": "Espinaca",
+    "categoria_id": 2
+  },
+  {
+    "parent_id": 4,
+    "id": 38,
+    "nombre": "Col",
+    "categoria_id": 2
+  },
+  {
+    "parent_id": 4,
+    "id": 39,
+    "nombre": "Repollo",
+    "categoria_id": 2
+  },
+  {
+    "parent_id": 4,
+    "id": 40,
+    "nombre": "Brócoli",
+    "categoria_id": 2
+  },
+  {
+    "parent_id": 4,
+    "id": 41,
+    "nombre": "Coliflor",
+    "categoria_id": 2
+  },
+  {
+    "parent_id": 5,
+    "id": 42,
+    "nombre": "Tomate",
+    "categoria_id": 2
+  },
+  {
+    "parent_id": 5,
+    "id": 43,
+    "nombre": "Pepino",
+    "categoria_id": 2
+  },
+  {
+    "parent_id": 5,
+    "id": 44,
+    "nombre": "Pimiento",
+    "categoria_id": 2
+  },
+  {
+    "parent_id": 5,
+    "id": 45,
+    "nombre": "Zucchini",
+    "categoria_id": 2
+  },
+  {
+    "parent_id": 6,
+    "id": 46,
+    "nombre": "Zanahoria",
+    "categoria_id": 2
+  },
+  {
+    "parent_id": 6,
+    "id": 47,
+    "nombre": "Remolacha",
+    "categoria_id": 2
+  },
+  {
+    "parent_id": 6,
+    "id": 48,
+    "nombre": "Rábano",
+    "categoria_id": 2
+  },
+  {
+    "parent_id": 6,
+    "id": 49,
+    "nombre": "Cebolla",
+    "categoria_id": 2
+  },
+  {
+    "parent_id": 6,
+    "id": 50,
+    "nombre": "Ajo",
+    "categoria_id": 2
+  },
+  {
+    "parent_id": 7,
+    "id": 51,
+    "nombre": "Haba",
+    "categoria_id": 2
+  },
+  {
+    "parent_id": 7,
+    "id": 52,
+    "nombre": "Arveja",
+    "categoria_id": 2
+  },
+  {
+    "parent_id": 7,
+    "id": 53,
+    "nombre": "Fréjol",
+    "categoria_id": 2
+  },
+  {
+    "parent_id": 7,
+    "id": 54,
+    "nombre": "Chocho",
+    "categoria_id": 2
+  },
+  {
+    "parent_id": 8,
+    "id": 55,
+    "nombre": "Papa",
+    "categoria_id": 3
+  },
+  {
+    "parent_id": 8,
+    "id": 56,
+    "nombre": "Yuca",
+    "categoria_id": 3
+  },
+  {
+    "parent_id": 8,
+    "id": 57,
+    "nombre": "Camote",
+    "categoria_id": 3
+  },
+  {
+    "parent_id": 8,
+    "id": 58,
+    "nombre": "Oca",
+    "categoria_id": 3
+  },
+  {
+    "parent_id": 8,
+    "id": 59,
+    "nombre": "Melloco",
+    "categoria_id": 3
+  },
+  {
+    "parent_id": 8,
+    "id": 60,
+    "nombre": "Mashua",
+    "categoria_id": 3
+  },
+  {
+    "parent_id": 9,
+    "id": 61,
+    "nombre": "Maíz",
+    "categoria_id": 4
+  },
+  {
+    "parent_id": 9,
+    "id": 62,
+    "nombre": "Arroz",
+    "categoria_id": 4
+  },
+  {
+    "parent_id": 9,
+    "id": 63,
+    "nombre": "Quinua",
+    "categoria_id": 4
+  },
+  {
+    "parent_id": 9,
+    "id": 64,
+    "nombre": "Amaranto",
+    "categoria_id": 4
+  },
+  {
+    "parent_id": 9,
+    "id": 65,
+    "nombre": "Sorgo",
+    "categoria_id": 4
+  },
+  {
+    "parent_id": 10,
+    "id": 66,
+    "nombre": "Soya",
+    "categoria_id": 5
+  },
+  {
+    "parent_id": 10,
+    "id": 67,
+    "nombre": "Maní",
+    "categoria_id": 5
+  },
+  {
+    "parent_id": 10,
+    "id": 68,
+    "nombre": "Girasol",
+    "categoria_id": 5
+  },
+  {
+    "parent_id": 10,
+    "id": 69,
+    "nombre": "Ajonjolí",
+    "categoria_id": 5
+  },
+  {
+    "parent_id": 11,
+    "id": 70,
+    "nombre": "Cacao nacional",
+    "categoria_id": 6
+  },
+  {
+    "parent_id": 11,
+    "id": 71,
+    "nombre": "Cacao CCN51",
+    "categoria_id": 6
+  },
+  {
+    "parent_id": 11,
+    "id": 72,
+    "nombre": "Café arábigo",
+    "categoria_id": 6
+  },
+  {
+    "parent_id": 11,
+    "id": 73,
+    "nombre": "Café robusta",
+    "categoria_id": 6
+  },
+  {
+    "parent_id": 12,
+    "id": 74,
+    "nombre": "Cilantro",
+    "categoria_id": 7
+  },
+  {
+    "parent_id": 12,
+    "id": 75,
+    "nombre": "Perejil",
+    "categoria_id": 7
+  },
+  {
+    "parent_id": 12,
+    "id": 76,
+    "nombre": "Hierba buena",
+    "categoria_id": 7
+  },
+  {
+    "parent_id": 12,
+    "id": 77,
+    "nombre": "Albahaca",
+    "categoria_id": 7
+  },
+  {
+    "parent_id": 12,
+    "id": 78,
+    "nombre": "Orégano",
+    "categoria_id": 7
+  },
+  {
+    "parent_id": 12,
+    "id": 79,
+    "nombre": "Romero",
+    "categoria_id": 7
+  },
+  {
+    "parent_id": 17,
+    "id": 80,
+    "nombre": "Lomo de res",
+    "categoria_id": 5
+  },
+  {
+    "parent_id": 17,
+    "id": 81,
+    "nombre": "Costilla de res",
+    "categoria_id": 5
+  },
+  {
+    "parent_id": 18,
+    "id": 82,
+    "nombre": "Pechuga de pollo",
+    "categoria_id": 5
+  },
+  {
+    "parent_id": 18,
+    "id": 83,
+    "nombre": "Muslo de pollo",
+    "categoria_id": 5
+  },
+  {
+    "parent_id": 19,
+    "id": 84,
+    "nombre": "Chuleta de cerdo",
+    "categoria_id": 5
+  },
+  {
+    "parent_id": 19,
+    "id": 85,
+    "nombre": "Tocino",
+    "categoria_id": 5
+  },
+  {
+    "parent_id": 20,
+    "id": 86,
+    "nombre": "Pechuga de pavo",
+    "categoria_id": 5
+  },
+  {
+    "parent_id": 20,
+    "id": 87,
+    "nombre": "Pierna de pavo",
+    "categoria_id": 5
+  },
+  {
+    "parent_id": 21,
+    "id": 88,
+    "nombre": "Tilapia",
+    "categoria_id": 6
+  },
+  {
+    "parent_id": 21,
+    "id": 89,
+    "nombre": "Corvina",
+    "categoria_id": 6
+  },
+  {
+    "parent_id": 22,
+    "id": 90,
+    "nombre": "Camarón",
+    "categoria_id": 6
+  },
+  {
+    "parent_id": 22,
+    "id": 91,
+    "nombre": "Calamar",
+    "categoria_id": 6
+  },
+  {
+    "parent_id": 23,
+    "id": 92,
+    "nombre": "Langosta",
+    "categoria_id": 6
+  },
+  {
+    "parent_id": 23,
+    "id": 93,
+    "nombre": "Cangrejo",
+    "categoria_id": 6
+  },
+  {
+    "parent_id": 24,
+    "id": 94,
+    "nombre": "Cilantro",
+    "categoria_id": 7
+  },
+  {
+    "parent_id": 24,
+    "id": 95,
+    "nombre": "Perejil",
+    "categoria_id": 7
+  },
+  {
+    "parent_id": 25,
+    "id": 96,
+    "nombre": "Pimienta",
+    "categoria_id": 7
+  },
+  {
+    "parent_id": 25,
+    "id": 97,
+    "nombre": "Comino",
+    "categoria_id": 7
+  },
+  {
+    "parent_id": 26,
+    "id": 98,
+    "nombre": "Mostaza",
+    "categoria_id": 7
+  },
+  {
+    "parent_id": 26,
+    "id": 99,
+    "nombre": "Mayonesa",
+    "categoria_id": 7
+  },
+  {
+    "parent_id": 27,
+    "id": 100,
+    "nombre": "Jugo de Naranja",
+    "categoria_id": 8
+  },
+  {
+    "parent_id": 27,
+    "id": 101,
+    "nombre": "Jugo de Mango",
+    "categoria_id": 8
+  },
+  {
+    "parent_id": 28,
+    "id": 102,
+    "nombre": "Horchata",
+    "categoria_id": 8
+  },
+  {
+    "parent_id": 28,
+    "id": 103,
+    "nombre": "Colada Morada",
+    "categoria_id": 8
+  },
+  {
+    "parent_id": 29,
+    "id": 104,
+    "nombre": "Manzanilla",
+    "categoria_id": 8
+  },
+  {
+    "parent_id": 29,
+    "id": 105,
+    "nombre": "Hierba Luisa",
+    "categoria_id": 8
+  },
+  {
+    "parent_id": 30,
+    "id": 106,
+    "nombre": "Atún enlatado",
+    "categoria_id": 9
+  },
+  {
+    "parent_id": 30,
+    "id": 107,
+    "nombre": "Maíz enlatado",
+    "categoria_id": 9
+  },
+  {
+    "parent_id": 31,
+    "id": 108,
+    "nombre": "Chocolate",
+    "categoria_id": 9
+  },
+  {
+    "parent_id": 31,
+    "id": 109,
+    "nombre": "Caramelos",
+    "categoria_id": 9
+  },
+  {
+    "parent_id": 32,
+    "id": 110,
+    "nombre": "Papas fritas",
+    "categoria_id": 9
+  },
+  {
+    "parent_id": 32,
+    "id": 111,
+    "nombre": "Chifles",
+    "categoria_id": 9
+  },
+  {
+    "parent_id": 13,
+    "id": 112,
+    "nombre": "Queso Fresco",
+    "categoria_id": 4
+  },
+  {
+    "parent_id": 13,
+    "id": 113,
+    "nombre": "Queso Maduro",
+    "categoria_id": 4
+  },
+  {
+    "parent_id": 14,
+    "id": 114,
+    "nombre": "Yogur Natural",
+    "categoria_id": 4
+  },
+  {
+    "parent_id": 14,
+    "id": 115,
+    "nombre": "Yogur de Frutas",
+    "categoria_id": 4
+  },
+  {
+    "parent_id": 15,
+    "id": 116,
+    "nombre": "Leche Entera",
+    "categoria_id": 4
+  },
+  {
+    "parent_id": 15,
+    "id": 117,
+    "nombre": "Leche Descremada",
+    "categoria_id": 4
+  },
+  {
+    "parent_id": 16,
+    "id": 118,
+    "nombre": "Mantequilla",
+    "categoria_id": 4
+  },
+  {
+    "parent_id": 16,
+    "id": 119,
+    "nombre": "Crema",
+    "categoria_id": 4
+  }
+]

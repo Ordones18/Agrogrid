@@ -1,0 +1,10 @@
+Flask
+Flask-SQLAlchemy
+Flask-Migrate
+alembic
+pandas
+numpy
+Flask-Login
+Flask-Mail
+networkx
+Werkzeug

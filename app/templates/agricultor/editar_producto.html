@@ -8,6 +8,7 @@
 {% extends 'partials/header_perfiles.html' %}
 {% block content %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/editar_producto.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/ubicacion_selector_simple.css') }}">
 <div class="agricultor-dashboard container">
   <header class="dashboard-header">
     <h1>Editar Producto</h1>
@@ -19,36 +20,124 @@
       <form method="POST" enctype="multipart/form-data" class="product-form">
         <div class="form-row">
           <div class="form-group">
-            <label for="region">Región</label>
-            <select id="region" name="region" required>
-              <option value="" disabled>Seleccione región...</option>
-              <option value="Costa" {{ 'selected' if producto.region == 'Costa' else '' }}>Costa</option>
-              <option value="Sierra" {{ 'selected' if producto.region == 'Sierra' else '' }}>Sierra</option>
-              <option value="Amazonía" {{ 'selected' if producto.region == 'Amazonía' else '' }}>Amazonía</option>
-              <option value="Galápagos" {{ 'selected' if producto.region == 'Galápagos' else '' }}>Galápagos</option>
+            <label for="regionSelector">Región</label>
+            <select id="regionSelector" name="regionSelector" required>
+              <option value="" disabled selected>Seleccione región...</option>
             </select>
           </div>
           <div class="form-group">
-            <label for="provincia">Provincia</label>
-            <input type="text" id="provincia" name="provincia" value="{{ producto.provincia }}" required>
-          </div>
-          <div class="form-group">
-            <label for="productType">Tipo de Producto</label>
-            <select id="productType" name="productType" required>
-              <option value="" disabled>Seleccione tipo...</option>
-              <option value="Fruta" {{ 'selected' if producto.tipo == 'Fruta' else '' }}>Fruta</option>
-              <option value="Verdura" {{ 'selected' if producto.tipo == 'Verdura' else '' }}>Verdura</option>
-              <option value="Hortaliza" {{ 'selected' if producto.tipo == 'Hortaliza' else '' }}>Hortaliza</option>
-              <option value="Grano" {{ 'selected' if producto.tipo == 'Grano' else '' }}>Grano</option>
-              <option value="Tubérculo" {{ 'selected' if producto.tipo == 'Tubérculo' else '' }}>Tubérculo</option>
-              <option value="Otro" {{ 'selected' if producto.tipo == 'Otro' else '' }}>Otro</option>
+            <label for="provinciaSelector">Provincia</label>
+            <select id="provinciaSelector" name="provinciaSelector" required disabled>
+              <option value="" disabled selected>Seleccione provincia...</option>
             </select>
           </div>
           <div class="form-group">
-            <label for="productName">Nombre del Producto</label>
-            <input type="text" id="productName" name="productName" value="{{ producto.nombre }}" required>
+            <label for="cantonSelector">Cantón</label>
+            <select id="cantonSelector" name="cantonSelector" required disabled>
+              <option value="" disabled selected>Seleccione cantón...</option>
+            </select>
           </div>
         </div>
+        <!-- Campos ocultos para compatibilidad con el backend -->
+        <input type="hidden" id="region" name="region" value="{{ producto.region }}" required>
+        <input type="hidden" id="provincia" name="provincia" value="{{ producto.provincia }}" required>
+        <input type="hidden" id="canton" name="canton" value="{{ producto.canton or '' }}" required>
+        <script src="{{ url_for('static', filename='js/ubicacion_selector_simple.js') }}?v={{ range(10000, 99999) | random }}"></script>
+        <script>
+          // Preselección de valores actuales del producto en los selectores dinámicos
+          document.addEventListener('DOMContentLoaded', function() {
+            const regionValue = {{ producto.region|tojson|safe }};
+            const provinciaValue = {{ producto.provincia|tojson|safe }};
+            const cantonValue = {{ producto.canton|tojson|safe }};
+            setTimeout(function() {
+              const regionSel = document.getElementById('regionSelector');
+              const provinciaSel = document.getElementById('provinciaSelector');
+              const cantonSel = document.getElementById('cantonSelector');
+              if(regionSel && regionValue) {
+                regionSel.value = regionValue;
+                regionSel.dispatchEvent(new Event('change'));
+                setTimeout(function() {
+                  if(provinciaSel && provinciaValue) {
+                    provinciaSel.value = provinciaValue;
+                    provinciaSel.dispatchEvent(new Event('change'));
+                    setTimeout(function() {
+                      if(cantonSel && cantonValue) {
+                        cantonSel.value = cantonValue;
+                        cantonSel.dispatchEvent(new Event('change'));
+                      }
+                    }, 300);
+                  }
+                }, 300);
+              }
+            }, 500);
+          });
+        </script>
+
+        <!-- Selección de categoría y subcategorías (idéntico a perfil_agricultor.html) -->
+        <div class="form-row">
+          <!-- Categoría -->
+          <div class="form-group">
+            <label for="categoriaSelector">Categoría 1</label>
+            <select id="categoriaSelector" name="categoriaSelector" required>
+              <option value="" disabled selected>Seleccione categoría...</option>
+            </select>
+          </div>
+          <!-- Subcategoría -->
+          <div class="form-group">
+            <label for="subcategoria2Selector">Subcategoría 2</label>
+            <select id="subcategoria2Selector" name="subcategoria2Selector" required disabled>
+              <option value="" disabled selected>Seleccione subcategoría 2...</option>
+            </select>
+          </div>
+          <!-- Subcategoría -->
+          <div class="form-group">
+            <label for="subcategoria3Selector">Subcategoría 3</label>
+            <select id="subcategoria3Selector" name="subcategoria3Selector" required disabled>
+              <option value="" disabled selected>Seleccione subcategoría 3...</option>
+            </select>
+          </div>
+          <!-- Nombre personalizado -->
+          <div class="form-group">
+            <label for="customProductName">Nombre del Producto</label>
+            <input type="text" id="customProductName" name="customProductName" maxlength="50" placeholder="Ejemplo: Tomate Cherry" autocomplete="off">
+          </div>
+          <!-- Campos ocultos para compatibilidad con el backend -->
+          <input type="hidden" id="productType" name="productType" required>
+          <input type="hidden" id="productName" name="productName" required>
+        </div>
+        <script src="{{ url_for('static', filename='js/taxonomia_widget.js') }}?v={{ range(10000, 99999) | random }}"></script>
+        <script>
+          // Variables de preselección generadas por Jinja2
+          const cat1 = {{ (producto.categoria1 if producto.categoria1 is defined else None) | tojson }};
+          const cat2 = {{ (producto.categoria2 if producto.categoria2 is defined else None) | tojson }};
+          const cat3 = {{ (producto.categoria3 if producto.categoria3 is defined else None) | tojson }};
+          document.addEventListener('DOMContentLoaded', function() {
+            const taxSel = new window.TaxonomiaSelector();
+            setTimeout(function() {
+              if(cat1) {
+                const catSel = document.getElementById('categoriaSelector');
+                catSel.value = cat1;
+                catSel.dispatchEvent(new Event('change'));
+                setTimeout(function() {
+                  if(cat2) {
+                    const sub2 = document.getElementById('subcategoria2Selector');
+                    sub2.value = cat2;
+                    sub2.dispatchEvent(new Event('change'));
+                    setTimeout(function() {
+                      if(cat3) {
+                        const sub3 = document.getElementById('subcategoria3Selector');
+                        sub3.value = cat3;
+                        sub3.dispatchEvent(new Event('change'));
+                      }
+                    }, 300);
+                  }
+                }, 300);
+              }
+            }, 500);
+          });
+        </script>
+
+
         <div class="form-group">
           <label for="productPrice">Precio (por unidad de medida)</label>
           <input type="number" id="productPrice" name="productPrice" step="0.01" min="0" value="{{ producto.precio }}" required>

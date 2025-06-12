@@ -15,7 +15,7 @@ with app.app_context():
     print('\n--- Productos registrados ---')
     productos = Producto.query.order_by(Producto.id.desc()).all()
     for p in productos:
-        print(f"ID: {p.id}, Nombre: {p.nombre}, Tipo: {p.tipo}, Región: {p.region}, Provincia: {p.provincia}, Inicial: {p.inicial_nombre}, Precio: {p.precio}, Unidad: {p.unidad}, UsuarioID: {p.usuario_id}, Imagen: {p.imagen_url}") 
+        print(f"ID: {p.id}, Nombre: {p.nombre}, Tipo: {p.tipo}, Región: {p.region}, Provincia: {p.provincia}, Cantón: {p.canton}, Inicial: {p.inicial_nombre}, Precio: {p.precio}, Unidad: {p.unidad}, UsuarioID: {p.usuario_id}, Imagen: {p.imagen_url}") 
     
     # para ejecutar
     # python testingdb.py 
