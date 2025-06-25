@@ -1,0 +1,168 @@
+/*
+    ESTILOS PARA EL PANEL DE ADMINISTRADOR
+*/
+
+/* Estilos generales del cuerpo de la página */
+body {
+    background: #f5f7fa;
+    font-family: 'Open Sans', sans-serif;
+}
+
+.admin-kpi-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5em;
+    margin-bottom: 2em;
+}
+
+.kpi-card {
+    flex: 1 1 160px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 1px 6px #e0e0e0;
+    padding: 1.3em 1em;
+    display: flex;
+    align-items: center;
+    gap: 1em;
+    min-width: 170px;
+}
+
+/* Icono dentro de la tarjeta KPI */
+.kpi-icon {
+    font-size: 2em;
+    color: #1976d2;
+}
+
+/* Etiqueta de texto de la métrica (ej. 'Usuarios') */
+.kpi-label {
+    font-size: 1em;
+    color: #888;
+}
+
+/* Valor numérico de la métrica */
+.kpi-value {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #222;
+}
+
+.admin-card {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px #e0e0e0;
+    margin: 2em 0;
+    padding: 2em;
+}
+
+.admin-header {
+    font-size: 2.2em;
+    font-weight: bold;
+    color: #1976d2;
+    margin-bottom: 0.5em;
+    letter-spacing: 1px;
+}
+
+/* Título para una sección específica (ej. 'Acciones rápidas') */
+.admin-section-title {
+    font-size: 1.3em;
+    color: #444;
+    margin-top: 1.5em;
+    margin-bottom: 0.5em;
+}
+
+/* Leyenda o texto descriptivo para la sección de ventas */
+.ventas-legend {
+    font-size: 1em;
+    margin-bottom: 1em;
+    color: #555;
+}
+
+/* Menú desplegable para filtrar ventas */
+.ventas-select {
+    padding: 0.3em 1em;
+    border-radius: 6px;
+    border: 1px solid #bbb;
+}
+
+/* Contenedor para botones de acciones rápidas */
+.quick-actions {
+    display: flex;
+    gap: 1em;
+    margin: 1em 0 2em 0;
+    flex-wrap: wrap;
+}
+
+/* Estilo de los botones de acciones rápidas */
+.quick-actions .btn {
+    background: #1976d2;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 0.5em 1.2em;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+/* Efecto hover para los botones de acciones rápidas */
+.quick-actions .btn:hover {
+    background: #125ea9;
+}
+
+/* Tabla para mostrar datos recientes (ej. 'Últimos usuarios') */
+.recent-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1em;
+    background: #fafbfc;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+/* Estilo para celdas de encabezado y datos en la tabla */
+.recent-table th,
+.recent-table td {
+    padding: 0.7em 1em;
+    text-align: left;
+}
+
+/* Estilo específico para el encabezado de la tabla */
+.recent-table th {
+    background: #1976d2;
+    color: #fff;
+}
+
+/* Estilo para filas pares, creando un efecto de cebra */
+.recent-table tr:nth-child(even) {
+    background: #f1f5f9;
+}
+
+/* Estilo específico para las celdas de datos de la tabla */
+.recent-table td {
+    color: #333;
+}
+
+/* ESTILOS RESPONSIVOS */
+
+/* Para tabletas y pantallas medianas (hasta 900px) */
+@media (max-width: 900px) {
+    .admin-kpi-row {
+        flex-direction: column;
+        gap: 1em;
+    }
+
+    .kpi-card {
+        min-width: 0;
+    }
+}
+
+/* Para dispositivos móviles (hasta 600px) */
+@media (max-width: 600px) {
+    .admin-card {
+        padding: 1em;
+    }
+
+    .admin-header {
+        font-size: 1.3em;
+    }
+}

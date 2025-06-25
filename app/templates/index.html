@@ -10,6 +10,7 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/chatbot.css') }}">
     <!-- =================== METADATOS Y ESTILOS =================== -->
     <meta charset="UTF-8"> <!-- Evita problemas con la visualización de texto -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -142,7 +143,7 @@
         </div>
       </div>
       <div class="steps-image">
-        <img src="{{ url_for('static', filename='images/empresa.jpeg') }}" alt="Empresa AgroGrid System">
+        <img src="{{ url_for('static', filename='images/centro_distri.png') }}" alt="Empresa AgroGrid System">
       </div>
     </div>
   </div>
@@ -157,40 +158,49 @@
       <!-- Testimonio 1 -->
       <div class="testimonial-card">
         <div class="testimonial-avatar">
-          <img src="{{ url_for('static', filename='images/persona1.jpeg') }}" alt="Agricultor Mateo Almeida">
+          <!-- Reemplaza la URL o sube tu imagen aquí -->
+          <!-- <input type="file" name="foto_testimonio_1" accept="image/*" style="display:none;"> -->
+          <img src="/static/images/persona1.jfif" alt="Avatar de Camila Torres">
         </div>
         <div class="testimonial-content">
-          <p>"Desde que uso AgroGrid System, he aumentado mis ventas en un 30% y reducido costos de intermediación. La plataforma es intuitiva y el soporte excelente."</p>
-          <div class="testimonial-author">
-            <h4>Mateo Almeida</h4>
-            <p>Productor de Remolacha, Provincia del Carchi </p>
+          <p class="testimonio-mensaje">"Gracias a AgroGrid, logré vender toda mi cosecha en menos tiempo y a un mejor precio. La plataforma es intuitiva y el soporte, excelente."</p>
+          <div class="testimonio-autor">
+            <span class="testimonio-nombre">Camila Torres</span>
+            <span class="testimonio-tipo">- Agricultora</span>
           </div>
+          <span class="testimonio-fecha">10/06/2025</span>
         </div>
       </div>
       <!-- Testimonio 2 -->
       <div class="testimonial-card">
         <div class="testimonial-avatar">
-          <img src="{{ url_for('static', filename='images/persona2.jpeg') }}" alt="Comprador Andres Martinez">
+          <!-- Reemplaza la URL o sube tu imagen aquí -->
+          <!-- <input type="file" name="foto_testimonio_2" accept="image/*" style="display:none;"> -->
+          <img src="/static/images/persona2.jfif" alt="Avatar de Esteban Ruiz">
         </div>
         <div class="testimonial-content">
-          <p>"Como comprador para una cadena de supermercados, AgroGrid me ha permitido encontrar productos frescos directamente de productores con total transparencia en precios y calidad."</p>
-          <div class="testimonial-author">
-            <h4>Kevin Martinez</h4>
-            <p>Gerente de Compras, Supermercados del Puyo</p>
+          <p class="testimonio-mensaje">"Como transportista, AgroGrid me permite encontrar rutas y clientes fácilmente. ¡He optimizado mis viajes y aumentado mis ingresos!"</p>
+          <div class="testimonio-autor">
+            <span class="testimonio-nombre">Esteban Ruiz</span>
+            <span class="testimonio-tipo">- Transportista</span>
           </div>
+          <span class="testimonio-fecha">12/06/2025</span>
         </div>
       </div>
       <!-- Testimonio 3 -->
       <div class="testimonial-card">
         <div class="testimonial-avatar">
-          <img src="https://images.pexels.com/photos/1222271/pexels-photo-1222271.jpeg" alt="Transportista Carlos Vázquez">
+          <!-- Reemplaza la URL o sube tu imagen aquí -->
+          <!-- <input type="file" name="foto_testimonio_3" accept="image/*" style="display:none;"> -->
+          <img src="/static/images/persona3.jpg" alt="Avatar de Paula Mendoza">
         </div>
         <div class="testimonial-content">
-          <p>"El sistema de cálculo automático de fletes ha optimizado mis rutas y aumentado mi cartera de clientes. Ahora tengo trabajo constante y mejor planificado."</p>
-          <div class="testimonial-author">
-            <h4>Carlos Vázquez</h4>
-            <p>Transportista independiente, Sinaloa</p>
+          <p class="testimonio-mensaje">"Compré productos frescos de calidad y recibí mi pedido a tiempo. Recomiendo AgroGrid para quienes buscan confianza y buen servicio."</p>
+          <div class="testimonio-autor">
+            <span class="testimonio-nombre">Paula Mendoza</span>
+            <span class="testimonio-tipo">- Compradora</span>
           </div>
+          <span class="testimonio-fecha">14/06/2025</span>
         </div>
       </div>
     </div>
@@ -232,17 +242,17 @@
           <li><a href="{{ url_for('productos') }}">Productos</a></li>
           <li><a href="{{url_for('about')}}">Nosotros</a></li>
           <li><a href="{{ url_for('login') }}">Iniciar sesión</a></li>
-          <li><a href="#">Registrate</a></li>
+          <li><a href="{{ url_for('register') }}">Registrate</a></li>
         </ul>
       </div>
       <div class="footer-column">
         <h3>Recursos</h3>
         <ul class="footer-links">
-          <li><a href="#">Centro de ayuda</a></li>
-          <li><a href="#">Blog</a></li>
-          <li><a href="#">Preguntas frecuentes</a></li>
-          <li><a href="#">Testimonios</a></li>
-          <li><a href="#">Noticias</a></li>
+          <li><a href="{{ url_for('centro_ayuda') }}">Centro de ayuda</a></li>
+          <li><a href="{{ url_for('blog') }}">Blog</a></li>
+          <li><a href="{{ url_for('faq') }}">Preguntas frecuentes</a></li>
+          <li><a href="{{ url_for('testimonios') }}">Testimonios</a></li>
+          <li><a href="{{ url_for('noticias') }}">Noticias</a></li>
         </ul>
       </div>
       <div class="footer-column">
@@ -267,5 +277,6 @@
 <!-- =================== SCRIPTS =================== -->
 <!-- Script principal de la app: menú, provincias dinámicas, etc. -->
 <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/chatbot.js') }}"></script>
 </body>
 </html>

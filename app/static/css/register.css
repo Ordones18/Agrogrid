@@ -1,47 +1,72 @@
+/*
+    ESTILOS PARA LA PÁGINA DE REGISTRO DE USUARIOS
+*/
 
-/* Contiene los colores y estilos ya predefinidos */
+/* Variables CSS globales utilizadas en esta página */
 :root {
   --primary-color: #4caf50;
   --spacing-xl: 3rem;
   --spacing-md: 1.2rem;
 }
 
+/* Sección principal que envuelve todo el contenido del registro */
 .register-section {
+  /* Establece el padding y el fondo de la sección */
   padding: var(--spacing-xl) 0;
   background: #f9fafb;
+  /* Establece la altura mínima y el display de la sección */
   min-height: 80vh;
   display: flex;
+  /* Ajusta la posición de la sección en la página */
   margin-top: 80px;
   align-items: center;
-
 }
+
+/* Formulario de registro */
 .register-form {
+  /* Establece el fondo, borde y sombra del formulario */
   background: #fff;
   border-radius: 12px;
   box-shadow: 0 4px 24px rgba(0,0,0,0.07);
+  /* Establece el padding y el ancho máximo del formulario */
   padding: 2.5rem 2rem;
   max-width: 420px;
+  /* Centra el formulario en la página */
   margin: 0 auto;
+  /* Establece la dirección del contenido del formulario */
   display: flex;
   flex-direction: column;
+  /* Establece el espacio entre los elementos del formulario */
   gap: var(--spacing-md);
 }
+
+/* Grupo de formulario (etiqueta + campo) */
 .register-form .form-group {
+  /* Establece la dirección del contenido del grupo de formulario */
   display: flex;
   flex-direction: column;
+  /* Establece el espacio entre los elementos del grupo de formulario */
   gap: 0.3rem;
 }
+
+/* Estilo para las etiquetas de los campos de formulario */
 .register-form label {
   font-weight: 500;
   color: #333;
 }
+
+/* Estilo para los campos de entrada y selección */
 .register-form input,
 .register-form select {
+  /* Establece el padding y el borde de los campos de entrada y selección */
   padding: 0.7rem 1rem;
   border: 1px solid #e0e0e0;
   border-radius: 6px;
+  /* Establece el tamaño de fuente de los campos de entrada y selección */
   font-size: 1rem;
+  /* Establece el fondo de los campos de entrada y selección */
   background: #f5f7fa;
+  /* Establece la transición del borde al enfocar los campos de entrada y selección */
   transition: border 0.2s;
 }
 .register-form input:focus,
@@ -62,9 +87,11 @@
   cursor: pointer;
   transition: background 0.2s;
 }
+/* Efecto hover para el botón de registro */
 .register-form .btn-primary:hover {
   background: #388e3c;
 }
+/* Enlace para redirigir a la página de inicio de sesión */
 .login-link {
   text-align: center;
   margin-top: 1rem;

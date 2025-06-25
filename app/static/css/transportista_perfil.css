@@ -1,25 +1,34 @@
+/*
+    ESTILOS PARA EL PANEL DE CONTROL DEL TRANSPORTISTA
+*/
+
+/* Contenedor principal del panel del transportista */
 .transportista-dashboard {
-    padding-top: 120px;
+    padding-top: 80px;
     max-width: 900px;
     margin: 0 auto 32px auto;
 }
+/* Cabecera del panel */
 .dashboard-header {
     text-align: center;
     margin-bottom: 30px;
 }
+/* Título principal del panel */
 .dashboard-header h1 {
-    color: #1976d2;
+    color: #229e60;
     font-size: 2.2rem;
     font-weight: 700;
     margin-top: 100px;
 }
+/* Párrafo descriptivo en la cabecera */
 .dashboard-header p {
     color: #444;
     font-size: 1.1rem;
 }
+/* Etiqueta que identifica el tipo de usuario (Transportista) */
 .user-type-label {
     display: inline-block;
-    color: #1976d2;
+    color: #229e60;
     background: #e3f2fd;
     font-weight: 600;
     font-size: 1rem;
@@ -34,81 +43,88 @@
     gap: 1.5rem;
     justify-content: center;
     margin-bottom: 32px;
-    flex-wrap: wrap;
 }
+/* Tarjeta individual para una métrica */
 .metric-card {
     background: #fff;
-    border-radius: 10px;
-    box-shadow: 0 2px 8px rgba(25, 118, 210, 0.08);
-    padding: 1.5rem 2rem;
-    min-width: 220px;
+    border-radius: 14px;
+    padding: 1.2em 2em;
+    box-shadow: 0 2px 12px #b0e5c733;
     text-align: center;
-    flex: 1 1 220px;
+    flex: 1 1 0;
+    border: none;
 }
 .metric-icon {
-    font-size: 2.2rem;
-    color: #1976d2;
-    margin-bottom: 0.5rem;
+    font-size: 2.3em;
+    color: #229e60;
+    margin-bottom: 0.3em;
+    filter: drop-shadow(0 1px 1px #43b97f33);
 }
+/* Título de la métrica (ej. 'Viajes completados') */
 .metric-card h2 {
     font-size: 1.1rem;
-    color: #1976d2;
+    color: #229e60;
     margin-bottom: 0.3rem;
 }
 .metric-value {
-    font-size: 1.5rem;
+    font-size: 1.5em;
     font-weight: 700;
-    color: #222;
+    color: #229e60;
 }
 .card-style {
     background: #fff;
-    border-radius: 10px;
-    box-shadow: 0 2px 8px rgba(25, 118, 210, 0.08);
-    padding: 2rem 1.5rem;
-    margin-bottom: 28px;
+    border: none;
+    border-radius: 16px;
+    box-shadow: 0 2px 12px #b0e5c733;
+    padding: 1.5em 2em 1.7em 2em;
+    margin-bottom: 2em;
 }
+/* Contenedor de la tabla de pedidos, permite scroll horizontal */
 .orders-table-wrapper {
-    overflow-x: auto;
-    background: #f5faff;
+    background: #fff;
     border-radius: 12px;
-    box-shadow: 0 2px 12px rgba(25,118,210,0.06);
-    padding: 1.5rem 1rem;
-    margin-bottom: 1.8rem;
+    box-shadow: 0 1px 5px #43b97f11;
+    padding: 1em 0.5em;
+    border: none;
 }
+/* Tabla de pedidos */
 .orders-table {
     width: 100%;
     border-collapse: separate;
-    border-spacing: 0;
+    border-spacing: 0 0.4em;
+    font-size: 1em;
+    color: #17695b;
+}
+/* Celdas de encabezado de la tabla */
+.orders-table th {
+    background: #c2f0db;
+    color: #229e60;
+    font-weight: 800;
+    padding: 0.7em 0.5em;
+    border-radius: 7px 7px 0 0;
+    border-bottom: 2px solid #b0e5c7;
+    letter-spacing: 0.01em;
+}
+/* Celdas de datos de la tabla */
+.orders-table td {
     background: #fff;
-    border-radius: 10px;
-    overflow: hidden;
-    font-size: 1.05rem;
-    box-shadow: 0 1px 8px rgba(25,118,210,0.05);
+    color: #17695b;
+    padding: 0.7em 0.5em;
+    border-radius: 0 0 7px 7px;
+    border-bottom: 1px solid #b0e5c7;
 }
-.orders-table thead th {
-    background: #e3f2fd;
-    color: #1976d2;
-    font-weight: 700;
-    padding: 0.85rem 0.6rem;
-    border-bottom: 2px solid #bbdefb;
-    text-align: center;
-    font-size: 1.08rem;
-}
-.orders-table tbody td {
-    padding: 0.7rem 0.5rem;
-    text-align: center;
-    border-bottom: 1px solid #e0e7ef;
-    color: #333;
-}
+/* Estilo para filas pares (efecto cebra) */
 .orders-table tbody tr:nth-child(even) {
     background: #f0f7fa;
 }
+/* Efecto hover en las filas de la tabla */
 .orders-table tbody tr:hover {
-    background: #e3f2fd;
+    background: #eafcf4;
     transition: background 0.18s;
 }
+/* Botones de acción en la tabla (ej. 'Aceptar', 'Entregado') */
 .btn-aceptar-viaje, .btn-marcar-entregado {
-    background: #1976d2;
+    background: #43b97f;
     color: #fff;
     border: none;
     border-radius: 6px;
@@ -119,21 +135,31 @@
     font-weight: 600;
     box-shadow: 0 1px 4px rgba(25,118,210,0.07);
 }
+/* Efecto hover para los botones de acción */
 .btn-aceptar-viaje:hover, .btn-marcar-entregado:hover {
-    background: #145ea8;
+    background: #d14f3d;
 }
+/* Estilo para cuando no hay datos que mostrar (ej. 'No hay viajes') */
 .empty-state {
     text-align: center;
     color: #777;
     font-style: italic;
     padding: 1.2rem 0 0.5rem 0;
 }
+/* Fondo oscuro para la ventana modal de calificación */
 .modal-transporte-bg { position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.35); z-index:9999; display:flex; align-items:center; justify-content:center; }
+/* Contenedor de la ventana modal */
 .modal-transporte { background:#fff; padding:2em; border-radius:8px; min-width:320px; position:relative; box-shadow:0 2px 24px #2224; }
+/* Botón para cerrar la ventana modal */
 .modal-close { position:absolute; top:10px; right:15px; font-size:1.5em; cursor:pointer; }
+/* Estilo de las estrellas para la calificación */
 .estrella { color:#FFD600; transition:color 0.2s; }
+/* Estilo de las estrellas al pasar el cursor o al ser seleccionadas */
 .estrella:hover, .estrella.selected { color:#FFA000; }
 
+/* ESTILOS RESPONSIVOS */
+
+/* Para tabletas y pantallas medianas (hasta 991px) */
 @media (max-width: 991px) {
     .metrics-section {
         flex-direction: column;
@@ -142,4 +168,292 @@
     .card-style {
         padding: 1.2rem 0.7rem;
     }
+    .redesigned-metrics {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .redesigned-metric-card {
+        flex: none;
+        margin-bottom: 1rem;
+    }
+}
+
+/* REDISEÑO VISUAL DE MÉTRICAS */
+
+/* Contenedor para las métricas con nuevo diseño */
+.redesigned-metrics {
+    display: flex;
+    gap: 2rem;
+    justify-content: center;
+    margin-bottom: 32px;
+    margin-top: 10px;
+}
+.redesigned-metric-card {
+    background: linear-gradient(135deg, #e3f9e5 0%, #f7fafc 100%);
+    border-radius: 18px;
+    padding: 1.4em 2.3em;
+    box-shadow: 0 4px 18px #b0e5c755;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    min-width: 220px;
+    border: 1px solid #c2f0db;
+    transition: transform 0.12s;
+}
+/* Efecto hover para la tarjeta de métrica rediseñada */
+.redesigned-metric-card:hover {
+    transform: translateY(-3px) scale(1.025);
+    box-shadow: 0 6px 24px #43b97f33;
+}
+/* Contenedor circular para el icono de la métrica */
+.metric-icon-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #229e60;
+    border-radius: 50%;
+    width: 54px;
+    height: 54px;
+    margin-right: 18px;
+    box-shadow: 0 1px 6px #43b97f33;
+}
+.metric-icon-wrapper .metric-icon {
+    color: #fff;
+    font-size: 2em;
+    filter: none;
+    margin-bottom: 0;
+}
+.metric-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+/* Etiqueta de la métrica (ej. 'Ganancias totales') */
+.metric-label {
+    font-size: 1.06em;
+    color: #229e60;
+    font-weight: 600;
+    margin-bottom: 0.2em;
+    letter-spacing: 0.5px;
+}
+.metric-value {
+    font-size: 2em;
+    font-weight: bold;
+    color: #17695b;
+    margin-bottom: 0;
+    line-height: 1.1;
+}
+
+
+/* SECCIÓN DE GESTIÓN DE VEHÍCULOS */
+
+/* Formulario para añadir o editar un vehículo */
+.vehiculo-form {
+    margin-bottom: 1.2em;
+}
+/* Fila dentro del formulario de vehículo */
+.vehiculo-form .form-row {
+    display: flex;
+    gap: 0.8em;
+    flex-wrap: wrap;
+    align-items: flex-end;
+}
+/* Campos de entrada de texto para los datos del vehículo */
+.input-vehiculo {
+    padding: 0.35em 0.7em;
+    border-radius: 6px;
+    border: 1px solid #b0e5c7;
+    background: #fff;
+    color: #17695b;
+    font-size: 1em;
+    min-width: 120px;
+    max-width: 200px;
+}
+/* Campo para subir la imagen del vehículo */
+.input-img-vehiculo {
+    background: #fff;
+    border: 1px solid #b0e5c7;
+    color: #17695b;
+    padding: 0.35em 0.7em;
+}
+/* Botón para guardar en el formulario de vehículo */
+.vehiculo-form button.btn-success {
+    font-size: 1em;
+    padding: 0.38em 1.2em;
+    border-radius: 6px;
+    background: #ffffff;
+    color: #17695b;
+    border: 1px solid #17695b;
+    font-weight: 600;
+    box-shadow: 0 1px 4px rgba(126, 240, 155, 0.07);
+    transition: background 0.18s;
+}
+/* Efecto hover del botón de guardar */
+.vehiculo-form button.btn-success:hover {
+    background: #79be7d;
+}
+
+.vehiculos-lista-horizontal {
+    display: flex;
+    gap: 1.2em;
+    overflow-x: auto;
+    padding-bottom: 0.5em;
+    margin-top: 1em;
+}
+.vehiculo-card {
+    background: #fff;
+    border: none;
+    border-radius: 14px;
+    box-shadow: 0 2px 12px #b0e5c733;
+    min-width: 250px;
+    max-width: 320px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1.1em 1em 1em 1em;
+    transition: box-shadow 0.2s, border 0.2s;
+    position: relative;
+}
+
+/* Formulario para el botón de eliminar vehículo */
+.vehiculo-eliminar-form {
+    position: absolute;
+    top: 10px;
+    right: 12px;
+    z-index: 2;
+}
+/* Botón para eliminar un vehículo */
+.vehiculo-eliminar-btn {
+    background: #eafcf4;
+    color: #43b97f;
+    border: none;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25em;
+    box-shadow: 0 1px 4px #43b97f22;
+    transition: background 0.18s, color 0.18s;
+    cursor: pointer;
+}
+/* Efecto hover del botón de eliminar */
+.vehiculo-eliminar-btn:hover {
+    background: #43b97f;
+    color: #fff;
+}
+
+/* Efecto hover en la tarjeta del vehículo */
+.vehiculo-card:hover {
+    box-shadow: 0 4px 18px #43b97f33;
+    border-color: #43b97f;
+}
+.vehiculo-img-wrapper {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    overflow: hidden;
+    background: #d6f7e6;
+    margin-bottom: 0.7em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid #b0e5c7;
+}
+/* Imagen del vehículo */
+.vehiculo-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+/* Contenedor para la información de texto del vehículo */
+.vehiculo-info {
+    width: 100%;
+    text-align: center;
+    color: #17695b;
+}
+/* Placa del vehículo */
+.vehiculo-placa {
+    font-weight: 700;
+    margin-bottom: 0.25em;
+    font-size: 1.13em;
+}
+/* Tipo, capacidad y descripción del vehículo */
+.vehiculo-tipo, .vehiculo-capacidad, .vehiculo-desc {
+    margin-bottom: 0.18em;
+    font-size: 0.98em;
+    color: #229e60;
+}
+.vehiculo-desc {
+    color: #388e3c;
+    font-style: italic;
+    font-size: 0.93em;
+}
+
+@media (max-width: 700px) {
+    .vehiculos-lista-horizontal {
+        gap: 0.5em;
+    }
+    .vehiculo-card {
+        min-width: 180px;
+        max-width: 220px;
+        padding: 0.7em 0.5em 0.7em 0.5em;
+    }
+    .vehiculo-img-wrapper {
+        width: 60px;
+        height: 60px;
+    }
+}
+
+/* GRÁFICA DE ENVÍOS */
+
+/* Contenedor para la gráfica interactiva de envíos */
+.grafica-envios-interactiva {
+  margin-bottom: 1em;
+}
+.grafica-flex-row {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 2.5em;
+  margin-bottom: 1.2em;
+}
+.barplot-btn-group-vertical {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7em;
+  margin-bottom: 0;
+  min-width: 120px;
+  align-items: flex-end;
+}
+/* Contenedor para el valor y la barra de la gráfica */
+.barplot-valor-grafico {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+}
+@media (max-width: 700px) {
+  .grafica-flex-row {
+    flex-direction: column;
+    gap: 1.2em;
+    align-items: stretch;
+  }
+  .barplot-btn-group-vertical {
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    min-width: 0;
+    margin-bottom: 0.7em;
+  }
+}
+/* Imagen de la gráfica de envíos */
+/* Imagen de la gráfica de envíos */
+.grafica-envios-img {
+  max-width: 99vw;
+  max-height: 340px;
+  width: 100%;
+  max-width: 480px;
 }

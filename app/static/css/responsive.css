@@ -1,12 +1,12 @@
-/* Responsive Styles */
-/* Large Desktop and below */
+/* Estilos Responsive */
+/* Grandes pantallas */
 @media (max-width: 1280px) {
   .container {
     max-width: 1140px;
   }
 }
 
-/* Desktop */
+/* Pantallas medianas */
 @media (max-width: 1024px) {
   .container {
     max-width: 960px;
@@ -26,7 +26,7 @@
   }
 }
 
-/* Tablet */
+/* Tablets */
 @media (max-width: 768px) {
   html {
     font-size: 15px;
@@ -83,7 +83,7 @@
   }
 }
 
-/* Mobile Large */
+/* Teléfonos */
 @media (max-width: 576px) {
   html {
     font-size: 14px;
@@ -144,7 +144,7 @@
   }
 }
 
-/* Mobile Small */
+/* Teléfonos pequeños */
 @media (max-width: 375px) {
   html {
     font-size: 13px;
@@ -199,7 +199,7 @@
     border-radius: 2px;
   }
 }
-/* Explore  */
+/* Explorar  */
 @media (max-width: 768px) {
   .explore-grid {
     display: flex;

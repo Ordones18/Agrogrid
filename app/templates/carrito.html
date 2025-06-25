@@ -92,13 +92,15 @@
     <!-- Acciones finales al pie del carrito -->
 
     <!-- Acciones finales al pie del carrito -->
+
     <div class="carrito-total-acciones-final">
       <div class="carrito-total-final">
-        Total: ${{ '%.2f'|format(total) }}
+        Total: $<span id="carrito-total-final-num">{{ '%.2f'|format(total) }}</span>
       </div>
       <button type="submit" form="carritoForm" class="btn btn-success btn-actualizar-carrito">Actualizar carrito</button>
       <a href="{{ url_for('confirmar_compra') }}" class="btn btn-primary btn-finalizar-compra">Finalizar compra</a>
     </div>
+
     <!-- Fin acciones finales -->
     {% else %}
       <div class="empty-state text-center my-5">

@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% block title %}Agregar Testimonio - AgroGrid{% endblock %}
+{% block styles %}
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/testimonios.css') }}">
+  <style>
+    .testimonio-form {
+      max-width: 500px;
+      margin: 2rem auto;
+      background: #fff;
+      border-radius: 14px;
+      box-shadow: 0 2px 16px #1e7c4c18;
+      padding: 2rem 2.5rem 2.5rem 2.5rem;
+    }
+    .testimonio-form h1 {
+      color: #1e7c4c;
+      margin-bottom: 1.5rem;
+      text-align: center;
+    }
+    .testimonio-form label {
+      font-weight: 600;
+      margin-top: 1rem;
+      display: block;
+      color: #17623c;
+    }
+    .testimonio-form input,
+    .testimonio-form textarea,
+    .testimonio-form select {
+      width: 100%;
+      margin-top: 0.3rem;
+      margin-bottom: 1rem;
+      padding: 0.7rem;
+      border: 1px solid #c3e6cb;
+      border-radius: 6px;
+      font-size: 1rem;
+      background: #f4faf7;
+    }
+    .testimonio-form button {
+      width: 100%;
+      background: #1e7c4c;
+      color: #fff;
+      border: none;
+      padding: 0.8rem;
+      border-radius: 6px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      cursor: pointer;
+      margin-top: 1rem;
+      transition: background 0.2s;
+    }
+    .testimonio-form button:hover {
+      background: #17623c;
+    }
+  </style>
+{% endblock %}
+{% block content %}
+<div class="testimonio-form">
+  <h1>Agregar Testimonio</h1>
+  <form method="POST">
+    <label for="nombre">Nombre</label>
+    <input type="text" name="nombre" id="nombre" required>
+    <label for="tipo_usuario">Tipo de usuario</label>
+    <select name="tipo_usuario" id="tipo_usuario" required>
+      <option value="Agricultor">Agricultor</option>
+      <option value="Comprador">Comprador</option>
+      <option value="Transportista">Transportista</option>
+      <option value="Otro">Otro</option>
+    </select>
+    <label for="mensaje">Mensaje</label>
+    <textarea name="mensaje" id="mensaje" rows="4" maxlength="300" required></textarea>
+    <label for="avatar_url">URL de imagen/avatar (opcional)</label>
+    <input type="url" name="avatar_url" id="avatar_url" placeholder="https://...">
+    <button type="submit">Guardar Testimonio</button>
+  </form>
+</div>
+{% endblock %}

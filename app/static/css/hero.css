@@ -1,4 +1,8 @@
-/* Hero Section Styles */
+/*
+    ESTILOS PARA LA SECCIÓN HERO (BANNER PRINCIPAL)
+*/
+
+/* Contenedor principal de la sección Hero */
 .hero {
   height: 100vh;
   min-height: 600px;
@@ -12,6 +16,7 @@
   margin-bottom: var(--spacing-xl);
 }
 
+/* Capa de superposición oscura sobre la imagen de fondo para mejorar la legibilidad del texto */
 .hero-overlay {
   position: absolute;
   top: 0;
@@ -21,6 +26,7 @@
   background: linear-gradient(to right, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.4));
 }
 
+/* Contenido textual y botones dentro de la sección Hero */
 .hero-content {
   position: relative;
   z-index: 2;
@@ -30,6 +36,7 @@
   animation: fadeInUp 1s ease-out;
 }
 
+/* Título principal (H1) */
 .hero h1 {
   font-size: 3.5rem;
   font-weight: 700;
@@ -39,6 +46,7 @@
   color: var(--color-white);
 }
 
+/* Subtítulo (H2) */
 .hero h2 {
   font-size: var(--font-size-xxl);
   font-weight: 600;
@@ -46,6 +54,7 @@
   color: var(--color-secondary);
 }
 
+/* Párrafo de texto descriptivo */
 .hero p {
   font-size: var(--font-size-lg);
   margin-bottom: var(--spacing-xl);
@@ -53,6 +62,7 @@
   line-height: 1.6;
 }
 
+/* Botones de llamada a la acción */
 .hero .btn {
   padding: var(--spacing-sm) var(--spacing-lg);
   font-size: var(--font-size-md);

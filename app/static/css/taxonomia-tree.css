@@ -1,4 +1,6 @@
 
+/* Estilos de la taxonomia */
+/* Estilos de la lista */
 .taxonomia-tree {
   list-style: none;
   margin: 0;
@@ -7,11 +9,13 @@
   color: #333;
   max-width: 100%;
 }
+/* Estilos de los elementos de la lista */
 .taxonomia-tree li {
   position: relative;
   user-select: none;
   transition: background 0.2s;
 }
+/* Estilos de la lista desplegable */
 .taxonomia-tree li ul {
   list-style: none;
   margin: 0;
@@ -19,9 +23,11 @@
   display: none;
   transition: max-height 0.3s cubic-bezier(.4,0,.2,1);
 }
+/* Estilos de la lista desplegable */
 .taxonomia-tree li.expanded > ul {
   display: block;
 }
+/* Estilos de la categoria */
 .taxonomia-tree .categoria {
   font-weight: bold;
   color: #388e3c;
@@ -31,9 +37,11 @@
   margin-bottom: 2px;
   background: #f3fbe9;
 }
+/* Estilos de la categoria */
 .taxonomia-tree .categoria:hover {
   background: #e0f2f1;
 }
+/* Estilos de la subcategoria */
 .taxonomia-tree .subcategoria {
   margin-left: 0.8em;
   font-weight: 500;
@@ -44,9 +52,11 @@
   margin-bottom: 1px;
   background: #f5faff;
 }
+/* Estilos de la subcategoria */
 .taxonomia-tree .subcategoria:hover {
   background: #e0f7fa;
 }
+/* Estilos de la subcategoria */
 .taxonomia-tree .producto-leaf {
   margin-left: 1.7em;
   cursor: pointer;
@@ -57,12 +67,14 @@
   color: #444;
   background: transparent;
 }
+/* Estilos de la subcategoria */
 .taxonomia-tree .producto-leaf:hover,
 .taxonomia-tree .producto-leaf.selected {
   background: #e8f5e9;
   color: #1b5e20;
   font-weight: bold;
 }
+/* Estilos del toggle */
 .taxonomia-tree .toggle {
   display: inline-block;
   width: 1em;

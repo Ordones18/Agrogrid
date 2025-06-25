@@ -1,0 +1,195 @@
+/*
+    ESTILOS PARA LA SECCIÓN DEL BLOG
+*/
+
+body {
+  background: #fff;
+}
+.blog-hero {
+  text-align: center;
+  padding: 2.5rem 1rem 2rem 1rem;
+  background: #ffffff;
+  border-radius: 0 0 24px 24px;
+  margin-bottom: 2rem;
+}
+.blog-hero i {
+  font-size: 2.5rem;
+  color: #1e7c4c;
+  margin-bottom: 3rem;
+}
+.blog-hero h1 {
+  color: #1e7c4c;
+  font-size: 2.3rem;
+  font-weight: 800;
+  margin-bottom: 0.3rem;
+}
+.blog-sub {
+  color: #198754;
+  font-size: 1.18rem;
+  margin-bottom: 0.7rem;
+}
+.blog-main {
+  display: flex;
+  gap: 2.5rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1.2rem;
+  
+}
+.blog-list {
+  flex: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+.blog-card {
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 2px 14px #1e7c4c11;
+  padding: 2rem 1.5rem 1.5rem 1.5rem;
+  transition: box-shadow 0.2s, transform 0.2s;
+  position: relative;
+}
+/* Efecto al pasar el cursor sobre la tarjeta del artículo */
+.blog-card:hover {
+  box-shadow: 0 6px 22px #1e7c4c22;
+  transform: translateY(-3px) scale(1.02);
+}
+/* Cabecera de la tarjeta (etiqueta y fecha) */
+.blog-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.7rem;
+}
+.blog-label {
+  background: #1e7c4c;
+  color: #fff;
+  border-radius: 6px;
+  padding: 0.2rem 0.8rem;
+  font-size: 0.93rem;
+  font-weight: 600;
+}
+.blog-date {
+  color: #bdbdbd;
+  font-size: 0.97rem;
+}
+.blog-card h2 {
+  color: #14532d;
+  font-size: 1.4rem;
+  margin-bottom: 0.3rem;
+}
+.blog-meta {
+  color: #198754;
+  font-size: 1.01rem;
+  margin-bottom: 0.7rem;
+}
+.blog-card p {
+  color: #14532d;
+  font-size: 1.09rem;
+  margin-bottom: 1.1rem;
+}
+.blog-btn {
+  display: inline-block;
+  background: #1e7c4c;
+  color: #fff;
+  font-weight: 600;
+  padding: 0.5rem 1.3rem;
+  border-radius: 6px;
+  text-decoration: none;
+  transition: background 0.2s, box-shadow 0.2s;
+  box-shadow: 0 1px 6px #1e7c4c22;
+  cursor: pointer;
+}
+.blog-btn.open {
+  background: #198754;
+}
+.blog-articulo-expandido {
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: max-height 0.4s cubic-bezier(0.4,0,0.2,1), opacity 0.3s;
+  background: #f7fdf9;
+  margin-top: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 1px 8px #1e7c4c11;
+  padding: 0 1.2rem;
+  border-left: 3px solid #1e7c4c;
+}
+.blog-card.open .blog-articulo-expandido {
+  max-height: 400px;
+  opacity: 1;
+  padding: 1rem 1.2rem;
+}
+.blog-card.open .blog-btn {
+  background: #198754;
+}
+
+.blog-btn:hover {
+  background: #198754;
+  box-shadow: 0 2px 14px #1e7c4c33;
+}
+.blog-sidebar {
+  flex: 1;
+  min-width: 220px;
+  max-width: 320px;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+/* Sección de categorías en la barra lateral */
+.blog-categorias {
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 1px 8px #1e7c4c11;
+  padding: 1.2rem 1rem;
+}
+.blog-categorias h3 {
+  color: #1e7c4c;
+  margin-bottom: 0.7rem;
+  font-size: 1.12rem;
+}
+.blog-categorias ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.blog-categorias li {
+  margin-bottom: 0.5rem;
+}
+.blog-categorias a {
+  color: #198754;
+  text-decoration: underline;
+  font-weight: 500;
+}
+.blog-categorias a:hover {
+  color: #14532d;
+}
+.blog-sugerencia {
+  background: #e6f5ea;
+  border-radius: 10px;
+  padding: 1rem;
+  color: #14532d;
+  font-size: 1.05rem;
+}
+.blog-sugerencia h4 {
+  color: #1e7c4c;
+  font-size: 1.08rem;
+  margin-bottom: 0.3rem;
+}
+@media (max-width: 950px) {
+  .blog-main { flex-direction: column; gap: 1.5rem; }
+  .blog-sidebar { max-width: 100%; min-width: 0; flex-direction: row; gap: 1rem; }
+  .blog-categorias, .blog-sugerencia { width: 100%; }
+}
+@media (max-width: 700px) {
+  .blog-hero { padding: 1.2rem 0.5rem 1.2rem 0.5rem; }
+  .blog-hero h1 { font-size: 1.5rem; }
+  .blog-main { padding: 0 0.2rem; }
+  .blog-list { gap: 1.1rem; }
+  .blog-card { padding: 1rem 0.5rem 0.8rem 0.5rem; }
+  .blog-sidebar { flex-direction: column; gap: 1rem; }
+}
+.blog-container { max-width: 780px; margin: 2rem auto; padding: 2rem; background: #fff; border-radius: 10px; box-shadow: 0 2px 8px #e0e7ef44; }
+.blog-container h1 { color: #1e7c4c; font-size: 2rem; margin-bottom: 1.2rem; }
+.blog-list { min-height: 100px; }

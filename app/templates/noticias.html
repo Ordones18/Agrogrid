@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% block title %}Noticias - AgroGrid{% endblock %}
+{% block styles %}
+  <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/hoja.png') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/noticias.css') }}">
+{% endblock %}
+{% block content %}
+<div class="noticias-container">
+  <h1>Noticias</h1>
+  <div class="noticias-list">
+    <!-- Noticia 1 -->
+    <div class="noticia-card">
+      <img src="/static/images/lanzamiento.png" alt="Lanzamiento plataforma" class="noticia-img">
+      <div class="noticia-info">
+        <span class="noticia-fecha">15/06/2025</span>
+        <h2 class="noticia-titulo">¡AgroGrid System lanza su plataforma oficial!</h2>
+        <p class="noticia-resumen">La plataforma digital AgroGrid ya está disponible para agricultores, compradores y transportistas de todo el país. Descubre cómo puedes optimizar tu negocio agrícola con tecnología de punta y procesos transparentes.</p>
+      </div>
+    </div>
+    <!-- Noticia 2 -->
+    <div class="noticia-card">
+      <img src="/static/images/personas7.png" alt="Primeras ventas exitosas" class="noticia-img">
+      <div class="noticia-info">
+        <span class="noticia-fecha">10/06/2025</span>
+        <h2 class="noticia-titulo">Primeras ventas exitosas a través de AgroGrid</h2>
+        <p class="noticia-resumen">Más de 50 agricultores han concretado ventas directas a compradores finales, eliminando intermediarios y mejorando sus ingresos. ¡Conoce sus historias de éxito!</p>
+      </div>
+    </div>
+    <!-- Noticia 3 -->
+    <div class="noticia-card">
+      <img src="/static/images/cooperativa.jpeg" alt="Alianza con cooperativas" class="noticia-img">
+      <div class="noticia-info">
+        <span class="noticia-fecha">05/06/2025</span>
+        <h2 class="noticia-titulo">Nueva alianza con cooperativas agrícolas</h2>
+        <p class="noticia-resumen">AgroGrid firma convenio con cooperativas para facilitar el acceso a mercados digitales y servicios logísticos a cientos de pequeños productores del país.</p>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+{% block scripts %}
+  <script src="{{ url_for('static', filename='js/noticias.js') }}"></script>
+{% endblock %}

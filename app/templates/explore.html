@@ -6,11 +6,22 @@
 #}
 
 <!-- =================== HEADER =================== -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Explorar la plataforma</title>
+  <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/hoja.png') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/chatbot.css') }}">
+</head>
+<body>
 {% if user %}
   {% include "partials/header_perfiles.html" %}
 {% else %}
   {% include "partials/base_header.html" %}
 {% endif %}
+
+
 
 <!-- =================== SECCIÓN DE EXPLORACIÓN =================== -->
 <section class="explore">
@@ -49,7 +60,7 @@
           <p>Haz clic en "Publicar producto", completa los datos y sube una foto de tu cosecha.</p>
         </div>
         <div class="guide-image">
-          <img src="{{ url_for('static', filename='images/captura-producto.png') }}" alt="Agregar producto">
+          <img src="{{ url_for('static', filename='images/publicar.jpg') }}" alt="Agregar producto">
         </div>
       </div>
       <!-- Paso 2 -->
@@ -59,7 +70,7 @@
           <p>Utiliza el buscador para encontrar aliados y negociar directamente.</p>
         </div>
         <div class="guide-image">
-          <img src="{{ url_for('static', filename='images/captura-busqueda.png') }}" alt="Buscar compradores y transportistas">
+          <img src="{{ url_for('static', filename='images/explora.jpg') }}" alt="Buscar compradores y transportistas">
         </div>
       </div>
       <!-- Paso 3 -->
@@ -69,7 +80,7 @@
           <p>Accede al módulo de envíos, ingresa los datos y obtén el costo y ruta óptima.</p>
         </div>
         <div class="guide-image">
-          <img src="{{ url_for('static', filename='images/captura-envio.png') }}" alt="Calcular envíos">
+          <img src="{{ url_for('static', filename='images/carrito.jpg') }}" alt="Calcular envíos">
         </div>
       </div>
     </div>
@@ -77,3 +88,6 @@
   </div>
 </section>
 
+<script src="{{ url_for('static', filename='js/chatbot.js') }}"></script>
+</body>
+</html>

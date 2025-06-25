@@ -1,19 +1,43 @@
-# =================== Importaciones principales ===================
-from app.grafo_transporte import grafo_cantonal, dijkstra # Importaciones para el grafo de transporte
-from flask import render_template, request, redirect, url_for, flash, session, send_file, jsonify  # Funciones principales de Flask para manejo de vistas, formularios, sesiones y respuestas
-from app import app, mail, db  # Instancias principales de la app, correo y base de datos
-from flask_login import current_user, login_required, login_user
-from flask_mail import Message  # Para enviar correos electrónicos
-from app.models import Usuario, Producto, Categoria, Subcategoria, Carrito  # Modelos de la base de datos
-from werkzeug.security import generate_password_hash, check_password_hash  # Utilidades para hashear y verificar contraseñas
-from app.utils import generate_token, confirm_token  # Funciones utilitarias para manejo de tokens (recuperación de contraseña, etc.)
-from werkzeug.utils import secure_filename  # Para guardar archivos de forma segura
-import os  # Manejo de rutas y sistema operativo
-from flask import current_app  # Acceso a la app actual de Flask
-import networkx as nx  # Usado solo en grafo_productos
-from app.ubicacion import obtener_estructura_ubicacion  # Usado en APIs de ubicación
-# --- API para menús jerárquicos ---
-from app.taxonomia import obtener_taxonomia_catalogo  # Usado en APIs de taxonomía
+# =================== Importaciones estándar ===================
+import os  # Para interactuar con el sistema operativo: manejo de rutas de archivos y variables de entorno.
+from datetime import datetime  # Para trabajar con fechas y horas (e.g., creación de órdenes, timestamps).
+import requests  # Para realizar peticiones HTTP a APIs externas (como la del chatbot).
+import networkx as nx  # Librería para la creación, manipulación y estudio de grafos complejos.
+import pandas as pd  # Para análisis y manipulación de datos, especialmente en los módulos de analytics.
+
+# =================== Importaciones de terceros (Framework y Extensiones) ===================
+from flask import (
+    render_template,  # Para renderizar plantillas HTML.
+    request,          # Para acceder a los datos de las peticiones entrantes (formularios, JSON).
+    redirect,         # Para redirigir al usuario a otra URL.
+    url_for,          # Para construir URLs para las rutas de la aplicación.
+    flash,            # Para mostrar mensajes temporales al usuario (e.g., 'Login exitoso').
+    session,          # Para almacenar datos de la sesión del usuario.
+    send_file,        # Para enviar archivos estáticos desde el servidor.
+    jsonify,          # Para convertir objetos de Python a formato JSON para las respuestas de la API.
+    current_app       # Proxy al objeto de la aplicación actual.
+)
+from flask_login import current_user, login_required, login_user  # Para gestionar la autenticación y sesiones de usuario.
+from flask_mail import Message  # Para crear objetos de mensaje para el envío de correos.
+from werkzeug.security import generate_password_hash, check_password_hash  # Para hashear y verificar contraseñas de forma segura.
+from werkzeug.utils import secure_filename  # Para asegurar que los nombres de archivo subidos sean seguros.
+from dotenv import load_dotenv  # Para cargar variables de entorno desde un archivo .env.
+
+# =================== Importaciones locales (Módulos de AgroGrid) ===================
+from app import app, mail, db  # Importa la instancia de la app, de mail y de la BD desde el paquete principal.
+from app.models import (  # Importa todos los modelos de la base de datos para interactuar con ellos.
+    Usuario, Producto, Categoria, Subcategoria, Carrito, Vehiculo,
+    Testimonio, Orden, DetalleCarrito, OrdenItem, Viaje
+)
+from app.token_utils import generate_token, confirm_token  # Utilidades para generar y confirmar tokens (e.g., para reset de contraseña).
+from app.grafo_transporte import grafo_cantonal, dijkstra  # El grafo de transporte y el algoritmo para calcular rutas.
+from app.ubicacion import obtener_estructura_ubicacion  # Lógica para obtener la jerarquía de ubicaciones.
+from app.taxonomia import obtener_taxonomia_catalogo  # Lógica para obtener la jerarquía de categorías de productos.
+from app.analytics import calcular_ventas_agregadas  # Funciones para realizar análisis de datos de ventas.
+from app.chatbot_prompts import SYSTEM_PROMPT_AGROGRID, MAX_TOKENS_DEFAULT  # Constantes y prompts para el chatbot.
+from app.chatbot_knowledge import buscar_respuesta_concreta  # Lógica para buscar en la base de conocimiento del chatbot.
+
+# =================== Rutas y lógica ===================
 
 @app.route('/api/categorias')
 def api_categorias():
@@ -104,6 +128,113 @@ def api_calcular_transporte():
 
 # Incluye home, about, explore, catálogo, etc.
 
+
+@app.route('/centro_ayuda')
+def centro_ayuda():
+    user = current_user if current_user.is_authenticated else None
+    user_type = getattr(current_user, 'user_type', None) if current_user.is_authenticated else None
+    return render_template('centro_ayuda.html', user=user, user_type=user_type)
+
+@app.route('/blog')
+def blog():
+    user = current_user if current_user.is_authenticated else None
+    user_type = getattr(current_user, 'user_type', None) if current_user.is_authenticated else None
+    return render_template('blog.html', user=user, user_type=user_type)
+
+@app.route('/faq')
+def faq():
+    user = current_user if current_user.is_authenticated else None
+    user_type = getattr(current_user, 'user_type', None) if current_user.is_authenticated else None
+    return render_template('faq.html', user=user, user_type=user_type)
+
+@app.route('/testimonios')
+def testimonios():
+    from app.models import Testimonio
+    todos_los_testimonios = Testimonio.query.order_by(Testimonio.fecha_creacion.desc()).all()
+    user = current_user if current_user.is_authenticated else None
+    user_type = getattr(current_user, 'user_type', None) if current_user.is_authenticated else None
+    return render_template('testimonios.html', user=user, user_type=user_type, testimonios=todos_los_testimonios)
+
+@app.route('/noticias')
+def noticias():
+    user = current_user if current_user.is_authenticated else None
+    user_type = getattr(current_user, 'user_type', None) if current_user.is_authenticated else None
+    return render_template('noticias.html', user=user, user_type=user_type)
+
+@app.route('/comprador/calificar_pedido/<int:pedido_id>', methods=['GET', 'POST'])
+@login_required
+def calificar_pedido(pedido_id):
+    pedido = Orden.query.get_or_404(pedido_id)
+    puede_calificar = False
+    calificacion_actual = None
+    # Solo el comprador dueño y entregado puede calificar (usando el estado real del viaje)
+    viaje = getattr(pedido, 'viaje', None)
+    estado_viaje = viaje.estado if viaje else pedido.estado
+    # Inicializar transportista y vehiculo como None para evitar UnboundLocalError
+    transportista = None
+    vehiculo = None
+    # Obtener datos del transportista y vehículo (si existen)
+    if viaje and viaje.transportista:
+        transportista = {
+            'nombre': viaje.transportista.name,
+            'email': viaje.transportista.email,
+            'telefono': viaje.transportista.phone
+        }
+    if viaje and hasattr(viaje, 'vehiculo') and viaje.vehiculo:
+        vehiculo = viaje.vehiculo
+    else:
+        # Fallback: buscar vehículo por transportista si es único
+        if viaje and viaje.transportista_id:
+            from app.models import Vehiculo
+            vehiculos = Vehiculo.query.filter_by(transportista_id=viaje.transportista_id).all()
+            if len(vehiculos) == 1:
+                vehiculo = vehiculos[0]
+    calificacion_actual = pedido.calificacion if hasattr(pedido, 'calificacion') else None
+    # Solo el comprador dueño y entregado puede calificar, y solo si no ha calificado antes
+    if pedido.comprador_id == current_user.id and estado_viaje == 'entregado' and not calificacion_actual:
+        puede_calificar = True
+        if request.method == 'POST':
+            # Relee desde la base por seguridad
+            pedido_actual = Orden.query.get(pedido.id)
+            if pedido_actual.calificacion is not None:
+                flash('Este pedido ya fue calificado. No puedes calificar nuevamente.', 'warning')
+                return redirect(url_for('calificar_pedido', pedido_id=pedido.id))
+            calif = request.form.get('calificacion', type=int)
+            if calif and 1 <= calif <= 5:
+                pedido_actual.calificacion = calif
+                if viaje:
+                    viaje.calificacion = calif
+                db.session.commit()
+                flash('¡Gracias por tu calificación!', 'success')
+                return redirect(url_for('perfil_comprador'))
+            else:
+                flash('Selecciona una calificación válida.', 'warning')
+    else:
+        puede_calificar = False
+    # Pasar el estado real del viaje al template
+    return render_template('comprador/calificar_pedido.html', pedido=pedido, puede_calificar=puede_calificar, calificacion_actual=calificacion_actual, transportista=transportista, vehiculo=vehiculo, estado_real=estado_viaje)
+    # Obtener datos del transportista y vehículo (si existen)
+    viaje = getattr(pedido, 'viaje', None)
+    transportista = None
+    vehiculo = None
+    if viaje and viaje.transportista:
+        transportista = {
+            'nombre': viaje.transportista.name,
+            'email': viaje.transportista.email,
+            'telefono': viaje.transportista.phone
+        }
+    if viaje and hasattr(viaje, 'vehiculo') and viaje.vehiculo:
+        vehiculo = viaje.vehiculo
+    else:
+        # Fallback: buscar vehículo por transportista si es único
+        if transportista:
+            from app.models import Vehiculo
+            vehiculos = Vehiculo.query.filter_by(transportista_id=viaje.transportista_id).all()
+            if len(vehiculos) == 1:
+                vehiculo = vehiculos[0]
+    return render_template('comprador/calificar_pedido.html', pedido=pedido, puede_calificar=puede_calificar, calificacion_actual=calificacion_actual, transportista=transportista, vehiculo=vehiculo)
+
+
 @app.route('/api/taxonomia/catalogo')
 def api_taxonomia_catalogo():
     """
@@ -119,9 +250,31 @@ def index():
     - Request: Ninguno
     - Response: Renderiza index.html
     """
-    user = session.get('user')
-    user_type = session.get('user_type')
-    return render_template('index.html', user=user, user_type=user_type)
+    from app.models import Testimonio
+    testimonios = Testimonio.query.order_by(Testimonio.fecha_creacion.desc()).limit(6).all()
+    user = current_user if current_user.is_authenticated else None
+    user_type = getattr(current_user, 'user_type', None) if current_user.is_authenticated else None
+    return render_template('index.html', user=user, user_type=user_type, testimonios=testimonios)
+
+@app.route('/eliminar_testimonio/<int:testimonio_id>', methods=['POST'])
+def eliminar_testimonio(testimonio_id):
+    from app.models import Testimonio
+    t = Testimonio.query.get(testimonio_id)
+    if t:
+        db.session.delete(t)
+        db.session.commit()
+        flash('Testimonio eliminado.', 'success')
+    else:
+        flash('Testimonio no encontrado.', 'danger')
+    return redirect(url_for('testimonios'))
+
+@app.route('/eliminar_todos_testimonios', methods=['POST'])
+def eliminar_todos_testimonios():
+    from app.models import Testimonio
+    Testimonio.query.delete()
+    db.session.commit()
+    flash('Todos los testimonios han sido eliminados.', 'success')
+    return redirect(url_for('testimonios'))
 
 @app.route('/about')
 def about():
@@ -383,6 +536,47 @@ def perfil_agricultor():
         .all()
     )
 
+    # Solo para la sección de Total General: datos para gráfica agrupada por semana, mes y día
+    def make_barplot_series(dic):
+        if not dic:
+            return {'labels': [], 'data': []}
+        keys = list(dic.keys())
+        vals = list(dic.values())
+        return {'labels': keys, 'data': vals}
+
+    # Día: agregar agrupación diaria
+    df = None
+    try:
+        from app.analytics import calcular_ventas_agregadas
+        # Reutilizar ventas_totales_data ya calculado
+        if 'ventas_totales_data' in locals():
+            df = ventas_totales_data.get('df')
+        if df is None:
+            # reconstruir df si no existe
+            orden_items = (
+                db.session.query(OrdenItem, Orden)
+                .join(Orden, OrdenItem.orden_id == Orden.id)
+                .filter(OrdenItem.producto_id.in_(producto_ids))
+                .all()
+            )
+            fechas = []
+            totales = []
+            for item, orden in orden_items:
+                fechas.append(orden.creado_en)
+                totales.append(item.cantidad * item.precio_unitario)
+            df = pd.DataFrame({'fecha': fechas, 'total': totales})
+        df['dia'] = df['fecha'].dt.strftime('%Y-%m-%d')
+        por_dia = df.groupby('dia')['total'].sum().to_dict()
+    except Exception:
+        por_dia = {}
+
+    ventas_totales_series = {
+        'semana': make_barplot_series(ventas_totales_data.get('por_semana')),
+        'mes': make_barplot_series(ventas_totales_data.get('por_mes')),
+        'dia': make_barplot_series(por_dia),
+        'anio': make_barplot_series(ventas_totales_data.get('por_anio')),
+    }
+
     return render_template('agricultor/perfil_agricultor.html',
                            user=usuario,
                            productos=productos_del_agricultor,
@@ -390,7 +584,8 @@ def perfil_agricultor():
                            ventas_totales=ventas_totales_calculadas,
                            numero_productos=numero_productos_publicados,
                            vistas_productos=vistas_a_productos,
-                           user_type=session['user_type'])
+                           user_type=session['user_type'],
+                           ventas_totales_series=ventas_totales_series)
 
 @app.route('/perfil/comprador')
 def perfil_comprador():
@@ -465,6 +660,7 @@ def perfil_comprador():
         estado_viaje = pedido.viaje.estado if hasattr(pedido, 'viaje') and pedido.viaje else pedido.estado
         viaje_id = pedido.viaje.id if hasattr(pedido, 'viaje') and pedido.viaje else None
         pedidos_lista.append({
+            'id': pedido.id,
             'fecha': pedido.creado_en,
             'productos': productos,
             'total': pedido.total,
@@ -478,13 +674,37 @@ def perfil_comprador():
     favoritos_count = len(favoritos)
     
     pedidos_realizados = len(pedidos_lista)
+
+    # --- AGREGACIÓN DE COMPRAS PARA PANEL ---
+    # Preparar lista de (OrdenItem, Orden) para todas las órdenes del comprador
+    orden_items = []
+    producto_map = {}
+    for pedido in pedidos:
+        items = OrdenItem.query.filter_by(orden_id=pedido.id).all()
+        for item in items:
+            orden_items.append((item, pedido))
+            # Mapear producto_id a nombre (si existe)
+            if item.producto_id and item.producto_id not in producto_map:
+                producto = Producto.query.get(item.producto_id)
+                if producto:
+                    producto_map[item.producto_id] = producto.nombre
+    from app.analytics import calcular_compras_agregadas
+    compras_agregadas = calcular_compras_agregadas(orden_items, producto_map)
+
+    # Prepara listas top 5 para el template (ordenadas)
+    top_5_gasto = sorted(compras_agregadas['por_producto_gasto'].items(), key=lambda x: x[1], reverse=True)[:5]
+    top_5_cantidad = sorted(compras_agregadas['por_producto_cantidad'].items(), key=lambda x: x[1], reverse=True)[:5]
+
     return render_template('comprador/perfil_comprador.html',
                            user=usuario,
                            user_type=session['user_type'],
                            pedidos=pedidos_lista,
                            favoritos=favoritos,
                            favoritos_count=favoritos_count,
-                           pedidos_realizados=pedidos_realizados)
+                           pedidos_realizados=pedidos_realizados,
+                           compras_agregadas=compras_agregadas,
+                           top_5_gasto=top_5_gasto,
+                           top_5_cantidad=top_5_cantidad)
 
 # --- API para info de viaje para modal del comprador ---
 
@@ -544,9 +764,138 @@ def perfil_transportista():
         return redirect(url_for('login'))
 
     usuario = Usuario.query.filter_by(email=session['user']).first()
+    vehiculos = Vehiculo.query.filter_by(transportista_id=usuario.id).all() if usuario else []
+    # Calcular promedio de calificaciones de viajes entregados
+    from app.models import Viaje
+    viajes_entregados = Viaje.query.filter_by(transportista_id=usuario.id, estado='entregado').all() if usuario else []
+    calificaciones = [v.calificacion for v in viajes_entregados if v.calificacion is not None]
+    if calificaciones:
+        promedio = round(sum(calificaciones)/len(calificaciones), 2)
+    else:
+        promedio = 'N/A'
+    from app.analytics import generar_barplot_envios_entregados, numpy_agrupa_entregas_por_periodo, numpy_agrupa_ganancias_por_periodo
+    fechas_entrega = [v.fecha_entrega for v in viajes_entregados if v.fecha_entrega]
+    barplot_filename = generar_barplot_envios_entregados(fechas_entrega)
+    barplot_envios_url = url_for('static', filename=barplot_filename)
+    # Calcula los datos para el JS interactivo
+    from datetime import datetime, timedelta
+    now = datetime.utcnow()
+    semana = sum(1 for f in fechas_entrega if f >= now - timedelta(days=7))
+    mes = sum(1 for f in fechas_entrega if f >= now - timedelta(days=30))
+    anio = sum(1 for f in fechas_entrega if f >= now - timedelta(days=365))
+    total = len(fechas_entrega)
+    barplot_data = {'Semana': semana, 'Mes': mes, 'Año': anio, 'Total': total}
+
+    # Series temporales para gráfico interactivo de entregas
+    etiquetas_sem, datos_sem = numpy_agrupa_entregas_por_periodo(fechas_entrega, 'semana', 12)
+    etiquetas_mes, datos_mes = numpy_agrupa_entregas_por_periodo(fechas_entrega, 'mes', 12)
+    etiquetas_ano, datos_ano = numpy_agrupa_entregas_por_periodo(fechas_entrega, 'año', 12)
+    barplot_series = {
+        'semana': {'labels': etiquetas_sem, 'data': datos_sem},
+        'mes': {'labels': etiquetas_mes, 'data': datos_mes},
+        'año': {'labels': etiquetas_ano, 'data': datos_ano}
+    }
+
+    # Series temporales para gráfico de ganancias
+    # Si el campo costo está vacío, intenta obtenerlo desde la orden asociada
+    fechas_y_montos = []
+    for v in viajes_entregados:
+        if v.fecha_entrega:
+            monto = v.costo
+            if monto is None and hasattr(v, 'orden') and v.orden:
+                # Prioriza costo_envio, si no existe usa total
+                monto = getattr(v.orden, 'costo_envio', None)
+                if monto is None:
+                    monto = getattr(v.orden, 'total', None)
+            if monto is not None:
+                fechas_y_montos.append((v.fecha_entrega, monto))
+    et_sem_g, dat_sem_g = numpy_agrupa_ganancias_por_periodo(fechas_y_montos, 'semana', 12)
+    et_mes_g, dat_mes_g = numpy_agrupa_ganancias_por_periodo(fechas_y_montos, 'mes', 12)
+    et_ano_g, dat_ano_g = numpy_agrupa_ganancias_por_periodo(fechas_y_montos, 'año', 12)
+    barplot_ganancias_series = {
+        'semana': {'labels': et_sem_g, 'data': dat_sem_g},
+        'mes': {'labels': et_mes_g, 'data': dat_mes_g},
+        'año': {'labels': et_ano_g, 'data': dat_ano_g}
+    }
+
+    envios_realizados = len(viajes_entregados)
     return render_template('transportista/perfil_transportista.html',
                            user=usuario,
-                           user_type=session['user_type'])
+                           user_type=session['user_type'],
+                           vehiculos=vehiculos,
+                           calificacion=promedio,
+                           envios_realizados=envios_realizados,
+                           barplot_envios_url=barplot_envios_url,
+                           barplot_data=barplot_data,
+                           barplot_series=barplot_series,
+                           barplot_ganancias_series=barplot_ganancias_series or {})
+
+# --- Eliminar vehículo ---
+@app.route('/perfil/transportista/vehiculo/<int:vehiculo_id>/eliminar', methods=['POST'])
+@login_required
+def eliminar_vehiculo(vehiculo_id):
+    vehiculo = Vehiculo.query.get_or_404(vehiculo_id)
+    if current_user.user_type != 'transportista' or vehiculo.transportista_id != current_user.id:
+        flash('No autorizado para eliminar este vehículo.', 'danger')
+        return redirect(url_for('perfil_transportista'))
+    # Eliminar imagen si existe
+    if vehiculo.imagen_url:
+        import os
+        img_path = os.path.join(current_app.root_path, 'static', vehiculo.imagen_url)
+        if os.path.exists(img_path):
+            try:
+                os.remove(img_path)
+            except Exception:
+                pass
+    db.session.delete(vehiculo)
+    db.session.commit()
+    if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+        return jsonify({'success': True})
+    flash('Vehículo eliminado correctamente.', 'success')
+    return redirect(url_for('perfil_transportista'))
+
+# --- Registro de vehículo ---
+@app.route('/perfil/transportista/vehiculo/agregar', methods=['POST'])
+@login_required
+def agregar_vehiculo():
+    if current_user.user_type != 'transportista':
+        flash('No autorizado.', 'danger')
+        return redirect(url_for('perfil_transportista'))
+    placa = request.form.get('placa', '').strip().upper()
+    tipo = request.form.get('tipo', '').strip()
+    capacidad = request.form.get('capacidad', '').strip()
+    descripcion = request.form.get('descripcion', '').strip()
+    imagen_url = None
+    # Manejo de imagen
+    imagen = request.files.get('imagen')
+    if imagen and imagen.filename:
+        from werkzeug.utils import secure_filename
+        filename = secure_filename(imagen.filename)
+        uploads_dir = os.path.join(current_app.root_path, 'static', 'uploads', 'vehiculos')
+        os.makedirs(uploads_dir, exist_ok=True)
+        filepath = os.path.join(uploads_dir, filename)
+        imagen.save(filepath)
+        imagen_url = f"uploads/vehiculos/{filename}"
+    if not placa or not tipo:
+        flash('La placa y el tipo son obligatorios.', 'warning')
+        return redirect(url_for('perfil_transportista'))
+    # Validar placa única por transportista
+    existe = Vehiculo.query.filter_by(transportista_id=current_user.id, placa=placa).first()
+    if existe:
+        flash('Ya has registrado un vehículo con esa placa.', 'warning')
+        return redirect(url_for('perfil_transportista'))
+    vehiculo = Vehiculo(
+        transportista_id=current_user.id,
+        placa=placa,
+        tipo=tipo,
+        capacidad=capacidad,
+        descripcion=descripcion,
+        imagen_url=imagen_url
+    )
+    db.session.add(vehiculo)
+    db.session.commit()
+    flash('Vehículo registrado correctamente.', 'success')
+    return redirect(url_for('perfil_transportista'))
 
 # =================== APIs de Viajes para Transportista ===================
 from app.models import Viaje, Orden
@@ -572,6 +921,12 @@ def api_viajes_pendientes():
                     productos.append(f"{item.cantidad} {prod.unidad or ''} {prod.nombre}")
         comprador = orden.comprador_id if orden else None
         comprador_nombre = Usuario.query.get(comprador).name if comprador else ''
+        # Determinar valor_envio
+        valor_envio = v.costo
+        if valor_envio is None and orden:
+            valor_envio = getattr(orden, 'costo_envio', None)
+            if valor_envio is None:
+                valor_envio = getattr(orden, 'total', None)
         resultado.append({
             'id': v.id,
             'origen': v.origen or '',
@@ -579,6 +934,7 @@ def api_viajes_pendientes():
             'productos': ', '.join(productos),
             'agricultor': agricultor or '',
             'comprador': comprador_nombre,
+            'valor_envio': valor_envio
         })
     return jsonify(resultado)
 
@@ -597,12 +953,19 @@ def api_viajes_asignados():
                 prod = item.producto
                 if prod:
                     productos.append(f"{item.cantidad} {prod.unidad or ''} {prod.nombre}")
+        # Determinar valor_envio
+        valor_envio = v.costo
+        if valor_envio is None and orden:
+            valor_envio = getattr(orden, 'costo_envio', None)
+            if valor_envio is None:
+                valor_envio = getattr(orden, 'total', None)
         resultado.append({
             'id': v.id,
             'origen': v.origen or '',
             'destino': v.destino or '',
             'productos': ', '.join(productos),
-            'estado': v.estado
+            'estado': v.estado,
+            'valor_envio': valor_envio
         })
     return jsonify(resultado)
 
@@ -896,6 +1259,7 @@ def actualizar_carrito():
                     detalle.cantidad = nueva_cantidad
                     cambios = True
 
+
     if cambios:
         db.session.commit()
         flash('Carrito actualizado correctamente.', 'success')
@@ -924,7 +1288,13 @@ def confirmar_compra():
     total = sum(item.cantidad * (item.producto.precio or 0) for item in items)
     costo_envio = session.get('costo_envio', 0)
     total_final = total + costo_envio
-    return render_template('confirmar_compra.html', items=items, total=total, costo_envio=costo_envio, total_final=total_final)
+    return render_template(
+        'confirmar_compra.html',
+        items=items,
+        total=total,
+        costo_envio=costo_envio,
+        total_final=total_final
+    )
 
 @app.route('/api/guardar_envio', methods=['POST'])
 def guardar_envio():
@@ -934,6 +1304,138 @@ def guardar_envio():
         session['costo_envio'] = float(costo_envio)
         return jsonify({'success': True})
     return jsonify({'success': False, 'error': 'No se recibió costo_envio'}), 400
+
+# --- Login admin ---
+@app.route('/admin/login', methods=['GET', 'POST'])
+def admin_login():
+    if request.method == 'POST':
+        user = request.form.get('user')
+        pw = request.form.get('password')
+        if user == 'admin' and pw == 'admin123':
+            session['is_admin'] = True
+            return redirect(url_for('admin_panel'))
+        else:
+            flash('Credenciales incorrectas', 'danger')
+    return render_template('admin_login.html')
+
+# --- Benchmark Sorts solo para admin ---
+@app.route('/admin/panel', methods=['GET', 'POST'])
+def admin_panel():
+    if not session.get('is_admin'):
+        return redirect(url_for('admin_login'))
+    from app.models import Orden
+    from app.utils.sorting import benchmark_sorts
+    from app.analytics import numpy_agrupa_ganancias_por_periodo
+    import random
+
+    # --- DATOS REALES PARA BENCHMARK ---
+    benchmark_tipo = request.form.get('benchmark_tipo') if request.method == 'POST' else request.args.get('benchmark_tipo', 'montos')
+    lista_raw = request.form.get('lista', '') if request.method == 'POST' else ''
+    lista_real = []
+    tipo_dato = 'numeros'
+    if benchmark_tipo == 'productos':
+        productos = Producto.query.order_by(Producto.nombre).all()
+        lista_real = [p.nombre for p in productos]
+        tipo_dato = 'productos'
+    elif benchmark_tipo == 'usuarios':
+        usuarios = Usuario.query.order_by(Usuario.name).all()
+        lista_real = [u.name for u in usuarios]
+        tipo_dato = 'usuarios'
+    else:
+        ordenes = Orden.query.filter(Orden.estado.in_(['entregado', 'pagado', 'finalizado'])).all()
+        lista_real = [float(o.total) for o in ordenes if o.total is not None]
+        tipo_dato = 'numeros'
+    # Si el usuario ingresó una lista manual, úsala
+    if lista_raw:
+        try:
+            if tipo_dato == 'numeros':
+                lista = [float(x.strip()) for x in lista_raw.split(',') if x.strip()]
+            else:
+                lista = [x.strip() for x in lista_raw.split(',') if x.strip()]
+        except Exception:
+            lista = lista_real
+    else:
+        lista = lista_real
+    if len(lista) < 2:
+        lista = [random.randint(10, 100) for _ in range(10)]
+        tipo_dato = 'numeros'
+    results = benchmark_sorts(lista, tipo_dato=tipo_dato)
+    lista_real_str = ', '.join(str(x) for x in lista)
+
+    # --- GRÁFICAS DE VENTAS Y GANANCIAS ---
+    # Agrupa ventas por periodo usando fechas y montos de las órdenes
+    fechas_y_montos = [(o.creado_en, float(o.total)) for o in ordenes if o.creado_en and o.total is not None]
+    labels_mes, ventas_mes = numpy_agrupa_ganancias_por_periodo(fechas_y_montos, 'mes', 12)
+    labels_sem, ventas_sem = numpy_agrupa_ganancias_por_periodo(fechas_y_montos, 'semana', 12)
+    labels_anio, ventas_anio = numpy_agrupa_ganancias_por_periodo(fechas_y_montos, 'año', 12)
+    # Ganancias: 1% de las ventas
+    ganancias_mes = [round(v*0.01, 2) for v in ventas_mes]
+    ganancias_sem = [round(v*0.01, 2) for v in ventas_sem]
+    ganancias_anio = [round(v*0.01, 2) for v in ventas_anio]
+    ventas_series = {
+        'mes': {'labels': labels_mes, 'ventas': ventas_mes, 'ganancias': ganancias_mes},
+        'semana': {'labels': labels_sem, 'ventas': ventas_sem, 'ganancias': ganancias_sem},
+        'año': {'labels': labels_anio, 'ventas': ventas_anio, 'ganancias': ganancias_anio},
+    }
+    # --- KPIs ---
+    # Ventas y ganancias: usa la lista real de montos de órdenes
+    if benchmark_tipo == 'montos' or tipo_dato == 'numeros':
+        ventas_lista = [x for x in lista_real if isinstance(x, (int, float))]
+        kpi_ventas = round(sum(ventas_lista), 2)
+        kpi_ordenes = len(ventas_lista)
+    else:
+        # Si está en benchmark de productos/usuarios, calcula ventas y órdenes directamente
+        ordenes_total = Orden.query.filter(Orden.estado.in_(['entregado', 'pagado', 'finalizado'])).all()
+        kpi_ventas = round(sum([float(o.total) for o in ordenes_total if o.total is not None]), 2)
+        kpi_ordenes = len(ordenes_total)
+    kpi_ganancias = round(kpi_ventas * 0.01, 2)
+    from app.models import Usuario, Producto
+    kpi_usuarios = Usuario.query.count()
+    kpi_productos = Producto.query.count()
+
+    # --- Actividad reciente ---
+    # Últimas 5 órdenes
+    ult_ordenes = Orden.query.order_by(Orden.creado_en.desc()).limit(5).all()
+    ult_usuarios = Usuario.query.order_by(Usuario.id.desc()).limit(5).all()
+    ult_productos = Producto.query.order_by(Producto.id.desc()).limit(5).all()
+    actividad_reciente = []
+    for o in ult_ordenes:
+        actividad_reciente.append({
+            'fecha': o.creado_en.strftime('%Y-%m-%d %H:%M'),
+            'tipo': 'Nueva orden',
+            'usuario': o.comprador_id,
+            'detalle': f'Total: ${o.total:.2f}'
+        })
+    for u in ult_usuarios:
+        actividad_reciente.append({
+            'fecha': u.id,  # Debería ser fecha de registro si está disponible
+            'tipo': 'Nuevo usuario',
+            'usuario': u.name,
+            'detalle': u.email
+        })
+    for p in ult_productos:
+        actividad_reciente.append({
+            'fecha': p.id,  # Debería ser fecha de alta si está disponible
+            'tipo': 'Nuevo producto',
+            'usuario': getattr(p.usuario, 'name', 'N/A'),
+            'detalle': p.nombre
+        })
+    actividad_reciente = sorted(actividad_reciente, key=lambda x: str(x['fecha']), reverse=True)[:10]
+
+    # Usar la lista mostrada en el input (manual o real)
+    lista_raw_final = lista_raw if lista_raw else ','.join(str(x) for x in lista)
+    return render_template(
+        'admin_panel.html',
+        results=results,
+        lista_raw=lista_raw_final,
+        ventas_series=ventas_series,
+        kpi_ventas=kpi_ventas,
+        kpi_ganancias=kpi_ganancias,
+        kpi_ordenes=kpi_ordenes,
+        kpi_usuarios=kpi_usuarios,
+        kpi_productos=kpi_productos,
+        actividad_reciente=actividad_reciente
+    )
 
 # --- Finalizar compra (checkout) ---
 @app.route('/carrito/finalizar', methods=['POST'])
@@ -1028,12 +1530,18 @@ def finalizar_compra():
 # Página de exploración y filtros de productos.
 @app.route('/productos')
 def productos():
+    from app.utils.sorting import quicksort, mergesort
+    from app.models import OrdenItem, Orden
+    import logging
     region = request.args.get('region', '')
     provincia = request.args.get('provincia', '')
     tipo = request.args.get('tipo', '')
     nombre = request.args.get('nombre', '')
     precio_min = request.args.get('precio_min', type=float)
     precio_max = request.args.get('precio_max', type=float)
+    sort = request.args.get('sort', 'recent')  # 'sold', 'viewed', 'recent'
+    sort_algo = request.args.get('sort_algo', 'quicksort')  # 'quicksort', 'mergesort'
+
     query = Producto.query
     if region:
         query = query.filter_by(region=region)
@@ -1048,13 +1556,58 @@ def productos():
     if precio_max is not None:
         query = query.filter(Producto.precio <= precio_max)
     productos = query.all()
+
+    # --- Sorting  ---
+    def sort_products(productos, sort, sort_algo):
+        if sort == 'sold':
+            producto_ids = [p.id for p in productos]
+            ventas = {pid: 0 for pid in producto_ids}
+            orden_items = (
+                OrdenItem.query.filter(OrdenItem.producto_id.in_(producto_ids))
+                .all()
+            )
+            for item in orden_items:
+                ventas[item.producto_id] += item.cantidad
+           
+            productos_with_sales = [(p, ventas.get(p.id, 0)) for p in productos]
+            
+            key_fn = lambda x: -x[1]
+            arr = productos_with_sales
+            if sort_algo == 'mergesort':
+                sorted_arr = mergesort(arr, key=key_fn)
+            else:
+                sorted_arr = quicksort(arr, key=key_fn)
+            productos_sorted = [p for p, _ in sorted_arr]
+            return productos_sorted
+        elif sort == 'viewed':
+            arr = productos[:]
+            key_fn = lambda p: -(getattr(p, 'vistas', 0) or 0)
+            if sort_algo == 'mergesort':
+                arr = mergesort(arr, key=key_fn)
+            else:
+                arr = quicksort(arr, key=key_fn)
+            return arr
+        else:  
+            arr = productos[:]
+            key_fn = lambda p: -(getattr(p, 'id', 0) or 0)  
+            if sort_algo == 'mergesort':
+                arr = mergesort(arr, key=key_fn)
+            else:
+                arr = quicksort(arr, key=key_fn)
+            return arr
+
+    import time
+    sort_time = 0
+    t0 = time.time()
+    productos = sort_products(productos, sort, sort_algo)
+    sort_time = (time.time() - t0) * 1000  # ms
+
     regiones = [r[0] for r in db.session.query(Producto.region).distinct().all()]
     provincias = [p[0] for p in db.session.query(Producto.provincia).distinct().all()]
     tipos = [t[0] for t in db.session.query(Producto.tipo).distinct().all()]
 
     favoritos_ids = []
-    import logging
-    favoritos_ids = []
+    recomendados = []
     if current_user.is_authenticated and getattr(current_user, 'user_type', None) == 'comprador':
         # Forzar acceso a la relación del modelo para evitar shadowing
         try:
@@ -1063,9 +1616,53 @@ def productos():
         except Exception as e:
             logging.error(f"Error obteniendo favoritos: {e}, tipo: {type(current_user.favoritos)}")
             favoritos_ids = []
-    return render_template('productos.html', productos=productos, regiones=regiones, provincias=provincias, tipos=tipos, user=current_user if current_user.is_authenticated else None, favoritos_ids=favoritos_ids )
+        # Usar lógica de recomendación separada
+        from app.utils.recomendador import recomendar_productos_para_usuario
+        recomendados = recomendar_productos_para_usuario(current_user.id, max_n=10)
+    return render_template(
+        'productos.html',
+        productos=productos,
+        regiones=regiones,
+        provincias=provincias,
+        tipos=tipos,
+        user=current_user if current_user.is_authenticated else None,
+        favoritos_ids=favoritos_ids,
+        recomendados=recomendados,
+        sort=sort,
+        sort_algo=sort_algo,
+        sort_time=sort_time
+    )
 
 # =================== APIs y Analítica ===================
+
+@app.route('/api/ganancias_transportista')
+@login_required
+def api_ganancias_transportista():
+    if current_user.user_type != 'transportista':
+        return jsonify({'error': 'No autorizado'}), 403
+    from app.models import Viaje
+    from app.analytics import numpy_agrupa_ganancias_por_periodo
+    usuario = current_user
+    viajes_entregados = Viaje.query.filter_by(transportista_id=usuario.id, estado='entregado').all()
+    fechas_y_montos = []
+    for v in viajes_entregados:
+        if v.fecha_entrega:
+            monto = v.costo
+            if monto is None and hasattr(v, 'orden') and v.orden:
+                monto = getattr(v.orden, 'costo_envio', None)
+                if monto is None:
+                    monto = getattr(v.orden, 'total', None)
+            if monto is not None:
+                fechas_y_montos.append((v.fecha_entrega, monto))
+    et_sem_g, dat_sem_g = numpy_agrupa_ganancias_por_periodo(fechas_y_montos, 'semana', 12)
+    et_mes_g, dat_mes_g = numpy_agrupa_ganancias_por_periodo(fechas_y_montos, 'mes', 12)
+    et_ano_g, dat_ano_g = numpy_agrupa_ganancias_por_periodo(fechas_y_montos, 'año', 12)
+    return jsonify({
+        'semana': {'labels': et_sem_g, 'data': dat_sem_g},
+        'mes': {'labels': et_mes_g, 'data': dat_mes_g},
+        'año': {'labels': et_ano_g, 'data': dat_ano_g}
+    })
+
 # APIs para grafo, vistas, historial y ventas totales.
 @app.route('/api/grafo_productos')
 def api_grafo_productos():
@@ -1252,6 +1849,61 @@ def api_productos_por_subcategoria(subcat_id):
     from app.models import Producto
     productos = Producto.query.filter_by(subcategoria_id=subcat_id).all()
     return jsonify([{'id': p.id, 'nombre': p.nombre} for p in productos])
+
+# =================== Chatbot Gridi ===================
+
+# Cargar variables de entorno (.env)
+load_dotenv()
+
+@app.route('/chatbot', methods=['POST'])
+def chatbot():
+    """
+    Endpoint para el chatbot Gridi usando la API de DeepSeek (tipo OpenAI compatible).
+    Recibe un mensaje del usuario, consulta DeepSeek y devuelve la respuesta generada.
+    """
+    data = request.get_json()
+    user_message = data.get('message', '')
+    if not user_message:
+        return jsonify({'response': 'Por favor, escribe tu pregunta.'}), 400
+
+    # Primero busca una respuesta concreta en la base de conocimientos
+    respuesta_concreta = buscar_respuesta_concreta(user_message)
+    if respuesta_concreta:
+        return jsonify({'response': respuesta_concreta})
+
+    # Configuración DeepSeek
+    api_key = os.getenv('DEEPSEEK_API_KEY')
+    if not api_key:
+        return jsonify({'response': 'No se encontró la API key de DeepSeek en el entorno.'}), 500
+
+    url = 'https://api.deepseek.com/v1/chat/completions'  
+    headers = {
+        'Authorization': f'Bearer {api_key}',
+        'Content-Type': 'application/json'
+    }
+    payload = {
+        "model": "deepseek-chat",  
+        "messages": [
+            {
+                "role": "system",
+                "content": SYSTEM_PROMPT_AGROGRID + " Responde SIEMPRE en español"
+            },
+            {"role": "user", "content": user_message}
+        ],
+        "max_tokens": MAX_TOKENS_DEFAULT
+    }
+    try:
+        response = requests.post(url, headers=headers, json=payload, timeout=60)
+        if response.ok:
+            data = response.json()
+            reply = data['choices'][0]['message']['content']
+            return jsonify({'response': reply})
+        else:
+            print('DeepSeek API error:', response.status_code, response.text)
+            return jsonify({'response': 'Ocurrió un problema al contactar la API de DeepSeek. Intenta más tarde.'}), 502
+    except Exception as e:
+        print('Exception al conectar con DeepSeek:', str(e))
+        return jsonify({'response': f'Error al contactar la API de DeepSeek: {str(e)}'}), 500
 
 # =================== Utilidades y Context Processors ===================
 # Inyección de contexto, endpoints auxiliares, pruebas.

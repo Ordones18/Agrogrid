@@ -1,5 +1,8 @@
-/* --- Estilos generales para las páginas de checkout --- */
+/*
+    ESTILOS PARA LA PÁGINA DE CHECKOUT (FINALIZAR COMPRA)
+*/
 
+/* Estilo base para el body de las páginas de checkout */
 body.checkout-page {
     min-height: 100vh;
     display: flex;
@@ -15,6 +18,7 @@ body.checkout-page {
 }
 
 
+/* FORMULARIO DE FINALIZACIÓN DE COMPRA */
 .finalizar-compra-form {
     width: 100%;
     max-width: 320px;
@@ -26,6 +30,7 @@ body.checkout-page {
     margin-top: 12px;
 }
 
+/* RESUMEN DEL CARRITO */
 .cart-summary {
     display: flex;
     flex-direction: column;
@@ -33,6 +38,7 @@ body.checkout-page {
     width: 100%;
 }
 
+/* TARJETA PRINCIPAL DEL CHECKOUT */
 .card.checkout-card {
     border-radius: 1.5rem;
     background: #f6fff7;
@@ -50,11 +56,13 @@ h1.checkout-success {
     
 }
 
+/* TEXTO SECUNDARIO (LEAD) */
 .checkout-lead {
     color: #38c172;
     font-size: 1.5rem;
 }
 
+/* BOTÓN PRINCIPAL DE ACCIÓN */
 .btn.checkout-btn {
     background: #38c172;
     border-color: #38c172;
@@ -70,17 +78,17 @@ h1.checkout-success {
 }
 
 
+/* ESTILOS RESPONSIVOS */
 @media (max-width: 600px) {
   /* Puedes agregar estilos responsivos aquí */
-}
-
-.card.checkout-card {
-padding: 1.2rem !important;
-}
-h1.checkout-success {
-font-size: 2rem;
-}
-.checkout-lead {
-font-size: 1.1rem;
+    .card.checkout-card {
+        padding: 1.2rem !important;
+    }
+    h1.checkout-success {
+        font-size: 2rem;
+    }
+    .checkout-lead {
+        font-size: 1.1rem;
+    }
 }
 

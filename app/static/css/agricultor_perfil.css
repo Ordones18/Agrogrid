@@ -1,3 +1,8 @@
+/*
+    ESTILOS PARA EL PANEL DE CONTROL DEL AGRICULTOR (PERFIL)
+*/
+
+/* VARIABLES CSS GLOBALES PARA ESTA SECCIÓN */
 :root {
     --light-gray-bg: #f9fafb;
     --text-color: #333;
@@ -10,14 +15,14 @@
     --spacing-xl: 2.5rem;
 }
 
-/* ======= Base ======= */
+/* ESTILOS BASE */
 body {
     background-color: var(--light-gray-bg, #f9fafb);
     color: var(--text-color, #333);
     font-family: 'Open Sans', sans-serif;
 }
 
-/* ======= Header ======= */
+/* ENCABEZADO DEL PANEL */
 .header {
     display: flex;
     justify-content: center;
@@ -47,14 +52,14 @@ body {
     align-items: center;
 }
 
-/* ======= Dashboard Layout ======= */
+/* DISEÑO GENERAL DEL PANEL (DASHBOARD) */
 .agricultor-dashboard.container {
     max-width: 1200px;
     margin-top: 0;
     padding: var(--spacing-md);
 }
 
-/* ======= Dashboard Header ======= */
+/* CABECERA DEL CONTENIDO DEL PANEL */
 .dashboard-header {
     margin-bottom: var(--spacing-xl);
     text-align: center;
@@ -66,7 +71,7 @@ body {
     margin-bottom: 0.5rem;
 }
 
-/* ======= Métricas ======= */
+/* SECCIÓN DE MÉTRICAS (KPIs) */
 .metrics-section {
     display: flex;
     gap: var(--spacing-md);
@@ -104,7 +109,7 @@ body {
     margin-top: 0.5rem;
 }
 
-/* ======= Tarjetas y Secciones ======= */
+/* ESTILOS GENERALES PARA TARJETAS Y SECCIONES */
 .card-style {
     background: var(--white-bg, #fff);
     border-radius: 12px;
@@ -112,6 +117,7 @@ body {
     padding: 2rem;
     margin-bottom: 0 !important;
 }
+/* Contenedor para el historial de ventas (acordeón) */
 .contenedor-historial {
   max-height: 0;
   overflow: hidden;
@@ -143,12 +149,13 @@ body {
     margin-right: 0.5rem;
 }
 
-/* ======= Formulario de Producto ======= */
+/* FORMULARIO PARA AÑADIR/EDITAR PRODUCTOS */
 
 .add-product-form {
     margin-top: -6rem;
 }
 
+/* Grupo de campos del formulario */
 .product-form .form-group {
     margin-bottom: var(--spacing-md);
 
@@ -209,12 +216,15 @@ body {
   background: #388e3c;
 }
 
-/* ======= Lista de Productos ======= */
+/* LISTA DE PRODUCTOS DEL AGRICULTOR */
+
+/* Rejilla (grid) para mostrar los productos */
 .my-products-list .products-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: var(--spacing-md);
 }
+/* Tarjeta individual para cada producto */
 .product-card {
   background: #fff;
   border: 1px solid var(--border-color, #e9e9e9);
@@ -265,6 +275,7 @@ body {
     gap: 0.5rem;
     justify-content: flex-end;
 }
+/* Botones de acción (editar, eliminar) en la tarjeta del producto */
 .product-actions .btn-edit,
 .product-actions .btn-delete {
     padding: 0.5rem 1rem;
@@ -292,7 +303,8 @@ body {
     background-color: #c82333;
 }
 
-/* ======= Estado vacío ======= */
+/* ESTADO VACÍO */
+/* Estilo para cuando no hay productos o ventas que mostrar */
 .empty-state {
     text-align: center;
     padding: 2rem;
@@ -300,7 +312,9 @@ body {
     font-style: italic;
 }
 
-/* ======= Tabla de Historial de Ventas ======= */
+/* TABLA DE HISTORIAL DE VENTAS */
+
+/* Contenedor de la tabla para permitir scroll horizontal en móvil */
 .orders-table-wrapper {
     overflow-x: auto;
     background: #f9fafb;
@@ -314,6 +328,7 @@ body {
 .orders-table-wrapper.abierto {
     display: block;
 }
+/* Estilos de la tabla de órdenes */
 .orders-table {
     width: 100%;
     border-collapse: separate;
@@ -372,6 +387,7 @@ body {
 }
 
 
+/* Estilos específicos para las columnas de la tabla de historial */
 .col-fecha {
   text-align: center !important;
   width: 20% !important;

@@ -1,8 +1,13 @@
-/* How It Works Section Styles */
+/*
+    ESTILOS PARA LA SECCIÓN 'CÓMO FUNCIONA'
+*/
+
+/* Contenedor principal de la sección */
 .how-it-works {
   padding: var(--spacing-xxl) 0;
 }
 
+/* Contenedor que alinea la imagen y la lista de pasos */
 .steps-container {
   display: flex;
   align-items: center;
@@ -10,10 +15,12 @@
   margin-top: var(--spacing-xl);
 }
 
+/* Contenedor para el contenido de texto (los pasos) */
 .steps-content {
   flex: 1;
 }
 
+/* Contenedor para la imagen ilustrativa */
 .steps-image {
   flex: 1;
   border-radius: var(--border-radius-lg);
@@ -32,10 +39,12 @@
   box-shadow: none;
 }
 
+/* Efecto de zoom en la imagen al pasar el cursor */
 .steps-image:hover img {
   transform: scale(1.05);
 }
 
+/* Estilo para un paso individual (número + detalle) */
 .step {
   display: flex;
   gap: var(--spacing-md);
@@ -43,10 +52,12 @@
   transition: transform var(--transition-normal);
 }
 
+/* Efecto de desplazamiento al pasar el cursor sobre un paso */
 .step:hover {
   transform: translateX(10px);
 }
 
+/* Círculo numerado para cada paso */
 .step-number {
   display: flex;
   align-items: center;
@@ -61,16 +72,19 @@
   flex-shrink: 0;
 }
 
+/* Contenedor para el título y la descripción del paso */
 .step-details {
   padding-top: var(--spacing-xs);
 }
 
+/* Título del paso */
 .step-details h3 {
   color: var(--color-primary);
   font-size: var(--font-size-lg);
   margin-bottom: var(--spacing-xs);
 }
 
+/* Descripción del paso */
 .step-details p {
   color: var(--color-text-secondary);
   font-size: var(--font-size-md);

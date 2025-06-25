@@ -36,8 +36,88 @@
             <h1>Explora Productos Agrícolas</h1>
             <p>Descubre productos frescos y de calidad directamente de los agricultores ecuatorianos.</p>
         </header>
+        {% if recomendados and user.is_authenticated and user.user_type == 'comprador' %}
+        <!-- =================== RECOMENDADOS ML SLIDER =================== -->
+        <section class="recomendados-section card-style">
+            <h2 class="section-title"><i class="fas fa-magic"></i> Recomendados para ti</h2>
+            <div class="recomendados-carousel-wrapper">
+                <button class="carousel-arrow left" id="recomendados-prev" aria-label="Anterior"><i class="fas fa-chevron-left"></i></button>
+                <div class="recomendados-carousel" id="recomendados-carousel">
+                    {% for producto in recomendados %}
+                    <div class="product-card recomendado carousel-item">
+                        <span class="badge-recomendado">¡Te puede interesar!</span>
+                        <img src="{{ url_for('static', filename='uploads/' + producto.imagen_url) if producto.imagen_url else url_for('static', filename='images/placeholder_product.png') }}" alt="{{ producto.nombre }}" class="product-image">
+                        <div class="product-info">
+                            <h3>{{ producto.nombre }}</h3>
+                            <p class="product-meta"><strong>Tipo:</strong> {{ producto.tipo }}</p>
+                            <p class="product-meta"><strong>Región:</strong> {{ producto.region }}</p>
+                            <p class="product-meta"><strong>Origen:</strong> {{ producto.provincia }}{% if producto.canton %} ({{ producto.canton }}){% endif %}</p>
+                            <p class="product-meta"><strong>Precio:</strong> ${{ '%.2f'|format(producto.precio or 0) }} / {{ producto.unidad or '' }}</p>
+                            <p class="product-meta"><strong>Disponible:</strong> {{ producto.cantidad or 0 }} {{ producto.unidad or '' }}</p>
+                        </div>
+                        <div class="product-actions-centered">
+                            <form method="POST" action="{{ url_for('agregar_al_carrito', producto_id=producto.id) }}">
+                                <input type="hidden" name="cantidad" value="1">
+                                <button type="submit" class="btn btn-agregar-carrito"><i class="fas fa-cart-plus"></i></button>
+                            </form>
+                            <form>
+                                <button type="button" class="btn btn-quick-view-light"
+                                    data-producto-id="{{ producto.id }}"
+                                    data-nombre="{{ producto.nombre }}"
+                                    data-imagen="{{ url_for('static', filename='uploads/' + producto.imagen_url) if producto.imagen_url else url_for('static', filename='images/placeholder_product.png') }}"
+                                    data-tipo="{{ producto.tipo }}"
+                                    data-region="{{ producto.region }}"
+                                    data-provincia="{{ producto.provincia }}{% if producto.canton %} : {{ producto.canton }}{% endif %}"
+                                    data-precio="{{ producto.precio }}"
+                                    data-cantidad="{{ producto.cantidad }}"
+                                    data-descripcion="{{ producto.descripcion|e }}"
+                                >
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                <button class="carousel-arrow right" id="recomendados-next" aria-label="Siguiente"><i class="fas fa-chevron-right"></i></button>
+            </div>
+        </section>
+        {% endif %}
+        <h2 class="section-title section-todos-productos"><i class="fas fa-leaf"></i> Todos los productos</h2>
         <!-- =================== FILTROS =================== -->
         <section class="filtros-section card-style">
+            <!-- =================== ORDENAMIENTO =================== -->
+            <form method="GET" id="sort-form" class="sort-bar">
+                <!-- Mantener filtros actuales como campos ocultos -->
+                <input type="hidden" name="region" value="{{ request.args.get('region', '') }}">
+                <input type="hidden" name="provincia" value="{{ request.args.get('provincia', '') }}">
+                <input type="hidden" name="tipo" value="{{ request.args.get('tipo', '') }}">
+                <input type="hidden" name="nombre" value="{{ request.args.get('nombre', '') }}">
+                <input type="hidden" name="precio_min" value="{{ request.args.get('precio_min', '') }}">
+                <input type="hidden" name="precio_max" value="{{ request.args.get('precio_max', '') }}">
+                <div class="sort-bar-row">
+                    <span class="sort-label">Ordenar por:</span>
+                    <button type="submit" name="sort" value="sold" class="btn-sort {% if sort=='sold' %}active-sort{% endif %}">
+                        <i class="fas fa-fire"></i> Más vendidos
+                    </button>
+                    <button type="submit" name="sort" value="viewed" class="btn-sort {% if sort=='viewed' %}active-sort{% endif %}">
+                        <i class="fas fa-eye"></i> Más vistos
+                    </button>
+                    <button type="submit" name="sort" value="recent" class="btn-sort {% if sort=='recent' %}active-sort{% endif %}">
+                        <i class="fas fa-clock"></i> Más recientes
+                    </button>
+                    <span class="sort-label sort-label-algo">Algoritmo:</span>
+                    <select name="sort_algo" class="sort-algo-select" onchange="this.form.submit()">
+                        <option value="quicksort" {% if sort_algo=='quicksort' %}selected{% endif %}>QuickSort</option>
+                        <option value="mergesort" {% if sort_algo=='mergesort' %}selected{% endif %}>MergeSort</option>
+                    </select>
+                    <span class="sort-time-label">
+                        <i class="fas fa-stopwatch"></i>
+                        <span class="sort-time-text">{{ '%.2f' % sort_time }} ms</span>
+                    </span>
+                </div>
+            </form>
+
             <form method="GET" class="filtros-form">
                 <div class="filtros-row">
                     <div class="form-group">
@@ -145,7 +225,9 @@
         </button>
     </form>
                                 {% elif not user.is_authenticated %}
-                                <button href="{{ url_for('login') }}" type="submit" class="btn btn-agregar-carrito"><i class="fas fa-cart-plus"></i> Inicia sesión para comprar</button>
+                                <a href="{{ url_for('login') }}">
+                                <button type="submit" class="btn btn-agregar-carrito"><i class="fas fa-cart-plus"></i> Inicia sesión para comprar</button>
+                                </a>
                                 {% endif %}
                             </div>
                         </div>
@@ -164,10 +246,13 @@
     {% if user.is_authenticated and user.user_type == 'comprador' %}
     <script src="{{ url_for('static', filename='js/fix_cart_button_footer.js') }}"></script>
     <script src="{{ url_for('static', filename='js/favoritos.js') }}"></script>
+    {% if recomendados %}
+    <script src="{{ url_for('static', filename='js/recomendados_carousel.js') }}"></script>
+    {% endif %}
 {% endif %}
 </body>
 <!-- Modal de Vista Rápida -->
-<div id="quickViewModal" class="quick-view-modal" style="display:none;">
+<div id="quickViewModal" class="quick-view-modal">
   <div class="quick-view-content">
     <span class="quick-view-close">&times;</span>
     <img id="qv-imagen" src="" alt="Imagen producto" class="quick-view-image">

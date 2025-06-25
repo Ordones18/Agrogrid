@@ -1,8 +1,14 @@
+/*
+    ESTILOS PARA EL PERFIL Y DASHBOARD DEL COMPRADOR
+*/
+
+/* CONTENEDOR PRINCIPAL DEL DASHBOARD */
 .comprador-dashboard {
     padding-top: 120px;
     max-width: 900px;
     margin: 0 auto 32px auto;
 }
+/* CABECERA DEL DASHBOARD */
 .dashboard-header {
     text-align: center;
     margin-bottom: 30px;
@@ -17,36 +23,172 @@
     color: #555;
     font-size: 1.1rem;
 }
-.metrics-section {
+.compras-metricas-visual {
     display: flex;
-    gap: 1.5rem;
     justify-content: center;
-    margin-bottom: 32px;
+    gap: 2.5rem;
+    margin-bottom: 2.5rem;
     flex-wrap: wrap;
 }
-.metric-card {
-    background: #fff;
-    border-radius: 10px;
-    box-shadow: 0 2px 8px rgba(34,139,34,0.08);
-    padding: 1.5rem 2rem;
-    min-width: 220px;
+.compras-grafica-card {
+    background: linear-gradient(135deg, #f7fcf8 60%, #e8f6ef 100%);
+    border-radius: 14px;
+    box-shadow: 0 2px 12px rgba(34,139,34,0.10);
+    padding: 2rem 1.7rem 2.2rem 1.7rem;
     text-align: center;
-    flex: 1 1 220px;
+    margin-bottom: 1.2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 2px solid #e8f6ef;
+    transition: box-shadow 0.22s, border 0.22s, transform 0.22s;
+    position: relative;
 }
-.metric-icon {
-    font-size: 2.2rem;
-    color: #4caf50;
-    margin-bottom: 0.5rem;
+/* TARJETA PARA LA GRÁFICA DE COMPRAS */
+.compras-grafica-card:hover {
+    box-shadow: 0 2px 12px rgba(34,139,34,0.10);
+    border: 2px solid #e8f6ef;
+    transform: none;
 }
-.metric-card h2 {
-    font-size: 1.1rem;
-    color: #388e3c;
-    margin-bottom: 0.3rem;
-}
-.metric-value {
-    font-size: 1.5rem;
+
+/* Título de la tarjeta de la gráfica */
+.compras-grafica-title {
+    font-size: 1.22rem;
+    color: #229e60;
     font-weight: 700;
-    color: #222;
+    margin-bottom: 1.1em;
+    letter-spacing: 0.01em;
+    text-align: center;
+    font-family: 'Montserrat', 'Segoe UI', Arial, sans-serif;
+    display: flex;
+    align-items: center;
+    gap: 0.7em;
+    justify-content: center;
+}
+.grafica-title-label {
+    font-size: 1.06em;
+    color: #229e60;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    text-shadow: 0 1px 6px rgba(67,185,127,0.08);
+}
+#compras-periodo-select {
+    margin-left: 0.6em;
+    padding: 0.22em 0.8em;
+    border-radius: 5px;
+    border: 1.5px solid #b0e5c7;
+    font-size: 1.09em;
+    color: #229e60;
+    background: #f7fcf8;
+    margin-bottom: 0.2em;
+    font-weight: 600;
+    transition: border 0.18s;
+}
+#compras-periodo-select:focus, #compras-periodo-select:hover {
+    border: 1.5px solid #43b97f;
+    outline: none;
+}
+@media (max-width: 900px) {
+    .compras-grafica-card {
+        padding: 1.2rem 0.5rem 1.5rem 0.5rem;
+    }
+    .compras-grafica-title {
+        font-size: 1.08rem;
+    }
+}
+.compras-metricas-visual {
+    display: flex;
+    justify-content: center;
+    gap: 2.5rem;
+    margin-bottom: 2.5rem;
+    flex-wrap: wrap;
+}
+/* TARJETA INDIVIDUAL DE MÉTRICA (KPI) */
+.compras-metric-card {
+    background: #fff;
+    border-radius: 14px;
+    box-shadow: 0 4px 18px rgba(34,139,34,0.10);
+    padding: 1.6rem 2.4rem 1.4rem 2.4rem;
+    min-width: 200px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 1rem;
+    border: 2px solid #e8f6ef;
+    transition: box-shadow 0.22s, border 0.22s, transform 0.22s;
+    background: linear-gradient(135deg, #f7fcf8 60%, #e8f6ef 100%);
+}
+.compras-metric-card:hover {
+    box-shadow: 0 6px 24px rgba(34,139,34,0.15);
+    border: 2px solid #43b97f;
+    transform: translateY(-3px) scale(1.025);
+}
+.compras-metric-card:first-child {
+    background: linear-gradient(135deg, #43b97f 0%, #b0e5c7 100%);
+    color: #fff;
+    border: 2px solid #43b97f;
+    box-shadow: 0 6px 28px rgba(67,185,127,0.16);
+}
+.compras-metric-card:first-child .compras-metric-label,
+.compras-metric-card:first-child .compras-metric-value,
+.compras-metric-card:first-child .compras-metric-icon {
+    color: #fff;
+}
+
+/* Etiqueta o nombre de la métrica (ej: 'Total Gastado') */
+.compras-metric-label {
+    color: #229e60;
+    font-size: 1.09rem;
+    font-weight: 600;
+    margin-bottom: 0.25em;
+    letter-spacing: 0.02em;
+}
+.compras-metric-card:first-child .compras-metric-label {
+    color: #fff;
+}
+
+/* Valor numérico de la métrica */
+.compras-metric-value {
+    font-size: 2.1rem;
+    font-weight: 800;
+    color: #229e60;
+    margin-bottom: 0.1em;
+    letter-spacing: -0.01em;
+    line-height: 1.1;
+}
+.compras-metric-card:first-child .compras-metric-value {
+    color: #fff;
+    text-shadow: 0 2px 8px rgba(67,185,127,0.12);
+}
+
+/* Icono de la métrica */
+.compras-metric-icon {
+    font-size: 2.5rem;
+    color: #43b97f;
+    margin-bottom: 0.32em;
+}
+.compras-metric-card:first-child .compras-metric-icon {
+    color: #fff;
+    text-shadow: 0 2px 8px rgba(67,185,127,0.18);
+}
+.compras-metric-card:nth-child(2) .compras-metric-icon {
+    color: #f7c948;
+}
+.compras-metric-card:nth-child(3) .compras-metric-icon {
+    color: #388e3c;
+}
+.compras-metric-card:nth-child(2) .compras-metric-value {
+    color: #43b97f;
+}
+.compras-metric-card:nth-child(3) .compras-metric-value {
+    color: #388e3c;
+}
+.metrics-section {
+    display: none;
+}
+.metric-card {
+    display: none;
 }
 .card-style {
     background: #fff;
@@ -79,6 +221,9 @@
     border-radius: 6px 6px 0 0;
 }
 
+/* SECCIÓN DE FAVORITOS */
+
+/* Rejilla para mostrar los productos favoritos */
 .favoritos-profile-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -139,6 +284,9 @@
     }
 }
 
+/* SECCIÓN DE HISTORIAL DE ÓRDENES */
+
+/* Contenedor para la tabla de órdenes (permite scroll horizontal) */
 .orders-table-wrapper {
     overflow-x: auto;
     background: #f9fafb;
@@ -147,6 +295,8 @@
     padding: 1.5rem 1rem;
     margin-bottom: 1.8rem;
 }
+
+/* Tabla de historial de órdenes */
 .orders-table {
     width: 100%;
     border-collapse: separate;
@@ -179,6 +329,9 @@
     background: #e0f2f1;
     transition: background 0.18s;
 }
+
+/* SECCIÓN DE CÁLCULO DE TRANSPORTE */
+
 .bloque-transporte {
   background: #fff;
   border-radius: 12px;
@@ -223,35 +376,50 @@
   min-height: 40px;
 }
 
-.nuevo-modal-bg {
-  position: fixed;
-  top: 0; left: 0;
-  width: 100vw; height: 100vh;
-  background: rgba(0,0,0,0.45);
-  z-index: 9999;
-  display: none;
-  align-items: center;
-  justify-content: center;
-  animation: fadeIn 0.18s;
-}
+/* MODAL DE CALIFICACIÓN DE PEDIDO */
 
-.nuevo-modal-bg[style*="flex"] {
+/* Fondo oscuro del modal */
+.modal-calificacion-bg {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  background: rgba(0,0,0,0.45) !important;
+  z-index: 99999 !important;
   display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  box-sizing: border-box !important;
 }
-
-.nuevo-modal {
-  background: #fff;
-  border-radius: 16px;
-  box-shadow: 0 6px 32px rgba(34,139,34,0.13);
-  min-width: 320px;
-  max-width: 92vw;
-  padding: 2.2rem 1.7rem 1.5rem 1.7rem;
-  position: relative;
-  text-align: left;
-  animation: slideDown 0.22s;
+.modal-calificacion {
+  background: #fff !important;
+  padding: 2em 1.5em !important;
+  border-radius: 14px !important;
+  min-width: 320px !important;
+  max-width: 96vw !important;
+  max-height: 90vh !important;
+  box-shadow: 0 8px 40px #222b !important;
+  position: relative !important;
+  animation: modalShow 0.18s !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  overflow-y: auto !important;
+  margin: 0 !important;
+  left: 0 !important;
+  top: 0 !important;
 }
-
-.nuevo-modal-close {
+@media (max-width: 600px) {
+  .modal-calificacion {
+    min-width: 92vw !important;
+    padding: 1em 0.4em !important;
+  }
+}
+.modal-calificacion-close {
   position: absolute;
   top: 12px; right: 18px;
   font-size: 2rem;

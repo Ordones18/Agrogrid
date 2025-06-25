@@ -1,14 +1,25 @@
+/*
+    ESTILOS PARA LA SECCIÓN 'EXPLORAR'
+*/
+
+/* Variables de CSS (actualmente solo una sombra) */
 :root {
   --shadow-xs: 0 1px 2px rgba(0,0,0,0.04);
 }
-.explore {
-  background-color: var(--color-gray-light);
-  padding: var(--spacing-xxl) 0;
-  text-align: center;
-  margin-top: 80px;
 
+/* CONTENEDOR PRINCIPAL DE LA SECCIÓN EXPLORAR */
+.explore {
+  /* Establece el color de fondo del contenedor principal */
+  background-color: var(--color-gray-light);
+  /* Establece el padding vertical del contenedor principal */
+  padding: var(--spacing-xxl) 0;
+  /* Centra el contenido horizontalmente */
+  text-align: center;
+  /* Establece el margen superior del contenedor principal */
+  margin-top: 80px;
 }
 
+/* REJILLA (GRID) DE TARJETAS */
 .explore-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -16,6 +27,7 @@
   margin: var(--spacing-xl) 0;
 }
 
+/* TARJETA INDIVIDUAL */
 .explore-card {
   background: var(--color-white);
   border-radius: var(--border-radius-lg);
@@ -44,17 +56,20 @@
   color: var(--color-text-secondary);
   font-size: var(--font-size-md);
 }
+/* SECCIÓN DE LA GUÍA 'CÓMO FUNCIONA' */
 .explore-guide {
   background: var(--color-white);
   padding: var(--spacing-xxl) 0;
 }
 
+/* Contenedor del collage de pasos de la guía */
 .guide-collage {
   display: flex;
   flex-direction: column;
   gap: var(--spacing-xl);
 }
 
+/* Paso individual dentro de la guía */
 .guide-step {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -66,22 +81,26 @@
   padding: var(--spacing-lg);
 }
 
+/* Título dentro de la información de la guía */
 .guide-info h3 {
   color: var(--color-primary);
   margin-bottom: var(--spacing-xs);
 }
 
+/* Párrafo dentro de la información de la guía */
 .guide-info p {
   color: var(--color-text-secondary);
   font-size: var(--font-size-md);
 }
 
+/* Imagen del paso de la guía */
 .guide-image img {
   width: 100%;
   border-radius: var(--border-radius-md);
   box-shadow: var(--shadow-sm);
   object-fit: cover;
 }
+/* Botón principal (si aplica en esta sección) */
 .btn.btn-primary {
   margin-top: 2rem;
   display: block;

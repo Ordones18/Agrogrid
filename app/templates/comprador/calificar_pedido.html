@@ -1,0 +1,67 @@
+{#
+    Template: comprador/calificar_pedido.html
+    Descripción: Permite al comprador calificar un pedido entregado y ver info del transportista y estado del pedido.
+    Variables esperadas:
+      - pedido: objeto Pedido (con transportista, vehiculo, estado, etc)
+      - puede_calificar: bool
+      - calificacion_actual: int (si ya calificó)
+#}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calificar Pedido - Agrogrid</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/calificar_pedido.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+  <div class="calificar-container">
+    <div class="calificar-header">
+      <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Agrogrid Logo" class="logo-agrogrid" style="width: 110px; margin-bottom: 0.7em; display: block; margin-left: auto; margin-right: auto;">
+      <h2>Califica tu experiencia</h2>
+      <div class="estado-pedido">Estado del pedido: <span>{{ estado_real|capitalize }}</span></div>
+    </div>
+    <div class="info-transp">
+      <div class="img-vehiculo">
+        <img src="{{ url_for('static', filename=vehiculo.imagen_url) if vehiculo and vehiculo.imagen_url else url_for('static', filename='images/camion_default.png') }}" alt="Vehículo">
+      </div>
+      <div class="datos-transp">
+        <p><strong>Transportista:</strong> {{ transportista.nombre if transportista else '-' }}</p>
+        <p><strong>Email:</strong> {{ transportista.email if transportista else '-' }}</p>
+        <p><strong>Teléfono:</strong> {{ transportista.telefono if transportista else '-' }}</p>
+        <p><strong>Vehículo:</strong> {{ vehiculo.placa if vehiculo else '-' }} {{ vehiculo.tipo if vehiculo else '' }}</p>
+        <p><strong>Capacidad:</strong> {{ vehiculo.capacidad if vehiculo else '-' }}</p>
+        <p><strong>Descripción:</strong> {{ vehiculo.descripcion if vehiculo else '-' }}</p>
+      </div>
+    </div>
+    
+    {% if puede_calificar %}
+  <form id="form-calificar" method="POST" action="">
+    <input type="hidden" name="calificacion" id="input-calificacion" value="{{ calificacion_actual or '' }}">
+    <div class="calificar-estrellas">
+      {% for i in range(1,6) %}
+        <i class="fas fa-star estrella{% if calificacion_actual and i <= calificacion_actual %} selected{% endif %}" data-value="{{ i }}"></i>
+      {% endfor %}
+    </div>
+    <button type="submit" class="btn-calificar">Enviar calificación</button>
+  </form>
+{% elif not puede_calificar and estado_real == 'entregado' %}
+  <div class="mensaje-calificacion">Solo puedes calificar una vez entregado el pedido.</div>
+{% elif not puede_calificar %}
+  <div class="mensaje-calificacion">Solo puedes calificar pedidos que hayan sido entregados.</div>
+{% endif %}
+
+{% if calificacion_actual %}
+  <div class="mensaje-calificacion mensaje-final">
+    <span class="mensaje-ya-califico">Ya calificaste este pedido.</span>
+    <span class="estrellas-final">
+      {% for i in range(calificacion_actual) %}<i class="fas fa-star"></i>{% endfor %}
+      {% for i in range(5-calificacion_actual) %}<i class="far fa-star"></i>{% endfor %}
+    </span>
+    <span class="texto-final">Calificación otorgada</span>
+  </div>
+{% endif %}
+<script src="{{ url_for('static', filename='js/calificar_pedido.js') }}"></script>
+</body>
+</html>

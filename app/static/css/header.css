@@ -1,4 +1,8 @@
-/* Header Styles */
+/*
+    ESTILOS PARA LA CABECERA (HEADER)
+*/
+
+/* Contenedor principal de la cabecera, fijo en la parte superior */
 .header {
   position: fixed;
   top: 0; 
@@ -14,6 +18,7 @@
 
 
 
+/* Contenedor interno para alinear el contenido */
 .header .container {
   display: flex;
   justify-content: space-between;
@@ -22,6 +27,7 @@
 }
 
 
+/* Estilo de la imagen del logo */
 .logo-image {
   height: 50px; 
   width: auto; 
@@ -44,6 +50,7 @@
   transition: color var(--transition-fast);
 }
 
+/* Efecto hover para el enlace del logo */
 .logo a:hover {
   color: var(--color-primary-light);
 }
@@ -54,6 +61,7 @@
   color: var(--color-secondary);
 }
 
+/* Lista no ordenada que contiene los enlaces de navegación */
 .navigation ul {
   display: flex;
   gap: var(--spacing-md);
@@ -68,10 +76,12 @@
   transition: color var(--transition-fast);
 }
 
+/* Efecto hover para los enlaces de navegación */
 .navigation a:hover {
   color: var(--color-primary);
 }
 
+/* Línea decorativa que aparece debajo del enlace al pasar el ratón */
 .navigation a::after {
   content: '';
   position: absolute;
@@ -85,12 +95,15 @@
 
 
 
+/* Estilo específico para el enlace de 'Registro' */
 .registro-link {
   color: var(--color-primary) !important;
   font-weight: 700 !important;
 }
 
-/* Mobile Menu Toggle */
+/* MENÚ PARA MÓVILES */
+
+/* Botón para mostrar/ocultar el menú en dispositivos móviles */
 .mobile-menu-toggle {
   display: none;
   font-size: var(--font-size-xl);
@@ -98,7 +111,9 @@
   cursor: pointer;
 }
 
-/* Scroll Effect */
+/* EFECTO AL HACER SCROLL */
+
+/* Estilo que se aplica a la cabecera cuando el usuario ha hecho scroll hacia abajo */
 .header.scrolled {
   background-color: rgba(255, 255, 255, 0.98);
   box-shadow: var(--shadow-md);

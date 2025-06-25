@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block title %}Contacto Soporte - AgroGrid{% endblock %}
+{% block styles %}
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/contacto.css') }}">
+{% endblock %}
+{% block content %}
+<div class="contacto-container">
+  <h1>Contacto de Soporte</h1>
+  <form method="POST" action="/contacto">
+    <label for="nombre">Nombre:</label>
+    <input type="text" id="nombre" name="nombre" required>
+    <label for="email">Correo electrónico:</label>
+    <input type="email" id="email" name="email" required>
+    <label for="mensaje">Mensaje:</label>
+    <textarea id="mensaje" name="mensaje" rows="4" required></textarea>
+    <button type="submit" class="btn btn-success">Enviar</button>
+  </form>
+</div>
+{% endblock %}
+{% block scripts %}
+  <script src="{{ url_for('static', filename='js/contacto.js') }}"></script>
+{% endblock %}

@@ -4,19 +4,23 @@
   flex-wrap: wrap;
   gap: 1.5em;
 }
+/* Formulario de seleccion de region, provincia y canton */
 .form-group {
   flex: 1 1 30%;
   min-width: 180px;
 }
+/* Formulario de seleccion de region, provincia y canton */
 .form-group label {
   font-weight: 600;
   margin-bottom: 0.4em;
   display: block;
 }
+/* Formulario de seleccion de region, provincia y canton */
 .form-group select:disabled {
   background: #f3f3f3;
   color: #aaa;
 }
+/* Formulario de seleccion de region, provincia y canton */
 .form-group select {
   width: 100%;
   padding: 0.35em 0.6em;
@@ -26,6 +30,7 @@
   background: #fff;
   transition: border 0.2s;
 }
+/* Formulario de seleccion de region, provincia y canton */
 .form-group select:focus {
   border-color: #4caf50;
   outline: none;

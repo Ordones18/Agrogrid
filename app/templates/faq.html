@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+{% block title %}Preguntas Frecuentes - AgroGrid{% endblock %}
+{% block styles %}
+  <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/hoja.png') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/faq.css') }}">
+{% endblock %}
+{% block content %}
+<div class="faq-container">
+  <h1>Preguntas Frecuentes</h1>
+  <div class="faq-accordion">
+    <div class="faq-item">
+      <button class="faq-question">¿Cómo me registro en AgroGrid?</button>
+      <div class="faq-answer">Haz clic en "Regístrate" en la barra superior y completa el formulario con tus datos. Recibirás un correo de confirmación para activar tu cuenta.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question">¿Cómo contacto a un agricultor o comprador?</button>
+      <div class="faq-answer">Puedes usar la mensajería interna desde el perfil del usuario o el botón de contacto en la página del producto.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question">¿Qué métodos de pago aceptan?</button>
+      <div class="faq-answer">Aceptamos transferencia bancaria, tarjetas de crédito/débito.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question">¿Cómo sé que los productos son frescos y de calidad?</button>
+      <div class="faq-answer">Todos los agricultores pasan por un proceso de verificación y los productos cuentan con etiquetas de calidad y opiniones de otros compradores.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question">¿Puedo comprar en grandes cantidades?</button>
+      <div class="faq-answer">Sí, AgroGrid permite compras al por mayor y puedes negociar directamente con el agricultor para obtener mejores precios.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question">¿Cómo funcionan las recomendaciones personalizadas?</button>
+      <div class="faq-answer">Nuestro sistema analiza tus compras, búsquedas y preferencias para mostrarte productos que realmente te interesan cada vez que ingresas.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question">¿Qué hago si tengo un problema con mi pedido?</button>
+      <div class="faq-answer">Puedes reportar cualquier inconveniente desde tu panel de usuario o contactando al soporte a través del Centro de Ayuda. Te ayudaremos a resolverlo lo antes posible.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question">¿Cómo puedo vender mis productos en AgroGrid?</button>
+      <div class="faq-answer">Regístrate como agricultor, completa tu perfil y publica tus productos desde el panel de control. Nuestro equipo revisará y aprobará tus publicaciones.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question">¿Qué comisiones cobra AgroGrid?</button>
+      <div class="faq-answer">Cobramos una pequeña comisión por transacción exitosa, la cual se muestra claramente antes de finalizar la venta.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question">¿Puedo recibir ayuda personalizada?</button>
+      <div class="faq-answer">Sí, nuestro equipo de soporte está disponible para ayudarte por chat, correo o desde el Centro de Ayuda.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question">¿Cómo protegen mis datos personales?</button>
+      <div class="faq-answer">Utilizamos protocolos de seguridad avanzados y nunca compartimos tu información con terceros sin tu consentimiento.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question">¿Puedo cancelar o modificar un pedido?</button>
+      <div class="faq-answer">Sí, puedes cancelar o modificar tu pedido desde tu panel de usuario siempre que el agricultor no lo haya despachado aún.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question">¿AgroGrid opera en todo el país?</button>
+      <div class="faq-answer">Actualmente operamos en las principales ciudades, pero estamos en constante expansión. Consulta la cobertura al registrarte.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question">¿Cómo funcionan las calificaciones y opiniones?</button>
+      <div class="faq-answer">Después de cada compra puedes calificar al agricultor y dejar una opinión visible para otros usuarios, ayudando a mantener la calidad del servicio.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question">¿Qué hago si olvidé mi contraseña?</button>
+      <div class="faq-answer">Haz clic en "¿Olvidaste tu contraseña?" en la página de inicio de sesión y sigue las instrucciones para restablecerla.</div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+{% block scripts %}
+  <script src="{{ url_for('static', filename='js/faq.js') }}"></script>
+{% endblock %}

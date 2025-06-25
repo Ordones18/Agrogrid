@@ -137,40 +137,88 @@ class DetalleCarrito(db.Model):
     producto = db.relationship('Producto')
 
 # =========================
+# Modelo de Testimonio
+# =========================
+class Testimonio(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    nombre = db.Column(db.String(100), nullable=False)
+    tipo_usuario = db.Column(db.String(50), nullable=False)  # Agricultor, Comprador, Transportista, etc.
+    mensaje = db.Column(db.Text, nullable=False)
+    avatar_url = db.Column(db.String(200), nullable=True)  # Opcional: URL de imagen/avatar
+    fecha_creacion = db.Column(db.DateTime, default=datetime.utcnow)
+
+    def __repr__(self):
+        return f'<Testimonio {self.nombre} - {self.tipo_usuario}>'
+
+# =========================
 # Modelos de Orden y OrdenItem
 # =========================
 class Orden(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    comprador_id = db.Column(db.Integer, db.ForeignKey('usuario.id'), nullable=False)
-    total = db.Column(db.Float, nullable=False)
-    costo_envio = db.Column(db.Float, nullable=True, default=0)  # Nuevo campo para el costo de envío
-    creado_en = db.Column(db.DateTime, default=datetime.utcnow)
-    estado = db.Column(db.String(20), default='pendiente')
-    items = db.relationship('OrdenItem', backref='orden', cascade='all, delete-orphan')
-    viaje = db.relationship('Viaje', backref='orden', uselist=False)
+    """
+    Representa un pedido de compra realizado por un usuario.
+    Contiene el total, el estado y los productos asociados a través de OrdenItem.
+    """
+    id = db.Column(db.Integer, primary_key=True)  # ID único de la orden.
+    comprador_id = db.Column(db.Integer, db.ForeignKey('usuario.id'), nullable=False)  # ID del usuario que realizó la compra.
+    total = db.Column(db.Float, nullable=False)  # Costo total de los productos en la orden.
+    costo_envio = db.Column(db.Float, nullable=True, default=0)  # Costo del envío, calculado por el transportista.
+    creado_en = db.Column(db.DateTime, default=datetime.utcnow)  # Fecha y hora de creación de la orden.
+    estado = db.Column(db.String(20), default='pendiente')  # Estado actual de la orden (e.g., pendiente, pagada, enviada).
+    calificacion = db.Column(db.Integer, nullable=True)  # Calificación de la orden (1-5) dada por el comprador.
+    items = db.relationship('OrdenItem', backref='orden', cascade='all, delete-orphan')  # Relación con los artículos de la orden.
+    viaje = db.relationship('Viaje', backref='orden', uselist=False)  # Relación uno-a-uno con el viaje de transporte.
 
+# =========================
+# Modelo de Vehículo
+# =========================
+class Vehiculo(db.Model):
+    """
+    Representa un vehículo perteneciente a un transportista.
+    Almacena detalles como placa, tipo y capacidad para la logística.
+    """
+    id = db.Column(db.Integer, primary_key=True)  # ID único del vehículo.
+    transportista_id = db.Column(db.Integer, db.ForeignKey('usuario.id'), nullable=False)  # ID del transportista propietario.
+    placa = db.Column(db.String(20), nullable=False, unique=True)  # Placa única del vehículo.
+    tipo = db.Column(db.String(50), nullable=False)  # Tipo de vehículo (e.g., Camión, Furgoneta).
+    capacidad = db.Column(db.String(50), nullable=True)  # Capacidad de carga (e.g., '3.5 Toneladas').
+    descripcion = db.Column(db.Text, nullable=True)  # Descripción adicional del vehículo.
+    imagen_url = db.Column(db.String(200), nullable=True)  # URL de una imagen del vehículo.
+    transportista = db.relationship('Usuario', backref=db.backref('vehiculos', lazy=True)) # Relación con el usuario transportista.
+
+# =========================
+# Modelo de Viaje
+# =========================
 class Viaje(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    orden_id = db.Column(db.Integer, db.ForeignKey('orden.id'), nullable=False, unique=True)
-    transportista_id = db.Column(db.Integer, db.ForeignKey('usuario.id'), nullable=True)
-    estado = db.Column(db.String(20), default='pendiente')  # pendiente, aceptado, en_progreso, entregado
-    fecha_asignacion = db.Column(db.DateTime, nullable=True)
-    fecha_entrega = db.Column(db.DateTime, nullable=True)
-    origen = db.Column(db.String(200), nullable=True)  # Dirección origen (del agricultor)
-    destino = db.Column(db.String(200), nullable=True)  # Dirección destino (del comprador)
-    costo = db.Column(db.Float, nullable=True)
-    notas = db.Column(db.Text, nullable=True)
-    calificacion = db.Column(db.Integer, nullable=True)  # Calificación del transportista (1-5)
-    transportista = db.relationship('Usuario', foreign_keys=[transportista_id])
+    """
+    Representa el componente logístico de una orden.
+    Asocia una orden con un transportista y rastrea el estado de la entrega.
+    """
+    id = db.Column(db.Integer, primary_key=True)  # ID único del viaje.
+    orden_id = db.Column(db.Integer, db.ForeignKey('orden.id'), nullable=False, unique=True)  # ID de la orden asociada (relación uno-a-uno).
+    transportista_id = db.Column(db.Integer, db.ForeignKey('usuario.id'), nullable=True)  # ID del transportista asignado.
+    estado = db.Column(db.String(20), default='pendiente')  # Estado del viaje (e.g., pendiente, en_progreso, entregado).
+    fecha_asignacion = db.Column(db.DateTime, nullable=True)  # Fecha en que el transportista acepta el viaje.
+    fecha_entrega = db.Column(db.DateTime, nullable=True)  # Fecha en que se completa la entrega.
+    origen = db.Column(db.String(200), nullable=True)  # Dirección de origen (del agricultor).
+    destino = db.Column(db.String(200), nullable=True)  # Dirección de destino (del comprador).
+    costo = db.Column(db.Float, nullable=True)  # Costo del transporte acordado.
+    notas = db.Column(db.Text, nullable=True)  # Notas adicionales del transportista o comprador.
+    calificacion = db.Column(db.Integer, nullable=True)  # Calificación del servicio de transporte (1-5).
+    transportista = db.relationship('Usuario', foreign_keys=[transportista_id])  # Relación con el usuario transportista.
 
 class OrdenItem(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    orden_id = db.Column(db.Integer, db.ForeignKey('orden.id'), nullable=False)
-    producto_id = db.Column(db.Integer, db.ForeignKey('producto.id'), nullable=False)  # Mantener obligatorio por compatibilidad SQLite
-    cantidad = db.Column(db.Integer, nullable=False)
-    precio_unitario = db.Column(db.Float, nullable=False)
-    # Snapshots del producto al momento de la compra
-    producto_nombre = db.Column(db.String(100), nullable=True)
-    producto_unidad = db.Column(db.String(20), nullable=True)
-    producto = db.relationship('Producto')
+    """
+    Representa un único artículo dentro de una orden de compra.
+    Almacena una 'snapshot' (copia) de los detalles del producto en el momento de la compra
+    para mantener la integridad del historial de pedidos.
+    """
+    id = db.Column(db.Integer, primary_key=True)  # ID único del ítem de la orden.
+    orden_id = db.Column(db.Integer, db.ForeignKey('orden.id'), nullable=False)  # ID de la orden a la que pertenece.
+    producto_id = db.Column(db.Integer, db.ForeignKey('producto.id'), nullable=False)  # ID del producto original.
+    cantidad = db.Column(db.Integer, nullable=False)  # Cantidad comprada del producto.
+    precio_unitario = db.Column(db.Float, nullable=False)  # Precio del producto en el momento de la compra.
+    # --- Snapshots de datos del producto ---
+    producto_nombre = db.Column(db.String(100), nullable=True)  # Nombre del producto al momento de la compra.
+    producto_unidad = db.Column(db.String(20), nullable=True)  # Unidad de medida al momento de la compra.
+    producto = db.relationship('Producto')  # Relación con el producto original para fácil acceso.
 

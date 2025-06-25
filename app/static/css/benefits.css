@@ -1,9 +1,15 @@
-/* Benefits Section Styles */
+/*
+    ESTILOS PARA LA SECCIÓN DE BENEFICIOS
+    Utilizada en la página principal para destacar ventajas.
+*/
+
+/* CONTENEDOR PRINCIPAL DE LA SECCIÓN */
 .benefits {
   background-color: var(--color-gray-light);
   padding: var(--spacing-xxl) 0;
 }
 
+/* REJILLA (GRID) PARA LAS TARJETAS DE BENEFICIOS */
 .benefits-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -11,6 +17,7 @@
   margin-top: var(--spacing-xl);
 }
 
+/* TARJETA INDIVIDUAL PARA CADA BENEFICIO */
 .benefit-card {
   background-color: var(--color-white);
   border-radius: var(--border-radius-lg);
@@ -20,11 +27,13 @@
   transition: transform var(--transition-normal), box-shadow var(--transition-normal);
 }
 
+/* Efecto al pasar el cursor sobre la tarjeta */
 .benefit-card:hover {
   transform: translateY(-10px);
   box-shadow: var(--shadow-lg);
 }
 
+/* Icono de cada tarjeta de beneficio */
 .benefit-icon {
   display: inline-flex;
   align-items: center;
@@ -39,12 +48,14 @@
   transition: background-color var(--transition-normal), transform var(--transition-normal);
 }
 
+/* Efecto en el icono al pasar el cursor sobre la tarjeta */
 .benefit-card:hover .benefit-icon {
   background-color: var(--color-primary);
   color: var(--color-white);
   transform: rotate(360deg);
 }
 
+/* TÍTULO Y TEXTO DE LA TARJETA */
 .benefit-card h3 {
   color: var(--color-primary);
   font-size: var(--font-size-xl);
@@ -55,4 +66,17 @@
   color: var(--color-text-secondary);
   font-size: var(--font-size-md);
   line-height: 1.6;
+}
+
+/* ESTILOS RESPONSIVOS */
+@media (max-width: 992px) {
+  .benefits-grid {
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  .benefits-grid {
+    grid-template-columns: 1fr;
+  }
 }

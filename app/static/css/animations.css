@@ -1,4 +1,15 @@
-/* Animations Styles */
+/*
+    ESTILOS DE ANIMACIONES GLOBALES
+    Este archivo define un conjunto de animaciones reutilizables y clases de utilidad
+    para aplicar efectos visuales a los elementos de la página.
+*/
+
+/* 
+    DEFINICIÓN DE KEYFRAMES
+    Aquí se definen los pasos de las animaciones que se usarán en toda la web.
+*/
+
+/* Animación de aparición gradual (fade in) */
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -8,6 +19,7 @@
   }
 }
 
+/* Aparición con desplazamiento hacia arriba */
 @keyframes fadeInUp {
   from {
     opacity: 0;
@@ -19,6 +31,7 @@
   }
 }
 
+/* Aparición con desplazamiento desde la izquierda */
 @keyframes fadeInLeft {
   from {
     opacity: 0;
@@ -30,6 +43,7 @@
   }
 }
 
+/* Aparición con desplazamiento desde la derecha */
 @keyframes fadeInRight {
   from {
     opacity: 0;
@@ -41,6 +55,7 @@
   }
 }
 
+/* Aparición con efecto de escalado */
 @keyframes scaleIn {
   from {
     opacity: 0;
@@ -52,7 +67,12 @@
   }
 }
 
-/* Animation Classes */
+/* 
+    CLASES DE UTILIDAD PARA ANIMACIONES
+    Estas clases aplican las animaciones definidas anteriormente a cualquier elemento.
+    'forwards' asegura que el estado final de la animación se mantenga.
+*/
+
 .animate-fadeIn {
   animation: fadeIn 1s ease forwards;
 }
@@ -73,17 +93,30 @@
   animation: scaleIn 0.8s ease forwards;
 }
 
-/* Scroll Animation - These would be added via JavaScript in a real implementation */
+/* 
+    ANIMACIONES ACTIVADAS POR SCROLL
+    Estas clases están diseñadas para ser añadidas con JavaScript cuando un elemento
+    entra en el viewport (la parte visible de la pantalla).
+*/
+
+/* Estado inicial de los elementos a revelar: ocultos y listos para la transición */
 .reveal {
   position: relative;
   opacity: 0;
-  transition: all 0.8s ease;
+  transition: all 0.8s ease; /* Transición suave para todas las propiedades */
 }
 
+/* Estado final (activo) cuando el elemento es visible */
 .reveal.active {
   opacity: 1;
 }
 
+/* Clases para definir la dirección de la animación de revelado */
+.reveal-left {
+  transform: translateX(-50px); /* Empieza 50px a la izquierda */
+}
+
+/* Cuando se activa, el elemento vuelve a su posición original */
 .reveal-left.active {
   transform: translateX(0);
 }
@@ -94,10 +127,6 @@
 
 .reveal-up.active {
   transform: translateY(0);
-}
-
-.reveal-left {
-  transform: translateX(-50px);
 }
 
 .reveal-right {

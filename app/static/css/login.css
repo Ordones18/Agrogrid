@@ -1,3 +1,8 @@
+/*
+    ESTILOS PARA LA PÁGINA DE INICIO DE SESIÓN (LOGIN)
+*/
+
+/* Estilo base del cuerpo de la página */
 body {
     background: #f4f8f4;
     font-family: 'Roboto', Arial, sans-serif;
@@ -5,6 +10,7 @@ body {
     padding: 0;
 }
 
+/* Logo de la empresa en la página de login */
 .login-logo {
     display: block;
     margin: 0 auto 18px auto;
@@ -14,6 +20,7 @@ body {
 }
 
 
+/* Contenedor principal del formulario de login */
 .login-container {
     background: #fff;
     max-width: 350px;
@@ -24,6 +31,7 @@ body {
     border: 1px solid #e0e8e0;
 }
 
+/* Título principal del formulario */
 h1 {
     color: #388e3c;
     text-align: center;
@@ -32,6 +40,7 @@ h1 {
     letter-spacing: 1px;
 }
 
+/* Etiqueta de los campos del formulario */
 .login-form label {
     display: block;
     margin-bottom: 6px;
@@ -40,6 +49,7 @@ h1 {
     font-weight: 500;
 }
 
+/* Campos de entrada del formulario */
 .login-form input {
     width: 100%;
     max-width: 330px;
@@ -70,10 +80,12 @@ h1 {
     transition: background 0.2s;
 }
 
+/* Efecto hover para el botón de envío */
 .login-form button:hover {
     background: #256029;
 }
 
+/* Enlace para redirigir a la página de registro */
 .register-link {
     text-align: center;
     margin-top: 18px;
@@ -90,6 +102,7 @@ h1 {
     text-decoration: underline;
 }
 
+/* Contenedor para los mensajes flash (éxito, error) */
 .flash-messages {
     list-style: none;
     padding: 0;
@@ -97,6 +110,7 @@ h1 {
     text-align: center;
 }
 
+/* Estilo para los mensajes de éxito */
 .flash-success {
     background-color: #d4edda;
     margin-bottom: 18px;
@@ -109,6 +123,7 @@ h1 {
     text-align: center;
 }
 
+/* Estilo para los mensajes de error/peligro */
 .flash-danger {
     background-color: #ffebee;
     margin-bottom: 18px;
@@ -121,11 +136,13 @@ h1 {
     text-align: center;
 }
 
+/* Contenedor para el enlace de volver al inicio */
 .return-home-wrapper {
   text-align: center;
   margin-top: 32px;
 }
 
+/* Enlace para la recuperación de contraseña */
 .recover-link{
     text-align: center;
     margin-top: 18px;

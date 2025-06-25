@@ -10,6 +10,7 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Panel de Comprador - {{ user.name }}</title>
@@ -19,6 +20,12 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/register.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/comprador_perfil.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+      window.comprasAgregadas = {{ compras_agregadas|tojson }};
+      window.top5Gasto = {{ top_5_gasto|tojson }};
+      window.top5Cantidad = {{ top_5_cantidad|tojson }};
+    </script>
 </head>
 <body>
     {% include 'partials/header_perfiles.html' %}
@@ -55,16 +62,17 @@
         <th>Costo Envío</th>
         <th>Total</th>
         <th>Estado</th>
+        <th>Acción</th>
 
       </tr>
     </thead>
     <tbody>
       {% for pedido in pedidos %}
       <tr>
-        <td data-label="Fecha">{{ pedido.fecha.strftime('%d/%m/%Y') }}</td>
+        <td data-label="Fecha">{{ pedido['fecha'].strftime('%d/%m/%Y') }}</td>
         <td data-label="Productos">
           <ul style="padding-left:0; margin:0; list-style:none;">
-            {% for item in pedido.productos %}
+            {% for item in pedido['productos'] %}
               <li>
                 {{ item.nombre }}{% if item.unidad %} ({{ item.unidad }}){% endif %} (x{{ item.cantidad }})
                 {% if item.nombre == 'Producto eliminado' %}<span style="color:#b00; font-size:0.95em;"> (eliminado)</span>{% endif %}
@@ -73,14 +81,19 @@
           </ul>
         </td>
         <td data-label="Costo Envío">
-          {% if pedido.costo_envio is not none %}
-            ${{ '%.2f'|format(pedido.costo_envio) }}
+          {% if pedido['costo_envio'] is not none %}
+            ${{ '%.2f'|format(pedido['costo_envio']) }}
           {% else %}
             -
           {% endif %}
         </td>
-        <td data-label="Total">${{ '%.2f'|format(pedido.total) }}</td>
-        <td data-label="Estado">{% if pedido.estado == 'pendiente' %}Pendiente{% elif pedido.estado == 'aceptado' %}Aceptado{% elif pedido.estado == 'en_progreso' %}En progreso{% elif pedido.estado == 'entregado' %}Entregado{% else %}{{ pedido.estado }}{% endif %}</td>
+        <td data-label="Total">${{ '%.2f'|format(pedido['total']) }}</td>
+        <td data-label="Estado">{% if pedido['estado'] == 'pendiente' %}Pendiente{% elif pedido['estado'] == 'aceptado' %}Aceptado{% elif pedido['estado'] == 'en_progreso' %}En progreso{% elif pedido['estado'] == 'entregado' %}Entregado{% else %}{{ pedido['estado'] }}{% endif %}</td>
+        <td data-label="Acción">
+          <a href="{{ url_for('calificar_pedido', pedido_id=pedido['id']) }}" class="btn btn-ver-calificar">
+            <i class="fas fa-star"></i> Ver
+          </a>
+        </td>
 
       </tr>
       {% endfor %}
@@ -91,6 +104,54 @@
           <p class="empty-state">Aún no tienes pedidos registrados.</p>
         {% endif %}
       </section>
+
+        <!-- PANEL DE COMPRAS AGREGADAS VISUAL -->
+        <section class="profile-section card-style compras-panel">
+          <h2><i class="fas fa-coins"></i> Resumen de Compras</h2>
+          <div class="compras-metricas-flex compras-metricas-visual">
+            <div class="compras-metric-card">
+              <i class="fas fa-money-bill-wave compras-metric-icon"></i>
+              <div class="compras-metric-label">Total Gastado</div>
+              <div class="compras-metric-value">${{ '%.2f'|format(compras_agregadas.total_gastado or 0) }}</div>
+            </div>
+            <div class="compras-metric-card">
+              <i class="fas fa-crown compras-metric-icon"></i>
+              <div class="compras-metric-label">Top por Gasto</div>
+              <div class="compras-metric-value">{{ compras_agregadas.producto_top_gasto or 'N/A' }}</div>
+            </div>
+            <div class="compras-metric-card">
+              <i class="fas fa-list-ol compras-metric-icon"></i>
+              <div class="compras-metric-label">Top por Cantidad</div>
+              <div class="compras-metric-value">{{ compras_agregadas.producto_top_cantidad or 'N/A' }}</div>
+            </div>
+          </div>
+          <div class="compras-graficas-layout">
+            <div class="compras-grafica-col">
+              <div class="compras-grafica-card">
+                <div class="compras-grafica-title">
+                  <span class="grafica-title-label">Gasto por periodo</span>
+                  <select id="compras-periodo-select">
+                    <option value="dia">Día</option>
+                    <option value="semana">Semana</option>
+                    <option value="mes" selected>Mes</option>
+                    <option value="anio">Año</option>
+                  </select>
+                </div>
+                <canvas id="compras-barplot" width="430" height="250"></canvas>
+              </div>
+            </div>
+            <div class="compras-grafica-col">
+              <div class="compras-grafica-card">
+                <div class="compras-grafica-title">Top productos por gasto</div>
+                <canvas id="compras-pie" width="360" height="220"></canvas>
+              </div>
+              <div class="compras-grafica-card">
+                <div class="compras-grafica-title">Top productos por cantidad</div>
+                <canvas id="compras-pie-cantidad" width="360" height="220"></canvas>
+              </div>
+            </div>
+          </div>
+        </section>
 
       <section class="profile-section card-style">
   <h2><i class="fas fa-heart"></i> Productos Favoritos</h2>
@@ -120,9 +181,9 @@
 
     {% include 'partials/footer.html' %}
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
-<!-- Script principal de la app: gestiona menú y lógica de navegación. -->
+    <!-- Script principal de la app: gestiona menú y lógica de navegación. -->
+    <script src="{{ url_for('static', filename='js/perfil_comprador.js') }}"></script>
 
-<script src="{{ url_for('static', filename='js/perfil_comprador.js') }}"></script>
-
+  
 </body>
 </html>

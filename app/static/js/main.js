@@ -52,8 +52,3 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
-// CSS sugerido para alerta-flotante (agrega en tu CSS):
-// .alerta-flotante { position: fixed; top: 2em; right: 2em; background: #222; color: #fff; padding: 1em 2em; border-radius: 6px; opacity: 0; transition: opacity .3s; z-index: 2000; }
-// .alerta-flotante.visible { opacity: 1; }
-// .alerta-success { background: #27ae60; }
-// .alerta-error { background: #c0392b; }

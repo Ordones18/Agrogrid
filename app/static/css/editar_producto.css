@@ -1,17 +1,22 @@
-/* ======= Estilo para Editar Producto ======= */
+/*
+    ESTILOS PARA LA PÁGINA DE EDICIÓN DE PRODUCTO
+*/
 
+/* Estilo base para el body */
 body {
     background-color: var(--light-gray-bg, #f9fafb);
     color: var(--text-color, #333);
     font-family: 'Open Sans', sans-serif;
 }
 
+/* CONTENEDOR PRINCIPAL DEL DASHBOARD */
 .agricultor-dashboard.container {
     max-width: 1200px;
     margin-top: 0;
     padding: 1.5rem;
 }
 
+/* CABECERA DEL DASHBOARD */
 .dashboard-header {
     margin-bottom: 2.5rem;
     text-align: center;
@@ -23,6 +28,7 @@ body {
     margin-bottom: 0.5rem;
 }
 
+/* ESTILO BASE PARA LAS TARJETAS (CARDS) */
 .card-style {
     background: var(--white-bg, #fff);
     border-radius: 12px;
@@ -41,6 +47,7 @@ body {
     margin-right: 0.5rem;
 }
 
+/* FORMULARIO DE PRODUCTO */
 .product-form .form-group {
     margin-bottom: 1.5rem;
 }
@@ -71,6 +78,8 @@ body {
     outline: none;
     box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.2);
 }
+
+/* Fila dentro del formulario para agrupar campos */
 .product-form .form-row {
     display: flex;
     gap: 1.5rem;
@@ -78,6 +87,7 @@ body {
 .product-form .form-row .form-group {
     flex: 1;
 }
+/* Botón principal de envío del formulario */
 .product-form .btn-primary {
     margin-top: 1rem;
     width: 100%;
@@ -95,6 +105,7 @@ body {
     background: #388e3c;
 }
 
+/* Imagen actual del producto */
 .product-form img {
     margin-top: 0.5rem;
     border-radius: 8px;
@@ -103,6 +114,7 @@ body {
     display: block;
 }
 
+/* ESTILOS RESPONSIVOS */
 @media (max-width: 768px) {
     .product-form .form-row {
         flex-direction: column;

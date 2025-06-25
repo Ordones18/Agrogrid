@@ -29,16 +29,24 @@
         <p>¡Hola, <strong>{{ user.name }}</strong>! Gestiona tus envíos y consulta tu actividad.</p>
       </header>
 
-      <section class="metrics-section">
-        <div class="metric-card">
-          <i class="fas fa-truck-moving metric-icon"></i>
-          <h2>Envíos Realizados</h2>
-          <p class="metric-value">{{ envios_realizados | default(0) }}</p>
+      <section class="metrics-section redesigned-metrics">
+        <div class="metric-card redesigned-metric-card">
+          <div class="metric-icon-wrapper">
+            <i class="fas fa-truck-moving metric-icon"></i>
+          </div>
+          <div class="metric-info">
+            <span class="metric-label">Envíos Realizados</span>
+            <span class="metric-value">{{ envios_realizados | default(0) }}</span>
+          </div>
         </div>
-        <div class="metric-card">
-          <i class="fas fa-star metric-icon"></i>
-          <h2>Calificación</h2>
-          <p class="metric-value">{{ calificacion | default('N/A') }}</p>
+        <div class="metric-card redesigned-metric-card">
+          <div class="metric-icon-wrapper">
+            <i class="fas fa-star metric-icon"></i>
+          </div>
+          <div class="metric-info">
+            <span class="metric-label">Calificación</span>
+            <span class="metric-value">{{ calificacion | default('N/A') }}</span>
+          </div>
         </div>
       </section>
 
@@ -53,11 +61,12 @@
                 <th>Productos</th>
                 <th>Agricultor</th>
                 <th>Comprador</th>
+                <th>Valor envío</th>
                 <th>Acción</th>
               </tr>
             </thead>
             <tbody id="tbody-viajes-pendientes">
-              <tr><td colspan="6" class="empty-state">Cargando viajes pendientes...</td></tr>
+              <tr><td colspan="7" class="empty-state">Cargando viajes pendientes...</td></tr>
             </tbody>
           </table>
         </div>
@@ -73,19 +82,96 @@
                 <th>Destino</th>
                 <th>Productos</th>
                 <th>Estado</th>
+                <th>Valor envío</th>
                 <th>Acción</th>
               </tr>
             </thead>
             <tbody id="tbody-viajes-asignados">
-              <tr><td colspan="5" class="empty-state">Cargando viajes asignados...</td></tr>
+              <tr><td colspan="6" class="empty-state">Cargando viajes asignados...</td></tr>
             </tbody>
           </table>
         </div>
       </section>
 
+      <section class="profile-section card-style grafica-envios-section">
+        <h2><i class="fas fa-chart-bar"></i> Gráfico de Pedidos Entregados</h2>
+        <div class="grafica-envios-interactiva">
+          <div class="barplot-select-row">
+            <label for="barplot-select" class="barplot-select-label"><i class="fas fa-filter"></i> Agrupar por:</label>
+            <select id="barplot-select" class="barplot-select">
+              <option value="semana">Semana</option>
+              <option value="mes">Mes</option>
+              <option value="año">Año</option>
+            </select>
+          </div>
+          <div class="grafica-envios-wrapper grafica-envios-wrapper-full">
+            <canvas id="graficaPedidosEntregados" height="260"></canvas>
+          </div>
+          <script id="barplot-series-json" type="application/json">{{ barplot_series|tojson }}</script>
+        </div>
+        <section class="profile-section card-style grafica-ganancias-section">
+          <h2><i class="fas fa-dollar-sign"></i> Total dinero ganado</h2>
+          <div class="grafica-ganancias-interactiva">
+            <div class="barplot-select-row">
+              <label for="ganancias-select" class="barplot-select-label"><i class="fas fa-filter"></i> Agrupar por:</label>
+              <select id="ganancias-select" class="barplot-select">
+                <option value="semana">Semana</option>
+                <option value="mes">Mes</option>
+                <option value="año">Año</option>
+              </select>
+            </div>
+            <div class="grafica-envios-wrapper grafica-envios-wrapper-full">
+              <canvas id="graficaGanancias" height="260"></canvas>
+            </div>
+            <script id="barplot-ganancias-series-json" type="application/json">{{ barplot_ganancias_series|tojson }}</script>
+          </div>
+        </section>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script src="{{ url_for('static', filename='js/transportista_barplot.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/transportista_barplot.js') }}"></script>
+      </section>
+
       <section class="profile-section card-style">
         <h2><i class="fas fa-truck"></i> Vehículos Registrados</h2>
+        <form method="POST" action="{{ url_for('agregar_vehiculo') }}" class="vehiculo-form" enctype="multipart/form-data">
+          <div class="form-row">
+            <input type="text" name="placa" maxlength="20" placeholder="Placa" required class="input-vehiculo">
+            <input type="text" name="tipo" maxlength="50" placeholder="Tipo (Ej: Camión)" required class="input-vehiculo">
+            <input type="text" name="capacidad" maxlength="50" placeholder="Capacidad (opcional)" class="input-vehiculo">
+            <input type="text" name="descripcion" maxlength="120" placeholder="Descripción (opcional)" class="input-vehiculo">
+            <input type="file" name="imagen" accept="image/*" class="input-vehiculo input-img-vehiculo">
+            <button type="submit" class="btn btn-success">Registrar</button>
+          </div>
+        </form>
+        <div id="mensaje-vehiculo-js" class="mensaje-vehiculo-js" style="display:none;"></div>
+        {% if vehiculos and vehiculos|length > 0 %}
+        <div class="vehiculos-lista-horizontal">
+          {% for v in vehiculos %}
+          <div class="vehiculo-card">
+            <form method="POST" action="{{ url_for('eliminar_vehiculo', vehiculo_id=v.id) }}" class="vehiculo-eliminar-form vehiculo-eliminar-js">
+              <button type="submit" class="vehiculo-eliminar-btn" title="Eliminar vehículo">
+                <i class="fas fa-trash-alt"></i>
+              </button>
+            </form>
+            <div class="vehiculo-img-wrapper">
+              {% if v.imagen_url %}
+                <img src="{{ url_for('static', filename=v.imagen_url) }}" alt="Imagen vehículo {{ v.placa }}" class="vehiculo-img">
+              {% else %}
+                <img src="{{ url_for('static', filename='images/camion_default.png') }}" alt="Imagen por defecto" class="vehiculo-img">
+              {% endif %}
+            </div>
+            <div class="vehiculo-info">
+              <div class="vehiculo-placa"><i class="fas fa-id-card"></i> {{ v.placa }}</div>
+              <div class="vehiculo-tipo"><i class="fas fa-truck"></i> {{ v.tipo }}</div>
+              <div class="vehiculo-capacidad"><i class="fas fa-weight-hanging"></i> {{ v.capacidad or '-' }}</div>
+              <div class="vehiculo-desc">{{ v.descripcion or '-' }}</div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+        {% else %}
         <p class="empty-state">No has registrado ningún vehículo.</p>
+        {% endif %}
       </section>
     </div>
 

@@ -1,5 +1,4 @@
-// Ajusta el botón flotante para que nunca tape el footer y siempre sea visible
-
+// Este script se encarga de ajustar la posición del botón flotante para que nunca tape el footer y siempre sea visible
 document.addEventListener('DOMContentLoaded', function() {
     const cartBtn = document.querySelector('.btn-float-cart');
     const footer = document.querySelector('footer, .footer, .site-footer');

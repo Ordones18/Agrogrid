@@ -1,0 +1,214 @@
+/*
+    ESTILOS PARA LA PÁGINA DE CALIFICACIÓN DE PEDIDO
+*/
+
+/* CONTENEDOR PRINCIPAL DE LA VISTA DE CALIFICACIÓN */
+.calificar-container {
+  max-width: 600px;
+  min-width: 340px;
+  margin: 60px auto 36px auto;
+  background: linear-gradient(120deg, #f7faf7 60%, #e8f5e9 100%);
+  border-radius: 22px;
+  box-shadow: 0 8px 40px 0 rgba(34,139,34,0.18), 0 1.5px 0 #43b97f inset;
+  padding: 3.3em 2.7em 2.6em 2.7em;
+  font-family: 'Segoe UI', 'Roboto', Arial, sans-serif;
+  border: 2.5px solid #43b97f;
+  position: relative;
+  overflow: hidden;
+}
+.calificar-container::before {
+  content: '';
+  position: absolute;
+  top: -60px; left: -60px;
+  width: 180px; height: 180px;
+  background: radial-gradient(circle, #c2f0db33 60%, transparent 80%);
+  z-index: 0;
+}
+.calificar-container::after {
+  content: '';
+  position: absolute;
+  bottom: -50px; right: -50px;
+  width: 140px; height: 140px;
+  background: radial-gradient(circle, #43b97f22 60%, transparent 80%);
+  z-index: 0;
+}
+
+/* CABECERA DE LA TARJETA DE CALIFICACIÓN */
+.calificar-header {
+  text-align: center;
+  margin-bottom: 1.6em;
+  position: relative;
+  z-index: 1;
+}
+.logo-agrogrid {
+  width: 110px;
+  margin-bottom: 0.7em;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  filter: drop-shadow(0 2px 8px #43b97f22);
+}
+
+.calificar-header h2 {
+  color: #229e60;
+  font-size: 2.35rem;
+  font-weight: 900;
+  margin-bottom: 0.18em;
+  letter-spacing: 0.02em;
+  text-shadow: 0 2px 8px #43b97f22;
+}
+.calificar-header .estado-pedido {
+  font-size: 1.15em;
+  margin-top: 0.7em;
+  color: #388e3c;
+  font-weight: 600;
+}
+
+.estado-pedido {
+  margin: 1.1em 0 0.7em 0;
+  text-align: center;
+  font-weight: 600;
+  color: #388e3c;
+  font-size: 1.08em;
+}
+
+/* SECCIÓN DE INFORMACIÓN DEL TRANSPORTISTA */
+.info-transp {
+  display: flex;
+  gap: 1.7em;
+  align-items: flex-start;
+  margin-bottom: 1.7em;
+  background: #f7faf7;
+  border-radius: 13px;
+  padding: 1.3em 1.2em 1.3em 1em;
+  box-shadow: 0 2px 9px rgba(34,139,34,0.07);
+  border-left: 5px solid #43b97f;
+  position: relative;
+  z-index: 1;
+}
+
+.img-vehiculo img {
+  width: 95px;
+  height: 95px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3.5px solid #43b97f;
+  background: #f0f8f0;
+  box-shadow: 0 2px 12px #43b97f22;
+}
+
+.datos-transp p {
+  margin: 0 0 0.32em 0;
+  color: #229e60;
+  font-size: 1.01em;
+  font-weight: 500;
+}
+/* SISTEMA DE CALIFICACIÓN POR ESTRELLAS */
+.calificar-estrellas {
+  display: flex;
+  gap: 0.21em;
+  justify-content: center;
+  font-size: 2.9em;
+  margin: 1.7em 0 1em 0;
+  z-index: 1;
+  position: relative;
+}
+
+/* Estilo para una estrella individual */
+.estrella {
+  color: #bdbdbd;
+  cursor: pointer;
+  transition: color 0.19s, transform 0.13s;
+  will-change: color, transform;
+}
+.estrella.selected,
+.estrella:hover {
+  color: #FFD600;
+  transform: scale(1.13) rotate(-6deg);
+}
+.estrella.selected { color: #FFD600; }
+/* BOTÓN PRINCIPAL PARA ENVIAR LA CALIFICACIÓN */
+.btn-calificar {
+  background: linear-gradient(90deg, #43b97f 60%, #229e60 100%);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 0.75em 2.1em;
+  font-size: 1.25em;
+  cursor: pointer;
+  transition: background 0.18s, box-shadow 0.13s, transform 0.12s;
+  font-weight: 700;
+  margin: 1.1em auto 0 auto;
+  display: block;
+  box-shadow: 0 3px 16px rgba(34,139,34,0.13);
+  letter-spacing: 0.03em;
+}
+.btn-calificar:hover:not(:disabled) {
+  background: linear-gradient(90deg, #229e60 60%, #43b97f 100%);
+  box-shadow: 0 6px 20px rgba(34,139,34,0.16);
+  transform: scale(1.04);
+}
+
+.btn-calificar:hover:not(:disabled) {
+  background: linear-gradient(90deg, #229e60 60%, #43b97f 100%);
+  box-shadow: 0 4px 16px rgba(34,139,34,0.13);
+}
+.btn-calificar:disabled {
+  background: #c2f0db;
+  color: #a4b9b0;
+  cursor: not-allowed;
+}
+/* MENSAJE DEBAJO DE LAS ESTRELLAS (EJ: '¡Excelente!') */
+.mensaje-calificacion {
+  margin-top: 0.9em;
+  font-size: 1.08em;
+  text-align: center;
+  color: #229e60;
+  font-weight: 600;
+}
+/* MENSAJE FINAL QUE APARECE DESPUÉS DE CALIFICAR O SI YA ESTÁ CALIFICADO */
+.mensaje-final {
+  margin-top: 2.3em;
+  padding-top: 1.2em;
+  border-top: 2px solid #e0f2e9;
+  text-align: center;
+}
+.mensaje-final .mensaje-ya-califico {
+  display: block;
+  font-size: 1.14em;
+  margin-bottom: 0.5em;
+  color: #388e3c;
+  font-weight: 600;
+}
+.mensaje-final .estrellas-final {
+  font-size: 2.1em;
+  color: #FFD600;
+  margin-bottom: 0.2em;
+}
+.mensaje-final .fa-star {
+  color: #FFD600 !important;
+  font-size: 2.1em;
+  margin: 0 0.04em;
+  text-shadow: 0 2px 8px #ffd60033;
+}
+.mensaje-final .fa-star.far {
+  color: #e0e0e0 !important;
+  text-shadow: none;
+}
+.mensaje-final .texto-final {
+  display: block;
+  margin-top: 0.3em;
+  color: #666;
+  font-size: 1em;
+}
+
+/* ESTILOS RESPONSIVOS */
+@media (max-width: 750px) {
+  .calificar-container {
+    padding: 1.2em 0.5em;
+    max-width: 99vw;
+    min-width: unset;
+  }
+  .info-transp { flex-direction: column; align-items: stretch; gap: 0.7em; padding: 0.7em; }
+  .img-vehiculo img { margin: 0 auto; display: block; }
+}

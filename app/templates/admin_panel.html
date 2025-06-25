@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+
+  <meta charset="UTF-8">
+  <title>Panel Administrador - AgroGrid</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/checkout.css') }}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/admin_panel.css') }}">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <div class="container" style="max-width:1100px; margin:auto;">
+    <div class="admin-header"><i class="fas fa-user-shield"></i> Panel Administrador</div>
+    <!-- KPIs -->
+    <div class="admin-kpi-row">
+      <div class="kpi-card"><span class="kpi-icon"><i class="fas fa-dollar-sign"></i></span><div><div class="kpi-label">Ventas totales</div><div class="kpi-value">${{ kpi_ventas|default('0.00') }}</div></div></div>
+      <div class="kpi-card"><span class="kpi-icon"><i class="fas fa-coins"></i></span><div><div class="kpi-label">Ganancias (1%)</div><div class="kpi-value">${{ kpi_ganancias|default('0.00') }}</div></div></div>
+      <div class="kpi-card"><span class="kpi-icon"><i class="fas fa-file-invoice"></i></span><div><div class="kpi-label">Órdenes</div><div class="kpi-value">{{ kpi_ordenes|default('0') }}</div></div></div>
+      <div class="kpi-card"><span class="kpi-icon"><i class="fas fa-users"></i></span><div><div class="kpi-label">Usuarios</div><div class="kpi-value">{{ kpi_usuarios|default('0') }}</div></div></div>
+      <div class="kpi-card"><span class="kpi-icon"><i class="fas fa-leaf"></i></span><div><div class="kpi-label">Productos</div><div class="kpi-value">{{ kpi_productos|default('0') }}</div></div></div>
+    </div>
+    <!-- Acciones rápidas -->
+    <div class="quick-actions">
+      <button class="btn" title="Exportar ventas a Excel"><i class="fas fa-file-excel"></i> Exportar ventas</button>
+      <button class="btn" title="Ver reportes avanzados"><i class="fas fa-chart-line"></i> Reportes avanzados</button>
+      <button class="btn" title="Gestionar usuarios"><i class="fas fa-users-cog"></i> Usuarios</button>
+      <button class="btn" title="Gestionar productos"><i class="fas fa-box"></i> Productos</button>
+    </div>
+    <div class="admin-card">
+      <div class="admin-section-title"><i class="fas fa-chart-bar"></i> Ventas y Ganancias</div>
+      <div class="ventas-legend">
+        Visualiza la evolución de ventas y ganancias globales. Selecciona el periodo:
+        <select id="ventas-periodo" class="ventas-select">
+          <option value="mes">Mes</option>
+          <option value="semana">Semana</option>
+          <option value="año">Año</option>
+        </select>
+      </div>
+      <canvas id="graficaVentasAdmin" height="170"></canvas>
+    </div>
+    <!-- Actividad reciente -->
+    <div class="admin-card">
+      <div class="admin-section-title"><i class="fas fa-history"></i> Actividad Reciente</div>
+      <table class="recent-table">
+        <thead><tr><th>Fecha</th><th>Evento</th><th>Usuario</th><th>Detalle</th></tr></thead>
+        <tbody>
+          {% for evento in actividad_reciente %}
+            <tr>
+              <td>{{ evento.fecha }}</td>
+              <td>{{ evento.tipo }}</td>
+              <td>{{ evento.usuario }}</td>
+              <td>{{ evento.detalle }}</td>
+            </tr>
+          {% else %}
+            <tr><td colspan="4" style="text-align:center; color:#888;">Sin actividad reciente.</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <script>
+  // Solo inyecta datos globales necesarios para JS externo
+  window._ventasSeries = {{ ventas_series|tojson }};
+</script>
+<script src="{{ url_for('static', filename='js/admin_panel.js') }}"></script>
+
+</body>
+</html>

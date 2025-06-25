@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+{% block title %}Blog - AgroGrid{% endblock %}
+{% block styles %}
+  <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/hoja.png') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/blog.css') }}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+{% endblock %}
+{% block content %}
+<div class="blog-hero">
+  <i class="fas fa-seedling"></i>
+  <h1>Blog AgroGrid</h1>
+  <p class="blog-sub">Innovación, consejos y experiencias reales para potenciar el agro digital</p>
+</div>
+<div class="blog-main">
+  <div class="blog-list">
+    <article class="blog-card">
+      <div class="blog-card-header">
+        <span class="blog-label">Innovación</span>
+        <span class="blog-date">17 de junio, 2025</span>
+      </div>
+      <h2>¿Qué es AgroGrid y cómo transforma el comercio agrícola?</h2>
+      <div class="blog-meta">Por <b>Equipo AgroGrid</b></div>
+      <p>AgroGrid conecta agricultores y compradores de manera directa y segura, usando tecnología de recomendación inteligente y herramientas de gestión modernas. Descubre cómo nuestra plataforma está revolucionando la cadena agroalimentaria.</p>
+      <button class="blog-btn blog-leer-mas">Leer más</button>
+      <div class="blog-articulo-expandido">
+        <p><b>Contenido completo:</b><br>
+          AgroGrid es una plataforma digital que conecta directamente a agricultores y compradores, eliminando intermediarios y facilitando el acceso a productos frescos y de calidad. Nuestra tecnología de recomendación ayuda a cada usuario a descubrir productos ideales según sus preferencias y necesidades, mientras que los agricultores pueden gestionar sus ventas y llegar a nuevos mercados de forma sencilla y segura.
+        </p>
+      </div>
+    </article>
+    <article class="blog-card">
+      <div class="blog-card-header">
+        <span class="blog-label">Tips compradores</span>
+        <span class="blog-date">10 de junio, 2025</span>
+      </div>
+      <h2>5 consejos para comprar productos frescos en línea</h2>
+      <div class="blog-meta">Por <b>María Torres</b></div>
+      <p>¿Quieres asegurar la mejor calidad y precio? Aprende a comparar productos, leer calificaciones, aprovechar recomendaciones y contactar productores de confianza en AgroGrid.</p>
+      <button class="blog-btn blog-leer-mas">Leer más</button>
+      <div class="blog-articulo-expandido">
+        <p><b>Contenido completo:</b><br>
+          1. Revisa la reputación y comentarios de los vendedores.<br>
+          2. Utiliza los filtros para encontrar productos frescos de tu región.<br>
+          3. Lee las descripciones y etiquetas de calidad.<br>
+          4. Aprovecha las recomendaciones personalizadas.<br>
+          5. Contacta al agricultor si tienes dudas antes de comprar.
+        </p>
+      </div>
+    </article>
+    <article class="blog-card">
+      <div class="blog-card-header">
+        <span class="blog-label">Casos de éxito</span>
+        <span class="blog-date">2 de junio, 2025</span>
+      </div>
+      <h2>Historias reales: Agricultores que crecieron con AgroGrid</h2>
+      <div class="blog-meta">Por <b>Equipo AgroGrid</b></div>
+      <p>Conoce testimonios de usuarios que han expandido su mercado, mejorado sus ingresos y digitalizado su producción gracias a nuestra plataforma.</p>
+      <button class="blog-btn blog-leer-mas">Leer más</button>
+      <div class="blog-articulo-expandido">
+        <p><b>Contenido completo:</b><br>
+          "Gracias a AgroGrid, pude vender mi cosecha directamente a restaurantes y supermercados de mi ciudad. El sistema de pagos es seguro y el soporte siempre responde rápido." — Juan Pérez, agricultor.
+          "Como compradora, encontré productos frescos y a mejor precio que en tiendas tradicionales. Recomiendo AgroGrid a todos los que buscan calidad y confianza." — Ana Gómez, compradora.
+        </p>
+      </div>
+    </article>
+    <article class="blog-card">
+      <div class="blog-card-header">
+        <span class="blog-label">Novedades</span>
+        <span class="blog-date">25 de mayo, 2025</span>
+      </div>
+      <h2>¡Nuevo! Sistema de recomendaciones personalizadas</h2>
+      <div class="blog-meta">Por <b>Equipo AgroGrid</b></div>
+      <p>Presentamos nuestro algoritmo híbrido de recomendaciones, que combina preferencias, historial y popularidad para que encuentres productos ideales rápidamente.</p>
+      <button class="blog-btn blog-leer-mas">Leer más</button>
+      <div class="blog-articulo-expandido">
+        <p><b>Contenido completo:</b><br>
+          Nuestro nuevo sistema de recomendaciones utiliza inteligencia artificial para analizar tus compras, búsquedas y preferencias. Así, cada vez que entras a AgroGrid, verás productos que realmente te interesan, ahorrando tiempo y mejorando tu experiencia de compra.
+        </p>
+      </div>
+    </article>
+  </div>
+  <aside class="blog-sidebar">
+    <div class="blog-categorias">
+      <h3><i class="fas fa-list"></i> Categorías</h3>
+      <ul>
+        <li><a href="#">Innovación</a></li>
+        <li><a href="#">Tips compradores</a></li>
+        <li><a href="#">Tips vendedores</a></li>
+        <li><a href="#">Casos de éxito</a></li>
+        <li><a href="#">Novedades</a></li>
+      </ul>
+    </div>
+    <div class="blog-sugerencia">
+      <h4>¿Te gustaría ver algún tema?</h4>
+      <p>Envíanos tu sugerencia a <a href="mailto:info@agrogrid.com">info@agrogrid.com</a> o déjala en el <a href="{{ url_for('centro_ayuda') }}">Centro de Ayuda</a>.</p>
+    </div>
+  </aside>
+</div>
+{% endblock %}
+{% block scripts %}
+  <script src="{{ url_for('static', filename='js/blog.js') }}"></script>
+{% endblock %}

@@ -1,5 +1,8 @@
-/* Estilos personalizados para la vista de carrito */
+/*
+    ESTILOS PERSONALIZADOS PARA LA PÁGINA DEL CARRITO DE COMPRAS
+*/
 
+/* BLOQUE PARA CÁLCULO DE TRANSPORTE */
 .bloque-transporte-canton {
   background: #fff;
   border-radius: 12px;
@@ -17,6 +20,8 @@
 .bloque-transporte-provincia {
   color: #138a65;
 }
+
+/* Formulario para seleccionar origen y destino */
 .formTransporte {
   display: flex;
   align-items: flex-end;
@@ -68,6 +73,7 @@
   font-size: 1rem;
   color: #2e7d32;
 }
+/* ESTILOS RESPONSIVOS PARA EL BLOQUE DE TRANSPORTE */
 @media (max-width: 900px) {
   .bloque-transporte-canton {
     padding: 1rem 0.5rem;
@@ -86,12 +92,14 @@
 }
 
 
+/* LISTA DE PRODUCTOS EN EL CARRITO */
 .carrito-lista-productos {
   list-style: none;
   padding: 0;
   margin-bottom: 2rem;
 }
 
+/* Elemento individual de la lista de productos */
 .carrito-lista-item {
   display: flex;
   align-items: center;

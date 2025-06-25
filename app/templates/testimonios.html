@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% block title %}Testimonios - AgroGrid{% endblock %}
+{% block styles %}
+  <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/hoja.png') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/testimonios.css') }}">
+{% endblock %}
+{% block content %}
+<main class="testimonios-main">
+  <div class="testimonios-container">
+    <div class="testimonios-header-row">
+      <h1 class="testimonios-title">Testimonios</h1>
+    </div>
+    <div class="testimonios-grid">
+      <!-- Testimonio 1 -->
+      <div class="testimonio-card">
+        <div class="testimonio-avatar">
+          <img src="/static/images/persona1.jfif" alt="Avatar de Camila Torres">
+        </div>
+        <div class="testimonio-content">
+          <p class="testimonio-mensaje">"Gracias a AgroGrid, logré vender toda mi cosecha en menos tiempo y a un mejor precio. La plataforma es intuitiva y el soporte, excelente."</p>
+          <div class="testimonio-autor">
+            <span class="testimonio-nombre">Camila Torres</span>
+            <span class="testimonio-tipo">- Agricultora</span>
+          </div>
+          <span class="testimonio-fecha">10/06/2025</span>
+        </div>
+      </div>
+      <!-- Testimonio 2 -->
+      <div class="testimonio-card">
+        <div class="testimonio-avatar">
+          <img src="/static/images/persona2.jfif" alt="Avatar de Esteban Ruiz">
+        </div>
+        <div class="testimonio-content">
+          <p class="testimonio-mensaje">"Como transportista, AgroGrid me permite encontrar rutas y clientes fácilmente. ¡He optimizado mis viajes y aumentado mis ingresos!"</p>
+          <div class="testimonio-autor">
+            <span class="testimonio-nombre">Esteban Ruiz</span>
+            <span class="testimonio-tipo">- Transportista</span>
+          </div>
+          <span class="testimonio-fecha">12/06/2025</span>
+        </div>
+      </div>
+      <!-- Testimonio 3 -->
+      <div class="testimonio-card">
+        <div class="testimonio-avatar">
+          <img src="/static/images/persona3.jpg" alt="Avatar de Paula Mendoza">
+        </div>
+        <div class="testimonio-content">
+          <p class="testimonio-mensaje">"Compré productos frescos de calidad y recibí mi pedido a tiempo. Recomiendo AgroGrid para quienes buscan confianza y buen servicio."</p>
+          <div class="testimonio-autor">
+            <span class="testimonio-nombre">Paula Mendoza</span>
+            <span class="testimonio-tipo">- Compradora</span>
+          </div>
+          <span class="testimonio-fecha">14/06/2025</span>
+        </div>
+      </div>
+    </div>
+</div>
+{% endblock %}
+{% block scripts %}
+  <script src="{{ url_for('static', filename='js/testimonios.js') }}"></script>
+{% endblock %}

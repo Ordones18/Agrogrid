@@ -1,25 +1,30 @@
-/* Hero Section */
+/*
+    ESTILOS DE LA PÁGINA "ACERCA DE NOSOTROS" (ABOUT)
+*/
+
+/* HERO SECTION - SECCIÓN PRINCIPAL SUPERIOR */
 .about-hero {
-  margin-top: 80px;
+  height: 100vh;
+  margin-top:80px;
   position: relative;
-  height: 70vh;
-  min-height: 490px;
-  background: url('https://images.pexels.com/photos/440731/pexels-photo-440731.jpeg') center/cover no-repeat;
+  min-height: 600px;
+  background: url('/static/images/centro_distri.png') center/cover no-repeat;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-
+/* CAPA SEMITRANSPARENTE SOBRE LA IMAGEN DE FONDO PARA MEJORAR LA LEGIBILIDAD DEL TEXTO */
 .about-hero-overlay {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 60, 30, 0.5);
+  background: rgba(0, 0, 0, 0.5);
 }
 
+/* CONTENIDO DE TEXTO CENTRADO SOBRE EL HERO */
 .about-hero-content {
   position: relative;
   color: #fff;
@@ -27,6 +32,7 @@
   z-index: 2;
 }
 
+/* IMAGENES DE MISIÓN Y VISIÓN */
 .img-mission{
   width: 100%;
   max-width: 400px;
@@ -49,20 +55,20 @@
   margin: 0 auto;}
 
 .about-hero h1 {
-  font-size: 2.8rem;
+  font-size: 4rem;
   margin-bottom: 0.5em;
   letter-spacing: 1px;
 }
 
 .about-hero p {
-  font-size: 1.2rem;
+  font-size: 1.5rem;
   max-width: 600px;
   margin: 0 auto;
 }
 
 
 
-/* Mission & Vision Rows */
+/* FILAS DE MISIÓN Y VISIÓN */
 .about-row {
   display: flex;
   flex-wrap: wrap;
@@ -74,10 +80,12 @@
   margin-top: -5em;
 }
 
+/* MODIFICADOR PARA INVERTIR EL ORDEN DE LOS ELEMENTOS (IMAGEN A LA DERECHA) */
 .about-row.reverse {
   flex-direction: row-reverse;
 }
 
+/* COLUMNA FLEXIBLE PARA EL CONTENIDO DE TEXTO O IMAGEN */
 .about-col {
   flex: 1 1 350px;
   padding: 1em;
@@ -90,7 +98,7 @@
   box-shadow: 0 2px 12px rgba(0,0,0,0.08);
 }
 
-/* Section Titles */
+/* TÍTULOS DE SECCIÓN */
 .about-mission h2,
 .about-values h2,
 .about-team h2 {
@@ -178,7 +186,7 @@
   font-size: 0.98rem;
 }
 
-/* Responsive */
+/* ESTILOS RESPONSIVOS */
 @media (max-width: 900px) {
   .about-row {
     flex-direction: column;

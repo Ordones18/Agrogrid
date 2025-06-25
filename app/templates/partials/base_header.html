@@ -47,8 +47,13 @@
           <li><a href="{{ url_for('index') }}" class="active">Inicio</a></li>
           <li><a href="{{ url_for('productos') }}">Productos</a></li>
           <li><a href="{{ url_for('about') }}">Nosotros</a></li>
-          <li><a href="{{ url_for('login') }}">Iniciar sesión</a></li>
-          <li><a href="{{ url_for('register') }}" class="registro-link">Registrate</a></li>
+          {% if user %}
+            <li><a href="{{ url_for('logout') }}">Cerrar sesión</a></li>
+            <li><a href="{{ url_for('perfil_' + user_type) }}">Mi perfil</a></li>
+          {% else %}
+            <li><a href="{{ url_for('login') }}">Iniciar sesión</a></li>
+            <li><a href="{{ url_for('register') }}" class="registro-link">Registrate</a></li>
+          {% endif %}
         </ul>
       </nav>
       <div class="mobile-menu-toggle">

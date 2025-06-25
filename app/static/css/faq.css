@@ -1,0 +1,106 @@
+
+/*
+    ESTILOS PARA LA PÁGINA DE PREGUNTAS FRECUENTES (FAQ)
+*/
+
+/* Contenedor principal de la sección de FAQ */
+.faq-container {
+  max-width: 700px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 2px 16px #1e7c4c18;
+  margin-top: 100px;
+}
+
+/* Título principal de la sección */
+.faq-container h1 {
+  color: #1e7c4c;
+  font-size: 2.2rem;
+  margin-bottom: 1.5rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+/* Contenedor del acordeón de preguntas */
+.faq-accordion {
+  margin-top: 1.5rem;
+}
+
+/* Elemento individual de pregunta y respuesta */
+.faq-item {
+  border-bottom: 1px solid #e0e7ef;
+}
+
+/* Estilo del botón que contiene la pregunta */
+.faq-question {
+  width: 100%;
+  background: none;
+  border: none;
+  outline: none;
+  text-align: left;
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: #17623c;
+  padding: 1.2rem 0;
+  cursor: pointer;
+  transition: background 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Icono de flecha (indicador de desplegable) */
+.faq-question:after {
+  content: '\25BC';
+  font-size: 1.1rem;
+  color: #1e7c4c;
+  margin-left: 8px;
+  transition: transform 0.3s;
+}
+
+/* Estilo de la pregunta cuando el acordeón está activo (abierto) */
+.faq-item.active .faq-question {
+  background: #e6f4ec;
+}
+
+/* Rotación del icono de flecha cuando está activo */
+.faq-item.active .faq-question:after {
+  transform: rotate(180deg);
+}
+
+/* Contenedor de la respuesta */
+.faq-answer {
+  max-height: 0;
+  overflow: hidden;
+  background: #f4faf7;
+  color: #23432b;
+  font-size: 1.05rem;
+  line-height: 1.7;
+  padding: 0 0.8rem;
+  transition: max-height 0.4s cubic-bezier(.4,0,.2,1), padding 0.3s;
+  border-left: 3px solid #1e7c4c;
+  border-radius: 0 0 9px 9px;
+}
+
+/* Estilo de la respuesta cuando el acordeón está activo (visible) */
+.faq-item.active .faq-answer {
+  max-height: 400px;
+  padding: 1rem 0.8rem;
+  transition: max-height 0.5s cubic-bezier(.4,0,.2,1), padding 0.3s;
+}
+
+/* ESTILOS RESPONSIVOS */
+@media (max-width: 600px) {
+  .faq-container {
+    padding: 1rem;
+  }
+  .faq-question {
+    font-size: 1rem;
+    padding: 1rem 0;
+  }
+  .faq-answer {
+    font-size: 0.97rem;
+  }
+}

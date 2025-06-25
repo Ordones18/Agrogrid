@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% block title %}Centro de Ayuda - AgroGrid{% endblock %}
+{% block styles %}
+  <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/hoja.png') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/centro_ayuda.css') }}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+{% endblock %}
+{% block content %}
+<div class="ayuda-full-bg">
+  <div class="ayuda-hero">
+    <i class="fas fa-life-ring ayuda-icon-main"></i>
+    <h1>Centro de Ayuda AgroGrid</h1>
+    <p class="ayuda-sub">Encuentra respuestas, soporte y recursos para aprovechar al máximo nuestra plataforma.</p>
+  </div>
+  <div class="ayuda-grid">
+    <div class="ayuda-card">
+      <i class="fas fa-question-circle"></i>
+      <h2>Preguntas Frecuentes</h2>
+      <p>Resuelve tus dudas rápidamente revisando las <a href="{{ url_for('faq') }}">FAQs</a>.</p>
+    </div>
+    <div class="ayuda-card">
+      <i class="fas fa-envelope-open-text"></i>
+      <h2>Contacto Soporte</h2>
+      <p>¿Necesitas ayuda personalizada? Escríbenos a <a href="mailto:info@agrogrid.com">info@agrogrid.com</a> o llama al <b>+593 99 765 8903</b>.</p>
+    </div>
+    <div class="ayuda-card">
+      <i class="fas fa-video"></i>
+      <h2>Tutoriales y Guías</h2>
+      <p>Consulta nuestros videos y manuales para aprender a usar AgroGrid paso a paso. <span class="soon"></span></p>
+    </div>
+    <div class="ayuda-card">
+      <i class="fas fa-book"></i>
+      <h2>Recursos útiles</h2>
+      <p>Accede al <a href="{{ url_for('blog') }}">Blog</a>, <a href="{{ url_for('noticias') }}">Noticias</a> y <a href="{{ url_for('testimonios') }}">Testimonios</a> de usuarios.</p>
+    </div>
+  </div>
+  <div class="ayuda-info-extra">
+    <h3><i class="fas fa-clock"></i> Horario de atención</h3>
+    <p>Lunes a Viernes: 8:00 a 18:00<br>Sábados: 9:00 a 13:00</p>
+    <h3><i class="fas fa-bolt"></i> Preguntas rápidas</h3>
+<div class="ayuda-quick-accordion">
+  <div class="ayuda-quick-item">
+    <button class="ayuda-quick-q">¿Cómo registro mi cuenta? <i class="fas fa-chevron-down"></i></button>
+    <div class="ayuda-quick-a">
+      Para registrarte, haz clic en <a href="{{ url_for('register') }}">Registrarme</a> y completa el formulario con tus datos. Recibirás un correo de confirmación para activar tu cuenta.
+    </div>
+  </div>
+  <div class="ayuda-quick-item">
+    <button class="ayuda-quick-q">¿Cómo comprar productos? <i class="fas fa-chevron-down"></i></button>
+    <div class="ayuda-quick-a">
+      Ingresa a <a href="{{ url_for('productos') }}">Productos</a>, filtra o busca lo que necesitas, agrega al carrito y sigue los pasos de pago seguro. Puedes ver detalles y calificaciones de cada producto antes de comprar.
+    </div>
+  </div>
+</div>
+  </div>
+</div>
+{% endblock %}
+{% block scripts %}
+  <script src="{{ url_for('static', filename='js/centro_ayuda.js') }}"></script>
+{% endblock %}

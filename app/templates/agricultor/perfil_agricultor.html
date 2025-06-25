@@ -266,10 +266,16 @@ document.addEventListener('DOMContentLoaded', function() {
           <select id="ventas-totales-groupby" style="padding:0.25em 0.5em;">
             <option value="semana">Semana</option>
             <option value="mes" selected>Mes</option>
+            <option value="dia">Día</option>
             <option value="anio">Año</option>
           </select>
         </div>
-        <div id="grafico-ventas-totales" style="width:100%;min-height:350px;"></div>
+        <div class="grafica-ventas-wrapper grafica-ventas-wrapper-full" style="min-height:180px;padding:0.5rem 0.2rem;">
+          <canvas id="graficaVentasTotales" height="180"></canvas>
+        </div>
+        <script id="barplot-ventas-series-json" type="application/json">{{ ventas_totales_series|tojson }}</script>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script src="{{ url_for('static', filename='js/agricultor_barplot.js') }}"></script>
         <h3 style="margin-top:2em;">Ventas por Producto</h3>
         <div id="grafico-ventas-producto" style="width:100%;min-height:320px;"></div>
       </section>
@@ -295,8 +301,7 @@ document.addEventListener('DOMContentLoaded', function() {
     <!-- Script principal de la app: menú, provincias dinámicas, etc. -->
     <script src="https://cdn.plot.ly/plotly-2.26.0.min.js"></script>
     <script src="{{ url_for('static', filename='js/agricultor_perfil.js') }}?v={{ range(10000, 99999) | random }}"></script>
-    <script src="{{ url_for('static', filename='js/main.js') }}">
-    </script>    <!-- Script del widget de taxonomía -->
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>    <!-- Script del widget de taxonomía -->
     <script src="{{ url_for('static', filename='js/taxonomia-selector-simple.js') }}"></script>
     <!-- Librería Plotly.js para gráficos interactivos -->
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
