@@ -623,7 +623,7 @@ def perfil_comprador():
     db.session.commit()
     # --- FIN LIMPIEZA ---
 
-    # Asegúrate de que el usuario exista y maneja el caso contrario
+    # Asegura que el usuario exista y maneja el caso contrario
     if not usuario:
         flash('Usuario no encontrado.', 'danger')
         session.pop('user', None)
@@ -1539,8 +1539,8 @@ def productos():
     nombre = request.args.get('nombre', '')
     precio_min = request.args.get('precio_min', type=float)
     precio_max = request.args.get('precio_max', type=float)
-    sort = request.args.get('sort', 'recent')  # 'sold', 'viewed', 'recent'
-    sort_algo = request.args.get('sort_algo', 'quicksort')  # 'quicksort', 'mergesort'
+    sort = request.args.get('sort', 'recent')
+    sort_algo = request.args.get('sort_algo', 'quicksort')
 
     query = Producto.query
     if region:

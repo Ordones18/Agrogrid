@@ -1,4 +1,4 @@
-# 1. Importaciones necesarias
+# Importaciones necesarias
 from heapq import heappush, heappop  # Para implementar la cola de prioridad (min-heap) en Dijkstra.
 from typing import Dict, Tuple, List  # Para el tipado estático, mejorando la legibilidad.
 import os  # Para interactuar con el sistema de archivos (rutas).
@@ -6,11 +6,11 @@ import json  # Para leer y escribir datos en formato JSON.
 from app.models import Canton  # Modelo de la base de datos para acceder a los cantones.
 from app import app  # Importa la instancia de la aplicación Flask para obtener el contexto de la app.
 
-# 2. Inicialización del grafo cantonal
+# Inicialización del grafo cantonal
 # Este diccionario almacenará el grafo de transporte que se usará en toda la aplicación.
 grafo_cantonal = {}
 
-# 3. Función de utilidad para generar un grafo (posiblemente para pruebas o fallback)
+# Función de utilidad para generar un grafo (posiblemente para pruebas o fallback)
 # La estructura del grafo es un diccionario de diccionarios:
 # {canton_origen: {canton_destino: {'distancia': km, 'tipo': 'terrestre'/'maritimo'}}}
 def generar_grafo_completo_cantones(distancia_fija=100, tipo='terrestre'):
@@ -29,7 +29,7 @@ def generar_grafo_completo_cantones(distancia_fija=100, tipo='terrestre'):
                     grafo[origen][destino] = {'distancia': distancia_fija, 'tipo': tipo}
     return grafo
 
-# 4. Carga del grafo desde un archivo JSON
+# Carga del grafo desde un archivo JSON
 # Este bloque de código se ejecuta una sola vez cuando el módulo es importado.
 # Intenta cargar las conexiones del grafo desde un archivo pre-generado.
 
@@ -45,7 +45,7 @@ except FileNotFoundError:
     print(f"[ADVERTENCIA] No se encontró {GRAFO_JSON_PATH}. El grafo cantonal está vacío.")
     grafo_cantonal = {}
 
-# 5. Implementación del Algoritmo de Dijkstra
+# Implementación del Algoritmo de Dijkstra
 def dijkstra(grafo: Dict[str, Dict[str, Dict]], origen: str, destino: str) -> Tuple[float, List[str], List[str]]:
     """
     Calcula la ruta más corta entre dos nodos (cantones) en un grafo ponderado.
@@ -92,9 +92,3 @@ def dijkstra(grafo: Dict[str, Dict[str, Dict]], origen: str, destino: str) -> Tu
     # Si el bucle termina y no se encontró el destino, no hay una ruta posible.
     return float('inf'), [], []
 
-# Ejemplo de cómo se podría usar la función dijkstra con el grafo cargado.
-# distancia, ruta, tipos = dijkstra(grafo_cantonal, 'Quito', 'Ambato')
-# if ruta:
-#     print(f"Distancia: {distancia} km, Ruta: {' -> '.join(ruta)}, Tramos: {tipos}")
-# else:
-#     print("No se encontró ruta.")

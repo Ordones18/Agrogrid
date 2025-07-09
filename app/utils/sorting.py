@@ -88,11 +88,11 @@ def benchmark_sorts(arr, tipo_dato='numeros'):
     """
     arr1 = list(arr)  # Copia para QuickSort
     arr2 = list(arr)  # Copia para MergeSort
-    t0 = time.time()
+    t0 = time.time() # Guarda el tiempo antes de ejecutar Quicksort
     quick = quicksort(arr1)
-    t1 = time.time()
+    t1 = time.time() # Guarda el tiempo después de QuickSort y antes de MergeSort.
     merge = mergesort(arr2)
-    t2 = time.time()
+    t2 = time.time() # guarda el tiempo después de MergeSort.
     is_sorted = (arr == sorted(arr))
     return {
         'tipo': tipo_dato,

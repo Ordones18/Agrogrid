@@ -1,4 +1,3 @@
-# AgroGrid – Mapeo Completo y Arquitectura
 
 ## 1. Propósito General
 
@@ -141,8 +140,6 @@ Agrogrid/
 
 ---
 
-> **Nota:** El diagrama visual debe generarse y guardarse como `AgroGrid_Arquitectura.png` en la raíz del proyecto para ser incluido en el PDF final.
-
 
 -----------------------------------------
 
@@ -150,7 +147,7 @@ Agrogrid/
 
 ---
 
-## I. Lenguaje(s) de programación utilizado(s)
+## I. Lenguajes de programación utilizados
 
 - **Python** (backend, scripts, lógica de negocio)
 - **HTML, CSS, JavaScript** (frontend, plantillas, dashboards)
@@ -164,7 +161,7 @@ Agrogrid/
 
 ## II. Descripción del proyecto
 
-**Resumen del proyecto (máx. 150 palabras):**  
+**Resumen del proyecto:**  
 AgroGrid es una plataforma web que conecta agricultores, compradores y transportistas en Ecuador para facilitar la compra, venta y logística de productos agrícolas. Ofrece paneles personalizados, análisis de datos, gestión de pedidos, rutas inteligentes y soporte por chatbot con IA, optimizando la cadena agroalimentaria nacional.
 
 **Objetivo general:**  
@@ -189,7 +186,7 @@ AgroGrid mejora la eficiencia, transparencia y trazabilidad del sector agrícola
 
 **Diagrama de clases / actividades:**  
 ![Diagrama de Arquitectura](AgroGrid_Arquitectura.png)  
-*(Incluye aquí el diagrama generado en Draw.io)*
+
 
 **Estructuras de datos aplicadas (especificar y justificar su uso):**
 - **Tablas relacionales (SQLAlchemy):** Para usuarios, productos, órdenes, etc.
@@ -202,9 +199,6 @@ AgroGrid mejora la eficiencia, transparencia y trazabilidad del sector agrícola
 - **K-Nearest Neighbors (KNN):** Para recomendar productos basándose en compras de usuarios con gustos similares.
 - **Algoritmos de ordenamiento (QuickSort, MergeSort):** Para ordenar y mostrar productos por ventas, vistas o fecha.
 - **Agregaciones estadísticas (Pandas, Numpy):** Para calcular y mostrar datos en paneles de ventas, compras y reportes.
-
-**Capturas de pantalla o evidencia del desarrollo:**  
-*(Agrega aquí capturas de la interfaz web, paneles, chatbot, etc.)*
 
 **Descripción de funcionalidades principales:**
 - Registro y autenticación de usuarios por rol.
@@ -253,9 +247,6 @@ AgroGrid digitaliza la cadena agrícola ecuatoriana, conectando productores, com
 - Integración de rutas óptimas: resuelta usando NetworkX y datos GeoJSON.
 - Optimización del chatbot: migración a DeepSeek y ampliación de la base de conocimientos para minimizar costos.
 - Manejo de grandes volúmenes de datos: uso de Pandas y Numpy para análisis eficiente.
-
-**Aportes individuales de cada integrante:**  
-*(Completa aquí con los nombres y aportes de cada miembro del equipo)*
 
 **Resultados obtenidos:**  
 Plataforma funcional, paneles personalizados, chatbot operativo, integración logística y satisfacción de usuarios piloto.

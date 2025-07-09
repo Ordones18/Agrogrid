@@ -18,7 +18,9 @@ from app.models import Usuario, Producto  # Importa los modelos a consultar.
 # =================== Configuración de la Base de Datos ===================
 # Se asegura de que el script apunte a la base de datos correcta.
 # Esta línea es crucial si el script se ejecuta fuera del contexto normal de la app.
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///instance/agrogrid.db'
+basedir = os.path.abspath(os.path.dirname(__file__))
+db_path = os.path.join(basedir, 'instance', 'agrogrid.db')
+app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{db_path}'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 # =================== Lógica de Consulta ===================
