@@ -10,7 +10,7 @@ from app import app  # Importa la instancia de la aplicación Flask para obtener
 # Este diccionario almacenará el grafo de transporte que se usará en toda la aplicación.
 grafo_cantonal = {}
 
-# Función de utilidad para generar un grafo (posiblemente para pruebas o fallback)
+
 # La estructura del grafo es un diccionario de diccionarios:
 # {canton_origen: {canton_destino: {'distancia': km, 'tipo': 'terrestre'/'maritimo'}}}
 def generar_grafo_completo_cantones(distancia_fija=100, tipo='terrestre'):
